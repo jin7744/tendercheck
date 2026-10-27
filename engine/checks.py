@@ -11,7 +11,7 @@ import unicodedata
 
 from engine.dates import parse_datetime_text, required_until, same_reading
 from engine.injection import match_injection
-from engine.normalize import segment_map
+from engine.normalize import canonical_id, segment_map
 
 QUOTE_MAP = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"', "–": "-", "—": "-"})
 METHODS = ("exact", "casefold", "nospace")
@@ -275,7 +275,7 @@ def check_requirement(req: dict, bundle: dict, ctx: _Ctx | None = None) -> dict:
     ctx = ctx or _Ctx(bundle)
     checks: dict[str, dict] = {}
     loc = req.get("location") or {}
-    doc_id, claimed = loc.get("doc_id", ""), loc.get("seg_id", "")
+    doc_id, claimed = canonical_id(loc.get("doc_id", "")), canonical_id(loc.get("seg_id", ""))
     quote = req.get("quote", "")
     info: list[str] = []
     res = {"tmp_id": req.get("tmp_id", ""), "doc_id": doc_id, "seg_id": "", "seg_ids": [],

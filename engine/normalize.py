@@ -181,6 +181,20 @@ def segment_map(bundle: dict) -> dict[str, dict]:
     return {s["seg_id"]: s for s in bundle["segments"]}
 
 
+_ID_WRAPPERS = {"[": "]", "(": ")", "<": ">", '"': '"', "'": "'", "`": "`"}
+
+
+def canonical_id(value):
+    """Ids exactly as the code issued them: models echo the rendered `[A_BODY-L12]` form, so one layer of
+    surrounding brackets/quotes and whitespace is dropped. The id itself is never altered or guessed."""
+    if not isinstance(value, str):
+        return value
+    s = value.strip()
+    if len(s) >= 2 and _ID_WRAPPERS.get(s[0]) == s[-1]:
+        s = s[1:-1].strip()
+    return s
+
+
 def render_segments(bundle: dict, doc_id: str | None = None) -> str:
     """Model input lines `[A_BODY-L12] text` (D1)."""
     return "\n".join(f"[{s['seg_id']}] {s['text'].strip()}" for s in bundle["segments"]

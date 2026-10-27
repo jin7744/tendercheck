@@ -26,7 +26,7 @@ from engine.checks import TMP_ID_RE, contains, norm08
 from engine.ledger import BudgetExceeded, LedgerCorrupt
 from engine.mask import mask_text
 from engine.model_client import MODEL_LAYER_ERRORS, BillingNotConfigured, Usage
-from engine.normalize import segment_map
+from engine.normalize import canonical_id, segment_map
 
 PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
@@ -229,7 +229,36 @@ def _call(client, stage: str, attempt: int, content: str) -> dict:
         env["error"] = result.error or "empty_content: no parsed reply"
     else:
         env["parsed"] = copy.deepcopy(result.parsed)
+        fixed = _canonicalize_ids(env["parsed"])
+        if fixed:
+            env["notes"].append(f"ids_canonicalized: {fixed}")
     return env
+
+
+_ID_KEYS = {"seg_id", "doc_id", "tmp_id", "req_id", "row_id", "attribute_of", "for_id", "req_a", "req_b",
+            "candidate_id"}
+_ID_LIST_KEYS = {"row_ids", "merge_scope", "unmatched_rows"}
+
+
+def _canonicalize_ids(node) -> int:
+    """Rewrite id fields of a parsed reply in place to the issued form; returns how many changed."""
+    changed = 0
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key in _ID_KEYS and isinstance(value, str):
+                new = canonical_id(value)
+                changed += new != value
+                node[key] = new
+            elif key in _ID_LIST_KEYS and isinstance(value, list):
+                new_list = [canonical_id(v) for v in value]
+                changed += sum(a != b for a, b in zip(new_list, value))
+                node[key] = new_list
+            else:
+                changed += _canonicalize_ids(value)
+    elif isinstance(node, list):
+        for item in node:
+            changed += _canonicalize_ids(item)
+    return changed
 
 
 # ---------------------------------------------------------------------------------------------
