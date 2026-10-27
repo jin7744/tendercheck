@@ -177,6 +177,66 @@ def _block_of(bundle: dict) -> dict:
     return out
 
 
+PERIOD_RULES = ("valid_for_from_issue", "issued_within_before_anchor", "valid_at_least_after_anchor")
+MAX_MERGED_QUOTE = 300
+
+
+def _has_period(v: dict) -> bool:
+    return v.get("rule_type") in PERIOD_RULES and (int(v.get("days") or 0) > 0 or int(v.get("months") or 0) > 0)
+
+
+def _anchor_only(v: dict) -> bool:
+    return (v.get("anchor_event", "not_stated") != "not_stated" and not int(v.get("days") or 0)
+            and not int(v.get("months") or 0) and not v.get("until_iso"))
+
+
+def merge_split_validity(vreqs: list[dict], segs: dict) -> tuple[list[dict], list[dict]]:
+    """One validity obligation is sometimes extracted as two records in the same source line: the period
+    ("valid for N days from issue") and the moment it must hold ("valid on the submission deadline").
+    Rejoin them into one record whose quote is the contiguous source span covering both, so F7 sees the
+    period and the anchor together. Returns (reqs, merges); never invents text, never crosses lines."""
+    reqs = [v["req"] for v in vreqs]
+    merges, used = [], set()
+    for i, va in enumerate(vreqs):
+        a, ca = va["req"], va["check"]
+        if i in used or not (ca["verified"] and ca["grounded"]) or not _has_period(a.get("validity") or {}):
+            continue
+        if (a.get("validity") or {}).get("anchor_event", "not_stated") != "not_stated":
+            continue
+        for j, vb in enumerate(vreqs):
+            b, cb = vb["req"], vb["check"]
+            if j == i or j in used or not (cb["verified"] and cb["grounded"]):
+                continue
+            if not _anchor_only(b.get("validity") or {}) or cb["seg_id"] != ca["seg_id"]:
+                continue
+            if (a.get("attribute_of") or b.get("attribute_of")) and a.get("attribute_of") != b.get("attribute_of") \
+                    and a.get("attribute_of") and b.get("attribute_of"):
+                continue
+            text = segs[ca["seg_id"]]["text"]
+            sa, sb = text.find(ca["quote"]), text.find(cb["quote"])
+            if sa < 0 or sb < 0:
+                continue
+            start, end = min(sa, sb), max(sa + len(ca["quote"]), sb + len(cb["quote"]))
+            if end - start > MAX_MERGED_QUOTE:
+                continue
+            validity = {**a["validity"], "anchor_event": b["validity"]["anchor_event"]}
+            merged = {**a, "quote": text[start:end], "validity": validity,
+                      "attribute_of": a.get("attribute_of") or b.get("attribute_of", "")}
+            reqs[i] = merged
+            used |= {i, j}
+            merges.append({"kept": a.get("tmp_id", ""), "absorbed": b.get("tmp_id", ""), "seg_id": ca["seg_id"]})
+            break
+    absorbed = {m["absorbed"]: m["kept"] for m in merges}
+    out = []
+    for k, r in enumerate(reqs):
+        if r.get("tmp_id") in absorbed:
+            continue
+        if r.get("attribute_of") in absorbed:
+            r = {**r, "attribute_of": absorbed[r["attribute_of"]]}
+        out.append(r)
+    return out, merges
+
+
 def _seal_kind(value: str) -> str:
     v = (value or "").casefold()
     if "사용인감" in v or "usage" in v or "authorized" in v or "authorised" in v:
@@ -421,6 +481,12 @@ class _Run:
             if self.extract_failed:
                 return
             self.verify_loop()
+            self.reqs, merges = merge_split_validity(self.vreqs, self.segs)
+            if merges:
+                self.stats["validity_merges"] = merges
+                for m in merges:
+                    self.removed.append({"tmp_id": m["absorbed"], "why": f"joined into {m['kept']} (split validity)"})
+                self.recheck()
             self.match_files()
             self.adjudicate()
         except STOP_ERRORS as exc:
@@ -524,6 +590,7 @@ class _Run:
                              "cited": self.stats["cited_triggers"], "explained": self.stats["explained"],
                              "sent": self.stats["coverage_sent"], "unexplained": self.stats["coverage_unexplained"]},
                 "status_hint_downgrades": downgrades,
+                "validity_merges": self.stats.get("validity_merges", []),
                 "stages": self.stage_log,
             },
             "cost_total_usd": self.tap.spent_usd(),
