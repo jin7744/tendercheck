@@ -326,13 +326,30 @@ def _readings_text(file_check: dict | None, lang: str) -> str:
     return T[lang]["READINGS"].format(parts="; ".join(parts)) if parts else ""
 
 
-def _check_details(file_check: dict | None, ids: list[str]) -> str:
+def _check_details(file_check: dict | None, ids: list[str], lang: str = "en") -> str:
+    """FileCheck detail strings for the reason field. They are written in English by engine.filechecks, so a
+    non-English report leaves them out (they stay in x_meta.rows[].checks)."""
+    if lang != "en":
+        return ""
     out = []
     for c in (file_check or {}).get("checks") or []:
         if c.get("id") in ids and c.get("detail"):
             out.append(str(c["detail"]))
     text = "; ".join(out)
     return text if len(text) <= 200 else text[:199] + "…"
+
+
+def _failing_files(file_check: dict | None, ids: list[str]) -> list[str]:
+    """File names of the per-file readings that failed the given checks (general file rules have no matched
+    rows, so this is where the violating file names come from; 09 §2-6)."""
+    out = []
+    readings = (file_check or {}).get("readings") or {}
+    for cid in ids:
+        entries = readings.get(cid) if isinstance(readings, dict) else None
+        for e in entries if isinstance(entries, list) else []:
+            if isinstance(e, dict) and e.get("result") == "fail" and e.get("file_name") and e["file_name"] not in out:
+                out.append(e["file_name"])
+    return out
 
 
 # ---------------------------------------------------------------- reason / action per row
@@ -444,7 +461,7 @@ def _texts(ctx: _Ctx, item: dict, dec: dict, files: list[str]):
     if first in ("UNVERIFIED_QUOTE", "FIELD_NOT_GROUNDED", "DATE_MISMATCH", "DATE_UNPARSED",
                  "MANDATORY_UNCLEAR", "OPTIONAL_ITEM", "NO_MATCHING_FILE", "QUANTITY_SHORT"):
         r, a = t[first]
-        detail = _check_details(fc, ["F12", "F13"]) if first == "QUANTITY_SHORT" else ""
+        detail = _check_details(fc, ["F12", "F13"], lang) if first == "QUANTITY_SHORT" else ""
         return [r + (f" ({detail})" if detail else "") + suffix, r], [a]
     if first in ("CONDITION_UNKNOWN", "NOT_TRIGGERED"):
         r, a = t[first]
@@ -476,8 +493,10 @@ def _texts(ctx: _Ctx, item: dict, dec: dict, files: list[str]):
         fids = ["F4" if c == "NOT_MERGED" else c.split(":", 1)[1] for c in codes
                 if c == "NOT_MERGED" or c.startswith("CHECK_FAILED:")]
         labels = t["AND"].join(F_LABELS[lang].get(f, f) for f in fids)
-        detail = _check_details(fc, fids)
-        base = t["CHECK_FAILED"].format(labels=labels, files=files_txt or "-")
+        detail = _check_details(fc, fids, lang)
+        failing = _failing_files(fc, fids)
+        shown = _files_text(failing, lang) if failing else files_txt
+        base = t["CHECK_FAILED"].format(labels=labels, files=shown or "-")
         actions = " ".join(F_ACTIONS[lang].get(f, "") for f in fids).strip() or t["GENERIC"][1]
         return [base + (f" ({detail})" if detail else "") + suffix, base + suffix, base], [actions, t["GENERIC"][1]]
     if first.startswith("ATTRIBUTE_UNKNOWN:") or first == "COUNTING_AMBIGUOUS":

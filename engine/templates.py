@@ -6,6 +6,7 @@ the template here. Bidder questions are templates only, keyed `fact:<fact_key>` 
 from __future__ import annotations
 
 import re
+import unicodedata
 
 from engine import textfilter
 from engine.checks import norm08
@@ -23,6 +24,14 @@ _ROMAN = {"Ⅰ": "1", "Ⅱ": "2", "Ⅲ": "3", "Ⅳ": "4", "Ⅴ": "5", "Ⅵ": "6"
 _TRAILING = " '\"‘’“”"
 
 
+def _last_digit(ch: str) -> str | None:
+    """ASCII last digit of a non-ASCII digit character such as a circled number (⑥ -> '6', ⑫ -> '2')."""
+    value = unicodedata.numeric(ch, -1)
+    if value < 0 or not float(value).is_integer():
+        return None
+    return str(int(value))[-1]
+
+
 def particle(word: str, pair: str) -> str:
     """Korean particle for `word`: pair is 'with-final/without-final', e.g. '은/는', '이/가',
     '을/를', '과/와', '으로/로'. Unknown endings (Latin letters, brackets) give e.g. '은(는)'."""
@@ -34,8 +43,9 @@ def particle(word: str, pair: str) -> str:
     if "가" <= ch <= "힣":
         final = (ord(ch) - 0xAC00) % 28
         has, rieul = final != 0, final == 8
-    elif ch.isdigit():
-        has, rieul = _DIGIT_FINAL[ch], ch in _DIGIT_RIEUL
+    elif ch and (ch in _DIGIT_FINAL or _last_digit(ch) is not None):
+        d = ch if ch in _DIGIT_FINAL else _last_digit(ch)
+        has, rieul = _DIGIT_FINAL[d], d in _DIGIT_RIEUL
     elif ch == "X":
         has, rieul = True, False
     else:

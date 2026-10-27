@@ -320,6 +320,38 @@ class PackageBReport(unittest.TestCase):
         self.assertIn(KO_DISCLAIMER, txt)
 
 
+class FileCheckTextInReason(unittest.TestCase):
+    """Integration fixes (docs/integration_notes.md): FileCheck details are written in English by
+    engine.filechecks, so a Korean reason leaves them out; a general file rule has no matched rows, so the
+    violating file names come from the FileCheck readings (09 §2-6)."""
+
+    def _row(self, pkg, quote, doc_id, seg_id, manifest_id, lang):
+        from engine import rules
+        from engine.filechecks import run_file_checks
+        from engine.manifest import parse_manifest
+        bundle = bundle_a() if pkg == "A" else bundle_b()
+        r = req(quote, doc_id, seg_id, tmp_id="R1", category="file_format", subject="file format",
+                format={"extensions": ["pdf"]})
+        v = {"req": r, "check": check_requirement(r, bundle)}
+        manifest = parse_manifest((REPO / "scenarios" / "manifests" / f"{manifest_id}.txt").read_text(encoding="utf-8"),
+                                  lang=lang)
+        fc = run_file_checks(v, [], manifest, as_of=bundle["as_of"], anchors={})
+        d = rules.decide(v, file_check=fc, match={"by_req": {}}, profile=manifest["profile"], as_of=bundle["as_of"])
+        rep = R.build_report(manifest_id, [{"vreq": v, "decision": d, "file_check": fc}], [], lang=lang,
+                             manifest=manifest, bundle=bundle)
+        return rep["requirements"][0]
+
+    def test_korean_reason_names_the_file_without_english_detail(self):
+        row = self._row("B", "모든 제출서류는 PDF 형식으로 제출한다.", "B_RFP", "B_RFP-L5", "B-M2", "ko")
+        self.assertEqual((row["status"], row["evidence_files"]), ("error", []))
+        self.assertEqual(row["reason"], "파일 형식 검사에서 문제가 나왔습니다: 물안개시스템_입찰참가신청서.hwp.")
+
+    def test_english_reason_names_the_file_and_keeps_detail(self):
+        row = self._row("A", "All files shall be in PDF format.", "A_BODY", "A_BODY-L29", "A-M2", "en")
+        self.assertEqual(row["reason"], "File format check failed for QMJV_BF3.xlsx. "
+                                        "(fail: QMJV_BF3.xlsx: .xlsx not in allowed ['pdf'])")
+
+
 class Helpers(unittest.TestCase):
     def test_status_counts(self):
         rows = [{"status": s} for s in ("met", "met", "error", NC, "conditional")]

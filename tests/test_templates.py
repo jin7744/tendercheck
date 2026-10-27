@@ -126,6 +126,16 @@ class KoreanParticles(unittest.TestCase):
             with self.subTest(word=word):
                 self.assertEqual(templates.particle(word, pair), want)
 
+    def test_circled_number_locations(self):
+        # 08 B locations end in circled numbers (공고문 3.⑥); ⑥ is read 육, ② 이, ⑫ 십이, ⑳ 이십.
+        cases = [("공고문 3.⑥", "은/는", "은"), ("공고문 3.②", "은/는", "는"), ("공고문 3.⑫", "이/가", "가"),
+                 ("공고문 3.⑦", "으로/로", "로"), ("공고문 3.⑳", "을/를", "을")]
+        for word, pair, want in cases:
+            with self.subTest(word=word):
+                self.assertEqual(templates.particle(word, pair), want)
+        self.assertEqual(templates.bidder_question("fact:other", "ko", context="공고문 3.⑥"),
+                         "공고문 3.⑥에 적힌 조건이 이번 입찰에 해당합니까? (예/아니오)")
+
 
 if __name__ == "__main__":
     unittest.main()
