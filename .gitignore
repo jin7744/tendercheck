@@ -29,3 +29,7 @@ Thumbs.db
 
 # local-only scrub patterns
 tools/scrub_private_patterns.txt
+
+# cost ledger (live run ids/timestamps; evidence kept locally)
+runs/ledger.jsonl
+runs/*.lock
