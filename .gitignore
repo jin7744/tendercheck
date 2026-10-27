@@ -1,0 +1,31 @@
+# --- secrets: never commit ---
+.env
+.env.*
+*.env
+*.dpapi*
+*secret*
+*secrets*
+*.key
+*.pem
+_비밀*/
+api_key*
+# --- live user input & raw call logs from live (non-synthetic) runs ---
+runs/live_*/
+runs/**/user_input*
+web/uploads/
+# --- holdout is opened only after engine freeze ---
+scenarios/holdout/**/answers/
+# --- python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+# --- os/editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# local-only scrub patterns
+tools/scrub_private_patterns.txt
