@@ -9,6 +9,7 @@ Run: `cd tendercheck && PYTHONUTF8=1 python3 -m unittest discover -s tests -v`
 ## 1. Verify in the live smoke test (open items)
 
 Everything below is configurable. None of it was guessed silently; the defaults are the conservative choice.
+**2026-10-27 live smoke (`docs/smoke_20261027.md`) closed V1 (`reasoning_effort`), V3 (strict accepted), V5 (Chat usage names) and V9 (rate-limit header names).**
 
 | # | Open question | Current default | Knob | How to check |
 |---|---|---|---|---|
