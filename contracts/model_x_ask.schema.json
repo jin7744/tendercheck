@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_ask",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "asked_items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "item": {
+              "type": "string"
+            },
+            "search_terms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "item",
+            "search_terms"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "asked_items"
+    ],
+    "additionalProperties": false
+  }
+}

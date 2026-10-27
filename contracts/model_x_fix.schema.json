@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_fix",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "fixes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "tmp_id": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "requote",
+                "retract"
+              ]
+            },
+            "quote": {
+              "type": "string"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "doc_id": {
+                  "type": "string"
+                },
+                "seg_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "doc_id",
+                "seg_id"
+              ],
+              "additionalProperties": false
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "tmp_id",
+            "action",
+            "quote",
+            "location",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "fixes"
+    ],
+    "additionalProperties": false
+  }
+}

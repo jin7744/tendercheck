@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_review",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "flags": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "req_id": {
+              "type": "string"
+            },
+            "seg_id": {
+              "type": "string"
+            },
+            "issue": {
+              "type": "string"
+            },
+            "quote": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "req_id",
+            "seg_id",
+            "issue",
+            "quote"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "flags"
+    ],
+    "additionalProperties": false
+  }
+}

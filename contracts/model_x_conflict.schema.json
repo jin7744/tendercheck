@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_conflict",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "adjudications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "candidate_id": {
+              "type": "string"
+            },
+            "same_obligation": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unclear"
+              ]
+            },
+            "distinguishing_quote_a": {
+              "type": "string"
+            },
+            "distinguishing_quote_b": {
+              "type": "string"
+            },
+            "explanation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "candidate_id",
+            "same_obligation",
+            "distinguishing_quote_a",
+            "distinguishing_quote_b",
+            "explanation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "new_conflicts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "req_a": {
+              "type": "string"
+            },
+            "req_b": {
+              "type": "string"
+            },
+            "explanation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "req_a",
+            "req_b",
+            "explanation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "questions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "for_id": {
+              "type": "string"
+            },
+            "question": {
+              "type": "string"
+            },
+            "answer_type": {
+              "type": "string",
+              "enum": [
+                "yes_no",
+                "single_value"
+              ]
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "for_id",
+            "question",
+            "answer_type",
+            "options"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "adjudications",
+      "new_conflicts",
+      "questions"
+    ],
+    "additionalProperties": false
+  }
+}

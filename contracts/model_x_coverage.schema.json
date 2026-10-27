@@ -1,0 +1,352 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_coverage",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "new_requirements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "tmp_id": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "document",
+                "deadline",
+                "submission_method",
+                "file_format",
+                "file_naming",
+                "merge_rule",
+                "signature_seal",
+                "original_copy",
+                "validity",
+                "other"
+              ]
+            },
+            "subject": {
+              "type": "string"
+            },
+            "requirement": {
+              "type": "string"
+            },
+            "quote": {
+              "type": "string"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "doc_id": {
+                  "type": "string"
+                },
+                "seg_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "doc_id",
+                "seg_id"
+              ],
+              "additionalProperties": false
+            },
+            "mandatory": {
+              "type": "string",
+              "enum": [
+                "mandatory",
+                "conditional",
+                "optional",
+                "unclear"
+              ]
+            },
+            "conditions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition_quote": {
+                    "type": "string"
+                  },
+                  "fact_key": {
+                    "type": "string",
+                    "enum": [
+                      "consortium",
+                      "usage_seal",
+                      "foreign_entity",
+                      "subcontracting",
+                      "sme",
+                      "other"
+                    ]
+                  },
+                  "applies_when": {
+                    "type": "string",
+                    "enum": [
+                      "yes",
+                      "no"
+                    ]
+                  }
+                },
+                "required": [
+                  "condition_quote",
+                  "fact_key",
+                  "applies_when"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "attribute_of": {
+              "type": "string"
+            },
+            "doc_code": {
+              "type": "string"
+            },
+            "quantity_rule": {
+              "type": "string",
+              "enum": [
+                "none",
+                "per_member",
+                "per_person"
+              ]
+            },
+            "member_rule": {
+              "type": "object",
+              "properties": {
+                "max_members": {
+                  "type": "integer"
+                },
+                "lead_share_min_pct": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "max_members",
+                "lead_share_min_pct"
+              ],
+              "additionalProperties": false
+            },
+            "amount": {
+              "type": "object",
+              "properties": {
+                "currency": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "ratio_pct": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "currency",
+                "value",
+                "ratio_pct"
+              ],
+              "additionalProperties": false
+            },
+            "deadline": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "submission",
+                    "questions",
+                    "clarification",
+                    "opening",
+                    "other"
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                },
+                "iso_local": {
+                  "type": "string"
+                },
+                "tz_quote": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "raw",
+                "iso_local",
+                "tz_quote"
+              ],
+              "additionalProperties": false
+            },
+            "format": {
+              "type": "object",
+              "properties": {
+                "extensions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "max_size_mb": {
+                  "type": "number"
+                },
+                "filename_template": {
+                  "type": "string"
+                },
+                "merge_single_pdf": {
+                  "type": "string",
+                  "enum": [
+                    "not_stated",
+                    "yes"
+                  ]
+                },
+                "merge_scope": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "extensions",
+                "max_size_mb",
+                "filename_template",
+                "merge_single_pdf",
+                "merge_scope"
+              ],
+              "additionalProperties": false
+            },
+            "sign_seal": {
+              "type": "string",
+              "enum": [
+                "not_stated",
+                "signature",
+                "seal",
+                "signature_and_seal",
+                "seal_corporate_or_usage",
+                "all_members_seal",
+                "all_members_sign",
+                "each_person_handwritten",
+                "certified_copy_mark"
+              ]
+            },
+            "copy_type": {
+              "type": "string",
+              "enum": [
+                "not_stated",
+                "original",
+                "copy_allowed",
+                "certified_copy"
+              ]
+            },
+            "notarized": {
+              "type": "string",
+              "enum": [
+                "not_stated",
+                "required"
+              ]
+            },
+            "validity": {
+              "type": "object",
+              "properties": {
+                "rule_type": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "valid_for_from_issue",
+                    "issued_within_before_anchor",
+                    "valid_until_date",
+                    "valid_at_least_after_anchor"
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                },
+                "months": {
+                  "type": "integer"
+                },
+                "days": {
+                  "type": "integer"
+                },
+                "until_iso": {
+                  "type": "string"
+                },
+                "anchor_event": {
+                  "type": "string",
+                  "enum": [
+                    "not_stated",
+                    "submission_deadline",
+                    "notice_date",
+                    "other"
+                  ]
+                }
+              },
+              "required": [
+                "rule_type",
+                "raw",
+                "months",
+                "days",
+                "until_iso",
+                "anchor_event"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "tmp_id",
+            "category",
+            "subject",
+            "requirement",
+            "quote",
+            "location",
+            "mandatory",
+            "conditions",
+            "attribute_of",
+            "doc_code",
+            "quantity_rule",
+            "member_rule",
+            "amount",
+            "deadline",
+            "format",
+            "sign_seal",
+            "copy_type",
+            "notarized",
+            "validity"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "skips": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "seg_id": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "background",
+                "definition",
+                "duplicate",
+                "not_submission_related",
+                "instruction_to_ai"
+              ]
+            }
+          },
+          "required": [
+            "seg_id",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "new_requirements",
+      "skips"
+    ],
+    "additionalProperties": false
+  }
+}

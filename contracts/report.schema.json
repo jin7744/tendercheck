@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0.0",
+  "name": "report",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "run_id": {
+        "type": "string"
+      },
+      "basis": {
+        "type": "string"
+      },
+      "requirements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "deadline",
+                "document",
+                "attribute",
+                "validity",
+                "file_rule",
+                "conditional"
+              ]
+            },
+            "quote": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "met",
+                "missing",
+                "error",
+                "conditional",
+                "needs-confirmation"
+              ]
+            },
+            "condition_state": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "unknown",
+                "not_triggered",
+                "triggered",
+                null
+              ]
+            },
+            "evidence_files": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "depends_on": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "depends_on_conflict": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "bidder_action": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "quote",
+            "location",
+            "status",
+            "condition_state",
+            "evidence_files",
+            "depends_on",
+            "depends_on_conflict",
+            "reason",
+            "bidder_action"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "conflicts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "topic": {
+              "type": "string"
+            },
+            "sides": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "quote": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "quote",
+                  "location"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "agency_question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "topic",
+            "sides",
+            "agency_question"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "bidder_questions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "untrusted_instructions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "quote": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "ignored"
+              ]
+            }
+          },
+          "required": [
+            "quote",
+            "location",
+            "action"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "not_in_source": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "status_counts": {
+        "type": "object",
+        "properties": {
+          "met": {
+            "type": "integer"
+          },
+          "missing": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "integer"
+          },
+          "conditional": {
+            "type": "integer"
+          },
+          "needs-confirmation": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "met",
+          "missing",
+          "error",
+          "conditional",
+          "needs-confirmation"
+        ],
+        "additionalProperties": false
+      },
+      "disclaimer": {
+        "type": "string"
+      },
+      "x_meta": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "run_id",
+      "basis",
+      "requirements",
+      "conflicts",
+      "bidder_questions",
+      "untrusted_instructions",
+      "not_in_source",
+      "status_counts",
+      "disclaimer",
+      "x_meta"
+    ],
+    "additionalProperties": false
+  }
+}

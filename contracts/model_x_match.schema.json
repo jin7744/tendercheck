@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_match",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "matches": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "req_id": {
+              "type": "string"
+            },
+            "row_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "status_hint": {
+              "type": "string",
+              "enum": [
+                "no_concern",
+                "needs-confirmation"
+              ]
+            },
+            "hint_reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "req_id",
+            "row_ids",
+            "rationale",
+            "status_hint",
+            "hint_reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "attribute_findings": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "row_id": {
+              "type": "string"
+            },
+            "attribute": {
+              "type": "string",
+              "enum": [
+                "signed_by",
+                "seal_kind",
+                "member",
+                "merged_contents",
+                "headcount",
+                "signature_count",
+                "other"
+              ]
+            },
+            "value": {
+              "type": "string"
+            },
+            "note_quote": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "row_id",
+            "attribute",
+            "value",
+            "note_quote"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "unmatched_rows": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "matches",
+      "attribute_findings",
+      "unmatched_rows"
+    ],
+    "additionalProperties": false
+  }
+}
