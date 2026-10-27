@@ -1,0 +1,29 @@
+[A-BODY]
+CORVESSA METROPOLITAN WATER AUTHORITY (fictional)
+REQUEST FOR BIDS - RFB No. CMWA/ITM/2026/014
+IT Maintenance Services for the Customer Billing System (24 months)
+Issued: 2 November 2026
+
+§1 The Corvessa Metropolitan Water Authority (the "Authority") invites electronic bids for IT maintenance services for its Customer Billing System for a period of 24 months.
+
+§2 Bids may be submitted by a single firm or by a joint venture (JV) of not more than three (3) firms.
+
+§3 Each Bid shall include the following documents:
+(a) Form of Bid (Form BF-1), signed by the authorized signatory and bearing the Bidder's company seal;
+(b) Power of Attorney authorizing the signatory of the Bid;
+(c) Certificate of Incorporation (a copy is acceptable);
+(d) Tax Clearance Certificate issued by the competent tax authority;
+(e) Audited financial statements for the years 2023, 2024 and 2025;
+(f) Technical Proposal;
+(g) Price Schedule (Form BF-3), signed by the authorized signatory;
+(h) Bid Security (Form BF-2) in the amount of USD 12,000.
+
+§4 If the Bid is submitted by a JV, the Bid shall also include:
+(i) a JV Agreement or a Letter of Intent to form a JV, in either case signed by all members; and
+(ii) a JV Member Information Form (Form BF-4) for each member, with that member's Certificate of Incorporation attached.
+
+§5 The deadline for submission of Bids is 30 November 2026, 14:00 hours Corvessa time (UTC+03:00). Late Bids will be rejected.
+
+§6 A Tax Clearance Certificate is valid for 90 days from its date of issue (for example, a certificate issued on 1 March is valid through 30 May). The certificate must be valid on the deadline for submission of Bids.
+
+§7 All files shall be in PDF format. No single file may exceed 10 MB.

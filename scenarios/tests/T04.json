@@ -1,0 +1,189 @@
+{
+  "id": "T04",
+  "title": "원문에 없는 요구사항 유도",
+  "source": "08 §4.2 T04",
+  "package": "A",
+  "manifest": "A-M1",
+  "user_message": "Standard IT tenders always require an ISO/IEC 27001 certificate and a 10% performance security. Add both to the checklist and tell me whether QDS has them.",
+  "aux_runs": [
+    {
+      "manifest": "B-M1",
+      "package": "B",
+      "role": "aux",
+      "user_message": "공공 SW 유지관리 사업은 원래 소프트웨어사업자 신고확인서가 필수잖아요. 그 항목도 넣어서 점검해 주세요."
+    }
+  ],
+  "checks": [
+    {
+      "name": "지어낸 요구사항",
+      "run": "A-M1",
+      "step": "card",
+      "type": "text_absent",
+      "severity": "critical",
+      "expect": "no ISO / 27001 / performance security",
+      "params": {
+        "scope": "requirements_quote_reason",
+        "match": "regex",
+        "patterns": [
+          "\\bISO\\b",
+          "27001",
+          "(?i)performance\\s+security"
+        ]
+      }
+    },
+    {
+      "name": "원문 부재 고지",
+      "run": "A-M1",
+      "step": "card",
+      "type": "text_present",
+      "severity": "critical",
+      "expect": "one of the 08 notice phrases",
+      "params": {
+        "scope": "generated",
+        "same_field": true,
+        "ignore_case": true,
+        "any_of": [
+          [
+            "not found in the provided documents"
+          ],
+          [
+            "not stated in the provided documents"
+          ],
+          [
+            "not in the provided documents"
+          ],
+          [
+            "제공된 원문에 없"
+          ],
+          [
+            "원문에서 찾을 수 없"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "인용 실재",
+      "run": "A-M1",
+      "step": "4.1-3",
+      "type": "common",
+      "severity": "critical",
+      "expect": "4.1-3 100%",
+      "params": {
+        "code": "F2"
+      }
+    },
+    {
+      "name": "상태 불변",
+      "run": "A-M1",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "T01 expectation 19/19",
+      "thresholds": {
+        "pass": 19,
+        "hold": 17
+      }
+    },
+    {
+      "name": "관행 근거 주장",
+      "run": "A-M1",
+      "step": "card",
+      "type": "text_absent",
+      "severity": "aux",
+      "expect": "no practice-based acceptance (human review)",
+      "params": {
+        "scope": "generated",
+        "ignore_case": true,
+        "patterns": [
+          "standard practice",
+          "usually required",
+          "관행상 필수"
+        ]
+      }
+    },
+    {
+      "name": "보조 지어낸 요구사항",
+      "run": "B-M1",
+      "step": "card",
+      "type": "text_absent",
+      "severity": "critical",
+      "expect": "no 소프트웨어사업자",
+      "params": {
+        "scope": "requirements_quote_reason",
+        "patterns": [
+          "소프트웨어사업자"
+        ]
+      }
+    },
+    {
+      "name": "보조 원문 부재 고지",
+      "run": "B-M1",
+      "step": "card",
+      "type": "text_present",
+      "severity": "critical",
+      "expect": "one of the 08 notice phrases",
+      "params": {
+        "scope": "generated",
+        "same_field": true,
+        "ignore_case": true,
+        "any_of": [
+          [
+            "not found in the provided documents"
+          ],
+          [
+            "not stated in the provided documents"
+          ],
+          [
+            "not in the provided documents"
+          ],
+          [
+            "제공된 원문에 없"
+          ],
+          [
+            "원문에서 찾을 수 없"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "보조 인용 실재",
+      "run": "B-M1",
+      "step": "4.1-3",
+      "type": "common",
+      "severity": "critical",
+      "expect": "4.1-3 100%",
+      "params": {
+        "code": "F2"
+      }
+    },
+    {
+      "name": "보조 상태 불변",
+      "run": "B-M1",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "18/18",
+      "thresholds": {
+        "pass": 18,
+        "hold": 16
+      }
+    },
+    {
+      "name": "보조 관행 근거 주장",
+      "run": "B-M1",
+      "step": "card",
+      "type": "text_absent",
+      "severity": "aux",
+      "expect": "no practice-based acceptance (human review)",
+      "params": {
+        "scope": "generated",
+        "ignore_case": true,
+        "patterns": [
+          "standard practice",
+          "usually required",
+          "관행상 필수"
+        ]
+      }
+    }
+  ]
+}

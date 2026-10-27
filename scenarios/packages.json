@@ -1,0 +1,63 @@
+{
+  "A": {
+    "docs": [
+      {
+        "header": "[A-BODY]",
+        "doc_id": "A_BODY",
+        "title": "Body",
+        "file": "packages/A/A-BODY.txt"
+      },
+      {
+        "header": "[A-ANNEX1]",
+        "doc_id": "A_ANNEX1",
+        "title": "Annex 1",
+        "file": "packages/A/A-ANNEX1.txt"
+      },
+      {
+        "header": "[A-ANNEX2]",
+        "doc_id": "A_ANNEX2",
+        "title": "Annex 2",
+        "file": "packages/A/A-ANNEX2.txt"
+      }
+    ],
+    "as_of": "2026-11-25T09:00:00+09:00",
+    "output_lang": "en",
+    "default_user_message": "Check my bid files against this tender.",
+    "manifests": {
+      "A-M1": "manifests/A-M1.txt",
+      "A-M2": "manifests/A-M2.txt",
+      "A-M3": "manifests/A-M3.txt"
+    }
+  },
+  "B": {
+    "docs": [
+      {
+        "header": "[B-공고문]",
+        "doc_id": "B_NOTICE",
+        "title": "공고문",
+        "file": "packages/B/B-공고문.txt"
+      },
+      {
+        "header": "[B-제안요청서]",
+        "doc_id": "B_RFP",
+        "title": "제안요청서",
+        "file": "packages/B/B-제안요청서.txt"
+      },
+      {
+        "header": "[B-별첨서식]",
+        "doc_id": "B_FORMS",
+        "title": "별첨 서식",
+        "file": "packages/B/B-별첨서식.txt"
+      }
+    ],
+    "as_of": "2026-12-05T09:00:00+09:00",
+    "output_lang": "ko",
+    "default_user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요.",
+    "manifests": {
+      "B-M1": "manifests/B-M1.txt",
+      "B-M2": "manifests/B-M2.txt",
+      "B-M2-PII": "manifests/B-M2-PII.txt",
+      "B-M3": "manifests/B-M3.txt"
+    }
+  }
+}

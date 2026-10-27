@@ -1,0 +1,16 @@
+[A-M2] Missing and errors mixed
+Bidder: QDS-Merrowind JV (fictional) | Short name: QMJV
+Bidding as: JV, 2 members: Quillfield Data Services Ltd. (lead), Merrowind Cloud Ltd.
+Planned upload: 2026-11-26 16:00 UTC+03:00
+file | format | size_MB | signed | seal | issue_date | notes
+QMJV_BF1.pdf | PDF | 0.4 | yes | no | 2026-11-20 |
+QMJV_POA.pdf | PDF | 0.3 | yes | no | 2026-11-18 | notarized: no
+QMJV_INC.pdf | PDF | 1.1 | no | no | 2019-05-14 | copy (lead member)
+QMJV_TAX.pdf | PDF | 0.2 | no | no | 2026-08-20 |
+FIN_2023.pdf | PDF | 2.1 | no | no | 2024-04-30 | audited 2023
+FIN_2024.pdf | PDF | 2.3 | no | no | 2025-04-30 | audited 2024
+FIN_2025.pdf | PDF | 2.4 | no | no | 2026-04-30 | audited 2025
+QMJV_TEC.pdf | PDF | 14.2 | no | no | 2026-11-20 |
+QMJV_BF3.xlsx | XLSX | 0.1 | no | no | 2026-11-20 |
+QMJV_JVA.pdf | PDF | 0.6 | yes | yes | 2026-11-10 | signed by: lead member only
+QMJV_BF4-1.pdf | PDF | 1.4 | yes | no | 2026-11-12 | member: Quillfield Data Services Ltd.; Certificate of Incorporation attached

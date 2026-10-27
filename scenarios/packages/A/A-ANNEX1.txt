@@ -1,0 +1,13 @@
+[A-ANNEX1]
+ANNEX 1 - BID DATA SHEET (BDS)
+All times in this Bid Data Sheet are Corvessa local time (UTC+03:00).
+
+ITB 19.1 Bids shall remain valid until 31 March 2027.
+ITB 20.2 The Bid Security shall remain valid until 28 April 2027.
+ITB 21.2 The Power of Attorney shall be notarized.
+ITB 22.1 Each file shall be named [BidderShortName]_[DocumentCode].pdf, using the document codes in the Submission Checklist below (example: ABC_BF1.pdf).
+ITB 22.3 The audited financial statements for 2023, 2024 and 2025 shall be merged into a single PDF file (document code FIN).
+ITB 23.1 The deadline for submission of Bids is: Date: 2 December 2026; Time: 14:00 hours.
+
+Submission Checklist (document codes):
+BF1 Form of Bid; POA Power of Attorney; INC Certificate of Incorporation; TAX Tax Clearance Certificate; FIN Audited financial statements (one merged file); TEC Technical Proposal; BF3 Price Schedule; BF2 Bid Security; JVA JV Agreement or Letter of Intent (JV only); BF4-1, BF4-2, BF4-3 JV Member Information Form, one file per member (JV only).

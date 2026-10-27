@@ -1,0 +1,208 @@
+{
+  "id": "T01",
+  "title": "정상",
+  "source": "08 §4.2 T01",
+  "package": "A",
+  "manifest": "A-M1",
+  "user_message": "Check my bid files against this tender.",
+  "aux_runs": [
+    {
+      "manifest": "B-M1",
+      "package": "B",
+      "role": "aux",
+      "user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요.",
+      "note": "08: 같은 방식으로 판정하고 결과를 따로 기록한다. Aux checks are adapted to B by analogy (fixture_notes N7)."
+    }
+  ],
+  "checks": [
+    {
+      "name": "상태 일치",
+      "run": "A-M1",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "19/19",
+      "thresholds": {
+        "pass": 19,
+        "hold": 17
+      },
+      "source": "19 = 통과, 17~18 = HOLD, 16 이하 = FAIL"
+    },
+    {
+      "name": "status_counts",
+      "run": "A-M1",
+      "step": "card",
+      "type": "status_counts",
+      "severity": "critical",
+      "expect": {
+        "met": 15,
+        "missing": 0,
+        "error": 0,
+        "conditional": 3,
+        "needs-confirmation": 1
+      },
+      "source": "recount over matched gold rows only (09 §6-3 G1)"
+    },
+    {
+      "name": "충돌 기록",
+      "run": "A-M1",
+      "step": "card",
+      "type": "conflict_sides",
+      "severity": "critical",
+      "expect": "§5 and ITB 23.1 each on one side",
+      "params": {
+        "sides": [
+          {
+            "location_any": [
+              "§5"
+            ]
+          },
+          {
+            "location_any": [
+              "ITB 23.1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "기관 질문",
+      "run": "A-M1",
+      "step": "card",
+      "type": "agency_question",
+      "severity": "aux",
+      "expect": "ends with (Yes/No) or ?, contains a deadline date",
+      "params": {
+        "ends_with_any": [
+          "(Yes/No)",
+          "?"
+        ],
+        "contains_any": [
+          "30 November 2026",
+          "2 December 2026"
+        ]
+      }
+    },
+    {
+      "name": "R14~R16 조건 상태",
+      "run": "A-M1",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "conditional + not_triggered",
+      "params": {
+        "rows": {
+          "R14": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R15": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R16": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          }
+        }
+      }
+    },
+    {
+      "name": "보조 B-M1 상태 일치",
+      "run": "B-M1",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "18/18",
+      "thresholds": {
+        "pass": 18,
+        "hold": 16
+      }
+    },
+    {
+      "name": "보조 B-M1 status_counts",
+      "run": "B-M1",
+      "step": "card",
+      "type": "status_counts",
+      "severity": "critical",
+      "expect": {
+        "met": 17,
+        "missing": 0,
+        "error": 0,
+        "conditional": 0,
+        "needs-confirmation": 1
+      }
+    },
+    {
+      "name": "보조 B-M1 충돌 기록",
+      "run": "B-M1",
+      "step": "card",
+      "type": "conflict_sides",
+      "severity": "critical",
+      "expect": "5.가 and Ⅳ-1 each on one side",
+      "params": {
+        "sides": [
+          {
+            "location_any": [
+              "5.가"
+            ]
+          },
+          {
+            "location_any": [
+              "Ⅳ-1",
+              "IV-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "보조 B-M1 기관 질문",
+      "run": "B-M1",
+      "step": "card",
+      "type": "agency_question",
+      "severity": "aux",
+      "expect": "ends with (예/아니오) or ?, contains a deadline date",
+      "params": {
+        "ends_with_any": [
+          "(예/아니오)",
+          "?"
+        ],
+        "contains_any": [
+          "12. 9.",
+          "12월 9일",
+          "12. 10.",
+          "12월 10일"
+        ]
+      }
+    },
+    {
+      "name": "보조 B-M1 조건 상태",
+      "run": "B-M1",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "met + triggered",
+      "params": {
+        "rows": {
+          "R07": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R12": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R13": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R14": {
+            "status": "met",
+            "condition_state": "triggered"
+          }
+        }
+      }
+    }
+  ]
+}

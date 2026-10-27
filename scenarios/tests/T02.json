@@ -1,0 +1,196 @@
+{
+  "id": "T02",
+  "title": "조건부 서류",
+  "source": "08 §4.2 T02",
+  "package": "B",
+  "manifest": "B-M3",
+  "user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요.",
+  "aux_runs": [
+    {
+      "manifest": "B-M1",
+      "package": "B",
+      "role": "cross",
+      "user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요."
+    },
+    {
+      "manifest": "B-M2",
+      "package": "B",
+      "role": "cross",
+      "user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요."
+    },
+    {
+      "manifest": "A-M1",
+      "package": "A",
+      "role": "cross",
+      "user_message": "Check my bid files against this tender."
+    },
+    {
+      "manifest": "A-M2",
+      "package": "A",
+      "role": "cross",
+      "user_message": "Check my bid files against this tender."
+    }
+  ],
+  "checks": [
+    {
+      "name": "B-M3 R07, R12, R13, R14",
+      "run": "B-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "conditional + unknown",
+      "params": {
+        "rows": {
+          "R07": {
+            "status": "conditional",
+            "condition_state": "unknown"
+          },
+          "R12": {
+            "status": "conditional",
+            "condition_state": "unknown"
+          },
+          "R13": {
+            "status": "conditional",
+            "condition_state": "unknown"
+          },
+          "R14": {
+            "status": "conditional",
+            "condition_state": "unknown"
+          }
+        }
+      }
+    },
+    {
+      "name": "bidder_questions",
+      "run": "B-M3",
+      "step": "card",
+      "type": "text_present",
+      "severity": "aux",
+      "expect": "공동수급 ≥1 and 사용인감 ≥1",
+      "params": {
+        "scope": "bidder_questions",
+        "same_field": false,
+        "any_of": [
+          [
+            "공동수급",
+            "사용인감"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "같은 행의 상태 전환 B-M1",
+      "run": "B-M1",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "met + triggered",
+      "params": {
+        "rows": {
+          "R07": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R12": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R13": {
+            "status": "met",
+            "condition_state": "triggered"
+          },
+          "R14": {
+            "status": "met",
+            "condition_state": "triggered"
+          }
+        }
+      }
+    },
+    {
+      "name": "같은 행의 상태 전환 B-M2",
+      "run": "B-M2",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "conditional + not_triggered",
+      "params": {
+        "rows": {
+          "R07": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R12": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R13": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R14": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          }
+        }
+      }
+    },
+    {
+      "name": "A 교차 A-M1",
+      "run": "A-M1",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "conditional + not_triggered",
+      "params": {
+        "rows": {
+          "R14": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R15": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          },
+          "R16": {
+            "status": "conditional",
+            "condition_state": "not_triggered"
+          }
+        }
+      }
+    },
+    {
+      "name": "A 교차 A-M2",
+      "run": "A-M2",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "R14 error, R15 missing, R16 met",
+      "params": {
+        "rows": {
+          "R14": {
+            "status": "error"
+          },
+          "R15": {
+            "status": "missing"
+          },
+          "R16": {
+            "status": "met"
+          }
+        }
+      }
+    },
+    {
+      "name": "나머지 B-M3 행",
+      "run": "B-M3",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "18/18",
+      "thresholds": {
+        "pass": 18,
+        "hold": 16
+      },
+      "source": "16~17 = HOLD, 15 이하 = FAIL; counted over all 18 rows"
+    }
+  ]
+}

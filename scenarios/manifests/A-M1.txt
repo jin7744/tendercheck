@@ -1,0 +1,13 @@
+[A-M1] Normal
+Bidder: Quillfield Data Services Ltd. (fictional) | Short name: QDS
+Bidding as: single firm
+Planned upload: 2026-11-27 10:00 UTC+03:00
+file | format | size_MB | signed | seal | issue_date | notes
+QDS_BF1.pdf | PDF | 0.4 | yes | yes | 2026-11-20 |
+QDS_POA.pdf | PDF | 0.3 | yes | no | 2026-11-18 | notarized: yes
+QDS_INC.pdf | PDF | 1.2 | no | no | 2019-05-14 | copy
+QDS_TAX.pdf | PDF | 0.2 | no | no | 2026-10-15 |
+QDS_FIN.pdf | PDF | 6.8 | no | no | 2026-06-30 | one merged file: audited 2023, 2024, 2025
+QDS_TEC.pdf | PDF | 8.9 | no | no | 2026-11-20 |
+QDS_BF3.pdf | PDF | 0.3 | yes | no | 2026-11-20 |
+QDS_BF2.pdf | PDF | 0.5 | no | no | 2026-11-16 | bank guarantee; amount USD 12,000; valid until 2027-04-28

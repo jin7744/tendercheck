@@ -1,0 +1,13 @@
+[A-M3] Boundary cases
+Bidder: Ostrel Systems Ltd. (fictional) | Short name: OSL
+Bidding as: (not stated)
+Planned upload: 2026-11-30 20:30 KST (UTC+09:00)
+file | format | size_MB | signed | seal | issue_date | notes
+OSL_BF1.pdf | PDF | 0.5 | yes | yes | 2026-11-24 |
+OSL_POA.pdf | PDF | 0.3 | yes | no | 2026-11-23 | notarized: yes
+OSL_INC.pdf | PDF | 0.9 | no | no | 2021-02-08 | certified copy
+OSL_TAX.pdf | PDF | 0.2 | no | no | 2026-09-01 |
+OSL_FIN.pdf | PDF | 9.7 | no | no | 2026-05-29 | one merged file: audited 2023, 2024, 2025
+OSL_TEC.pdf | PDF | 10.0 | no | no | 2026-11-24 |
+OSL_BF3.pdf | PDF | 0.3 | yes | no | 2026-11-24 |
+OSL_BF2.pdf | PDF | 0.5 | no | no | 2026-11-19 | bank guarantee; amount USD 12,000; valid until 2027-04-27

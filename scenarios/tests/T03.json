@@ -1,0 +1,252 @@
+{
+  "id": "T03",
+  "title": "본문·별첨 마감 충돌",
+  "source": "08 §4.2 T03",
+  "package": "A",
+  "manifest": "A-M3",
+  "user_message": "Check my bid files against this tender.",
+  "aux_runs": [
+    {
+      "manifest": "B-M3",
+      "package": "B",
+      "role": "aux",
+      "user_message": "이 공고 기준으로 제 제출 파일을 점검해 주세요."
+    }
+  ],
+  "checks": [
+    {
+      "name": "R01 상태",
+      "run": "A-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "needs-confirmation",
+      "params": {
+        "rows": {
+          "R01": {
+            "status": "needs-confirmation"
+          }
+        }
+      }
+    },
+    {
+      "name": "충돌 양쪽",
+      "run": "A-M3",
+      "step": "card",
+      "type": "conflict_sides",
+      "severity": "critical",
+      "expect": "2 sides with both anchors and locations",
+      "params": {
+        "sides": [
+          {
+            "anchor_any": [
+              "30 November 2026, 14:00 hours"
+            ],
+            "location_any": [
+              "§5"
+            ]
+          },
+          {
+            "anchor_any": [
+              "Date: 2 December 2026"
+            ],
+            "location_any": [
+              "ITB 23.1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "단정 금지 B7",
+      "run": "A-M3",
+      "step": "card",
+      "type": "forbidden",
+      "severity": "critical",
+      "expect": "no B7",
+      "params": {
+        "sets": [
+          "B7"
+        ]
+      }
+    },
+    {
+      "name": "R07 상태",
+      "run": "A-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "needs-confirmation",
+      "params": {
+        "rows": {
+          "R07": {
+            "status": "needs-confirmation"
+          }
+        }
+      }
+    },
+    {
+      "name": "R07 연결",
+      "run": "A-M3",
+      "step": "card",
+      "type": "depends_on_conflict",
+      "severity": "aux",
+      "expect": "C1 (empty = HOLD)",
+      "params": {
+        "row": "R07",
+        "conflict_sides": [
+          {
+            "anchor_any": [
+              "30 November 2026, 14:00 hours"
+            ],
+            "location_any": [
+              "§5"
+            ]
+          },
+          {
+            "anchor_any": [
+              "Date: 2 December 2026"
+            ],
+            "location_any": [
+              "ITB 23.1"
+            ]
+          }
+        ],
+        "fallback_id": "C1"
+      }
+    },
+    {
+      "name": "시간대 변환",
+      "run": "A-M3",
+      "step": "card",
+      "type": "text_present",
+      "severity": "aux",
+      "expect": "14:30 with UTC+03:00/UTC+3, or 20:00 KST",
+      "params": {
+        "scope": "generated",
+        "same_field": true,
+        "any_of": [
+          [
+            "14:30",
+            "UTC+03:00"
+          ],
+          [
+            "14:30",
+            "UTC+3"
+          ],
+          [
+            "20:00 KST"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "R13",
+      "run": "A-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "error",
+      "params": {
+        "rows": {
+          "R13": {
+            "status": "error"
+          }
+        }
+      }
+    },
+    {
+      "name": "나머지",
+      "run": "A-M3",
+      "step": "4.1-5,6",
+      "type": "status_match",
+      "severity": "threshold",
+      "expect": "19/19",
+      "thresholds": {
+        "pass": 19,
+        "hold": 17
+      },
+      "source": "17~18 = HOLD; below = FAIL (fixture_notes N5); counted over all 19 rows"
+    },
+    {
+      "name": "보조 B-M3 R01",
+      "run": "B-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "needs-confirmation",
+      "params": {
+        "rows": {
+          "R01": {
+            "status": "needs-confirmation"
+          }
+        }
+      }
+    },
+    {
+      "name": "보조 B-M3 충돌 양쪽",
+      "run": "B-M3",
+      "step": "card",
+      "type": "conflict_sides",
+      "severity": "critical",
+      "expect": "5.가 and Ⅳ-1/IV-1; removing the conflict = FAIL",
+      "params": {
+        "sides": [
+          {
+            "location_any": [
+              "5.가"
+            ]
+          },
+          {
+            "location_any": [
+              "Ⅳ-1",
+              "IV-1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "보조 B-M3 R11",
+      "run": "B-M3",
+      "step": "card",
+      "type": "row_status",
+      "severity": "critical",
+      "expect": "needs-confirmation",
+      "params": {
+        "rows": {
+          "R11": {
+            "status": "needs-confirmation"
+          }
+        }
+      }
+    },
+    {
+      "name": "보조 B-M3 Q-B1",
+      "run": "B-M3",
+      "step": "card",
+      "type": "agency_question",
+      "severity": "aux",
+      "expect": "contains 12. 9. or 12월 9일",
+      "params": {
+        "contains_any": [
+          "12. 9.",
+          "12월 9일"
+        ]
+      }
+    },
+    {
+      "name": "보조 B-M3 단정 금지 B7",
+      "run": "B-M3",
+      "step": "card",
+      "type": "forbidden",
+      "severity": "critical",
+      "expect": "no B7",
+      "params": {
+        "sets": [
+          "B7"
+        ]
+      }
+    }
+  ]
+}
