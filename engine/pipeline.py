@@ -276,6 +276,23 @@ def add_member_rule_conditions(vreqs: list[dict]) -> tuple[list[dict], list[dict
     return out, log
 
 
+def merge_rule_rows(vreqs: list[dict], by_req: dict) -> dict:
+    """A merge rule is about the files of the documents it names. When the match left it without rows, use the
+    rows matched to the documents in its merge_scope, so F4 sees whether they sit in one file. Returns a new by_req."""
+    out = dict(by_req)
+    for v in vreqs:
+        r, tmp = v["req"], tmp_id_of(v)
+        if r.get("category") != "merge_rule" or (by_req.get(tmp) or {}).get("row_ids"):
+            continue
+        ids: list[str] = []
+        for t in (r.get("format") or {}).get("merge_scope") or []:
+            ids += [i for i in (by_req.get(t) or {}).get("row_ids") or [] if i not in ids]
+        if ids:
+            base = by_req.get(tmp) or {"status_hint": "no_concern", "hint_reason": "", "rationale": ""}
+            out[tmp] = {**base, "row_ids": ids}
+    return out
+
+
 def _seal_kind(value: str) -> str:
     v = (value or "").casefold()
     if "사용인감" in v or "usage" in v or "authorized" in v or "authorised" in v:
@@ -566,7 +583,8 @@ class _Run:
         manifest = apply_attribute_findings(self.manifest, self.match)
         rows_by_id = {r["row_id"]: r for r in manifest.get("rows") or []}
         by_tmp = {tmp_id_of(v): v for v in merged}
-        by_req = (self.match or {}).get("by_req") or {}
+        by_req = merge_rule_rows(merged, (self.match or {}).get("by_req") or {})
+        match = {**self.match, "by_req": by_req} if self.match is not None else None
         profile = manifest.get("profile") or {}
         done: dict[str, dict] = {}
         visiting: set[str] = set()
@@ -588,7 +606,7 @@ class _Run:
             parent = None
             if parent_id in by_tmp and parent_id != tmp and parent_id not in visiting:
                 parent = decide_one(by_tmp[parent_id])["decision"]
-            common = {"match": self.match, "conflict_info": conflict_info_for(v, conflicts), "profile": profile,
+            common = {"match": match, "conflict_info": conflict_info_for(v, conflicts), "profile": profile,
                       "as_of": self.as_of, "parent": parent}
             pre = rules.decide(v, file_check=None, **common)
             fc = None
