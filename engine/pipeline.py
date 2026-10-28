@@ -353,6 +353,24 @@ def add_member_rule_conditions(vreqs: list[dict]) -> tuple[list[dict], list[dict
     return out, log
 
 
+def drop_file_rule_scope_conditions(vreqs: list[dict]) -> tuple[list[dict], list[dict]]:
+    """A file rule (format, naming, merge) applies to whatever is submitted. When the model marks one mandatory and
+    still attaches a condition, the condition words a scope ("공동수급인 경우 ⑫ 포함": which documents join the merge,
+    already in merge_scope), not whether the rule applies; read as a condition it would tell a single firm the rule
+    is not needed. Drop it. Rules the model marks conditional, non-file rules, and records not verified and grounded
+    stay as they are. Returns (reqs, log)."""
+    out, log = [], []
+    for v in vreqs:
+        r, c = v["req"], v["check"]
+        if r.get("category") not in rules.FILE_RULE_CATEGORIES or r.get("mandatory") != "mandatory" \
+                or not r.get("conditions") or not (c.get("verified") and c.get("grounded")):
+            out.append(r)
+            continue
+        out.append({**r, "conditions": []})
+        log.append({"tmp_id": r.get("tmp_id", ""), "condition_quote": r["conditions"][0].get("condition_quote", "")})
+    return out, log
+
+
 def merge_rule_rows(vreqs: list[dict], by_req: dict) -> dict:
     """A merge rule is about the files of the documents it names. When the match left it without rows, use the
     rows matched to the documents in its merge_scope, so F4 sees whether they sit in one file. Returns a new by_req."""
@@ -638,7 +656,11 @@ class _Run:
                 self.recheck()
             self.match_files()
             self.adjudicate()
-            # After the last model stage: the condition only feeds S5/S6, and M/C requests stay as recorded.
+            # After the last model stage: conditions only feed S5/S6, and M/C requests stay as recorded.
+            self.reqs, dropped = drop_file_rule_scope_conditions(self.vreqs)
+            if dropped:
+                self.stats["file_rule_scope_conditions"] = dropped
+                self.recheck()
             self.reqs, added = add_member_rule_conditions(self.vreqs)
             if added:
                 self.stats["member_rule_conditions"] = added
@@ -748,6 +770,7 @@ class _Run:
                 "validity_merges": self.stats.get("validity_merges", []),
                 "list_entry_joins": self.stats.get("list_entry_joins", []),
                 "member_rule_conditions": self.stats.get("member_rule_conditions", []),
+                "file_rule_scope_conditions": self.stats.get("file_rule_scope_conditions", []),
                 "stages": self.stage_log,
             },
             "cost_total_usd": self.tap.spent_usd(),
