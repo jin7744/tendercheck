@@ -232,6 +232,29 @@ class OtherRules(unittest.TestCase):
         self.assertEqual([(x["rule"], x["a"], x["b"]) for x in c], [("K3", "R1", "R2"), ("K3", "R2", "R3")])
         self.assertEqual(c[0]["values"], {"a": "PDF", "b": "HWP"})
 
+    def test_k3_reads_refused_extensions(self):
+        # Live K=3 2026-10-28, B-M1 k2: "PDF only" and "HWP/DOCX not accepted" became conflict C3. Refusing what
+        # the other side does not allow agrees with it; refusing what the other side allows is a conflict.
+        pdf = self.hand("R1", "모든 제출서류는 PDF 형식으로 제출한다.", format={"extensions": ["PDF"]})
+        refuse = self.hand("R2", "한글(HWP)·워드(DOCX) 파일은 접수하지 않는다.", format={"extensions": ["HWP", "DOCX"]})
+        self.assertEqual(K.find_candidates([pdf, refuse]), [])
+        hwp_ok = self.hand("R3", "Files shall be HWP documents.", format={"extensions": ["hwp"]})
+        c = K.find_candidates([refuse, hwp_ok])
+        self.assertEqual([(x["rule"], x["a"], x["b"]) for x in c], [("K3", "R2", "R3")])
+
+    def test_k4_generic_seal_agrees_with_a_specific_one(self):
+        # Live K=3 2026-10-28, B-M1 k2: the form label "인감 날인란" (seal) against "법인인감 또는 사용인감을 날인"
+        # became conflict C1. A plain seal or signature agrees with any narrower seal or signature.
+        for generic, specific in (("seal", "seal_corporate_or_usage"), ("seal", "all_members_seal"),
+                                  ("signature", "all_members_sign"), ("seal", "signature_and_seal")):
+            with self.subTest(specific=specific):
+                vs = [self.hand("R1", "[서식 제1호] 입찰참가신청서 - 인감 날인란", sign_seal=generic),
+                      self.hand("R2", "법인인감 또는 사용인감을 날인한다.", sign_seal=specific)]
+                self.assertEqual(K.find_candidates(vs), [])
+        vs = [self.hand("R1", "The form shall be sealed.", sign_seal="seal_corporate_or_usage"),
+              self.hand("R2", "Each member shall sign.", sign_seal="all_members_sign")]
+        self.assertEqual([x["rule"] for x in K.find_candidates(vs)], ["K4"])
+
     def test_k4_and_k5(self):
         vs = [self.hand("R1", "The form shall be sealed.", sign_seal="seal"),
               self.hand("R2", "The form shall be signed.", sign_seal="signature")]

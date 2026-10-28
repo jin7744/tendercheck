@@ -12,6 +12,7 @@ import unicodedata
 from engine import templates, textfilter
 from engine.checks import METHODS, _Ctx, find_quote, norm08, project
 from engine.dates import DATE_RES, TIME_RES, required_until
+from engine.filechecks import split_extensions
 from engine.normalize import segment_map
 
 RULES = ("K1", "K2", "K3", "K4", "K5")
@@ -69,10 +70,6 @@ def _subject(req: dict) -> str:
     return " ".join((req.get("subject") or "").casefold().split())
 
 
-def _exts(req: dict) -> set[str]:
-    return {e.strip().lstrip(".").casefold() for e in (req.get("format") or {}).get("extensions") or [] if e.strip()}
-
-
 def _deadline_key(chk: dict):
     p = chk.get("deadline") or {}
     if not p.get("ok"):
@@ -103,6 +100,15 @@ def _size_text(quote: str, mb: float) -> str:
         except ValueError:
             continue
     return f"{float(mb):g} MB"
+
+
+# A plain seal or signature agrees with any narrower one (a form's "seal box" against "corporate or usage seal").
+NARROWER = {"seal": ("seal_corporate_or_usage", "all_members_seal", "signature_and_seal"),
+            "signature": ("all_members_sign", "each_person_handwritten", "signature_and_seal")}
+
+
+def _narrower(general: str, other: str) -> bool:
+    return other in NARROWER.get(general, ())
 
 
 def _ext_text(quote: str, exts: set[str]) -> str:
@@ -173,12 +179,12 @@ def _pair_rule(va: dict, vb: dict):
     sb = float((rb.get("format") or {}).get("max_size_mb") or 0)
     if sa > 0 and sb > 0 and sa != sb:
         return "K2", _size_text(qa, sa), _size_text(qb, sb)
-    ea, eb = _exts(ra), _exts(rb)
-    if ea and eb and not (ea & eb):
-        return "K3", _ext_text(qa, ea), _ext_text(qb, eb)
+    (aa, xa), (ab, xb) = split_extensions(ra), split_extensions(rb)
+    if (aa and ab and not (aa & ab)) or (aa & xb) or (ab & xa):
+        return "K3", _ext_text(qa, aa or xa), _ext_text(qb, ab or xb)
     for field in ("sign_seal", "copy_type"):
         a, b = ra.get(field, "not_stated"), rb.get(field, "not_stated")
-        if a != "not_stated" and b != "not_stated" and a != b:
+        if a != "not_stated" and b != "not_stated" and a != b and not _narrower(a, b) and not _narrower(b, a):
             return "K4", _short(qa), _short(qb)
     ka, kb = _validity_key(ra), _validity_key(rb)
     if ka and kb and ka != kb:
