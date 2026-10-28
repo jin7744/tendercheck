@@ -244,7 +244,9 @@ def decide(vreq: dict, *, file_check: dict | None = None, match: dict | None = N
     if not evidence and not any(c.get("result") == "pass" for c in checks):
         return done("S14", NC, ["ATTRIBUTE_UNKNOWN:evidence"] + extra, dep_conflict=dep_c)
 
-    if entry.get("status_hint") == NC:
+    # A file rule (format, naming, merge) is decided from file facts; a doubt about a document's content stays on
+    # that document's own record.
+    if entry.get("status_hint") == NC and req.get("category") not in FILE_RULE_CATEGORIES:
         return done("S15", NC, ["MODEL_FLAGGED"] + extra, dep_conflict=dep_c)
     if review_flag:
         return done("S15", NC, ["REVIEW_FLAG"] + extra, dep_conflict=dep_c)

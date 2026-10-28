@@ -287,6 +287,15 @@ class ModelHint(unittest.TestCase):
             with self.subTest(want=want):
                 self.assertEqual(decide(v, match=m, file_check=f, profile=facts(consortium="no"))["status"], want)
 
+    def test_hint_does_not_reach_file_rules(self):
+        # Live K=3 2026-10-28, B-M3 k1/k2: the doubt "scan top cut off" on one merged document was put on the
+        # merge rule. Format, naming and merge rules are decided from file facts; a doubt about a document's
+        # content belongs to that document's own record.
+        for cat in ("merge_rule", "file_format", "file_naming"):
+            with self.subTest(cat=cat):
+                d = decide(vr(category=cat), match=rows("M1", hint=NC), file_check=fc(("F4", "pass")))
+                self.assertEqual((d["rule"], d["status"], d["reason_codes"]), ("S15", "met", ["ALL_CHECKS_PASSED"]))
+
     def test_review_flag(self):
         d = decide(vr(), match=rows("M1"), file_check=fc(("F5", "pass")), review_flag=True)
         self.assertEqual((d["status"], d["reason_codes"]), (NC, ["REVIEW_FLAG"]))
