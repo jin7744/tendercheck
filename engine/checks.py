@@ -231,6 +231,12 @@ def _q5(req: dict, tz_ok: bool) -> tuple[str, str, str, dict | None, list[str]]:
     code = ""
     if dl.get("raw") or dl.get("kind", "none") != "none":
         parsed = parse_datetime_text(dl.get("raw", ""), dl.get("tz_quote", "") if tz_ok else "")
+        if parsed["ok"] and not parsed["offset"] and req.get("quote"):
+            # The model's raw can drop the zone its own quoted sentence states ("14:00 hours Corvessa time
+            # (UTC+03:00)"). Read it from the quote, but only when the quote yields one zone without error.
+            again = parse_datetime_text(dl["raw"], req["quote"])
+            if again["ok"] and again["offset"]:
+                parsed = {**again, "tz_source": "quote"}
         if not parsed["ok"]:
             code = "DATE_UNPARSED"
             problems.append(f"deadline.raw unparsed: {parsed['error']}")
