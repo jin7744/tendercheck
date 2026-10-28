@@ -414,6 +414,17 @@ class PackageB_M1(unittest.TestCase):
         fc2 = run(B["R18"], m2, pkg="B")
         self.assertEqual(res(fc2, "F3"), "fail")
 
+    def test_template_quoted_inside_sentence_words(self):
+        # Card T01 K=3 third pass (2026-10-28): the model gave filename_template "'업체명_서류명.pdf'로 하며" (quote marks
+        # and the following words kept), so all eight correctly named B-M1 files failed F3. The quoted span is the
+        # template.
+        r18 = copy.deepcopy(B["R18"])
+        r18["req"]["format"]["filename_template"] = "'업체명_서류명.pdf'로 하며"
+        fc = run(r18, self.m, pkg="B")
+        self.assertEqual((res(fc, "F3"), failed_files(fc, "F3")), ("pass", []))
+        bad = manifest("B-M1", replace=("별누리코드_제안서.pdf", "별누리_제안서.pdf"))
+        self.assertEqual(failed_files(run(r18, bad, pkg="B"), "F3"), ["별누리_제안서.pdf"])
+
     def test_future_issue_date_is_info_only(self):
         # 09 F8: issue date after as_of -> information flag only.
         fc = run(B["R02"], self.m, "별누리코드_입찰참가신청서.pdf", pkg="B", as_of="2026-11-25T09:00:00+09:00")

@@ -19,6 +19,7 @@ CORP_MARKS = re.compile(r"\(주\)|㈜|（주）|주식회사|\(유\)|유한회�
 _CORP_RULE = re.compile(r"\(주\)|㈜|법인\s*표기|corporate\s+(?:suffix|designation)", re.I)
 
 _BRACKET = re.compile(r"\[([^\]]+)\]|\{([^}]+)\}|<([^>]+)>")
+_QUOTED = re.compile(r"['\"‘“「『]([^'\"’”」』]+)['\"’”」』]")
 _PH_COMPANY = re.compile(r"(?:bidder\s*)?short\s*name|bidder\s*name|company\s*name|firm\s*name|bidder|company"
                          r"|파일명용\s*업체명|업체명|회사명|입찰자명|상호|약칭", re.I)
 _PH_DOC = re.compile(r"doc(?:ument)?\s*(?:code|name|type)?|file\s*code|서류\s*코드|문서\s*코드|서류명|문서명|서류", re.I)
@@ -185,8 +186,13 @@ def _bare_tokens(text: str) -> list[tuple]:
 
 def template_regex(template: str, short_name: str) -> tuple[re.Pattern | None, str, str]:
     """(compiled pattern, problem, unknown field). Company placeholders must equal the short
-    name; document placeholders accept any non-empty name; the extension is case-insensitive."""
-    t = (template or "").strip().strip("'\"‘’“”`")
+    name; document placeholders accept any non-empty name; the extension is case-insensitive. When the model kept
+    the sentence around a quoted template ("'업체명_서류명.pdf'로 하며"), the quoted span is the template."""
+    t = (template or "").strip()
+    quoted = _QUOTED.search(t)
+    if quoted:
+        t = quoted.group(1)
+    t = t.strip().strip("'\"‘’“”`")
     toks, pos = [], 0
     for m in _BRACKET.finditer(t):
         toks += _bare_tokens(t[pos:m.start()])
