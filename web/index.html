@@ -6,11 +6,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
 <title>TenderCheck: pre-submission checklist</title>
 <meta name="description" content="A verification agent that checks a bid package against the tender's own documents. Every requirement is quoted from the source; every status is computed by code.">
-<link rel="stylesheet" href="app.css?v=3">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161616'/%3E%3Cpath d='M8 17l5 5 11-12' stroke='%23ffffff' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css?v=4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181d'/%3E%3Cpath d='M8 17l5 5 11-12' stroke='%23fbfcfd' stroke-width='3' fill='none'/%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#rows">Skip to findings</a>
+<p id="announce" class="sr-only" aria-live="polite"></p>
 
 <header class="topbar">
   <span class="brand">TenderCheck</span>
@@ -20,23 +21,24 @@
   </label>
   <dl class="run">
     <div><dt>Mode</dt><dd><span id="mode" class="mode">Replay</span></dd></div>
-    <div><dt>Model</dt><dd id="model" class="mono">n/a</dd></div>
+    <div class="hide-xs"><dt>Model</dt><dd id="model" class="mono">n/a</dd></div>
     <div class="hide-s"><dt>Scenario date</dt><dd id="as-of" class="mono">n/a</dd></div>
   </dl>
 </header>
 
 <div class="casebar">
   <div class="case-head">
-    <h1 id="case-title">Loading…</h1>
+    <h1 id="case-title">Loading case…</h1>
     <p id="case-blurb"></p>
   </div>
   <p class="claim">Model finds and matches. <strong>Code verifies every quote and decides every status.</strong> It never says a bid is eligible; a person makes that call.</p>
-  <div class="tally" id="tally" role="tablist" aria-label="Filter findings by status">
+  <div class="proofline" id="proofline" aria-label="What code checked in this run"></div>
+  <div class="tally" id="tally" role="group" aria-label="Show requirements by status">
     <span class="tally-ink" id="tally-ink" aria-hidden="true"></span>
   </div>
 </div>
 
-<main class="split">
+<main class="split" id="split">
   <section class="findings" aria-label="Findings">
     <div id="banner" class="banner" role="status" hidden></div>
     <p id="summary" class="summary"></p>
@@ -49,10 +51,10 @@
     <section class="sec" aria-labelledby="rows-h">
       <div class="sec-head">
         <h2 id="rows-h">Requirements</h2>
-        <span class="hint">Select a row to open its line in the tender.</span>
+        <span class="hint">Worst first. Select a row (or use ↑ ↓) to open its line in the tender.</span>
       </div>
-      <ol id="rows" class="rows" tabindex="-1"></ol>
-      <p id="rows-empty" class="empty" hidden>No requirement has this status.</p>
+      <ol id="rows" class="rows"></ol>
+      <p id="rows-empty" class="empty" hidden>No requirement has this status. <button type="button" id="show-all" class="link">Show all</button></p>
     </section>
 
     <section class="sec" id="conf-sec" aria-labelledby="conf-h" hidden>
@@ -61,7 +63,7 @@
     </section>
 
     <section class="sec" id="q-sec" aria-labelledby="q-h" hidden>
-      <h2 id="q-h">Questions to send</h2>
+      <h2 id="q-h">Other questions to send</h2>
       <div id="questions"></div>
     </section>
 
@@ -92,8 +94,8 @@
 
   <aside class="evidence" id="evidence" aria-label="Tender documents">
     <div class="ev-head">
-      <div id="doc-tabs" class="doc-tabs" role="tablist" aria-label="Documents"></div>
-      <button type="button" id="ev-close" class="ev-close" aria-label="Close the document">Close</button>
+      <div id="doc-tabs" class="doc-tabs" role="group" aria-label="Documents"></div>
+      <button type="button" id="ev-close" class="ev-close">Close</button>
     </div>
     <div id="doc-view" class="doc-view" tabindex="0" aria-label="Document text"></div>
     <details class="bidder">
@@ -107,7 +109,7 @@
           <h2 id="rerun-h">Re-run</h2>
           <p id="rerun-note" class="hint"></p>
         </div>
-        <button type="button" id="rerun-btn" class="btn">Re-run this case</button>
+        <button type="button" id="rerun-btn" class="btn btn-ghost">Re-run this case</button>
       </div>
       <ol id="stages" class="stages" hidden aria-live="polite"></ol>
       <p id="rerun-err" class="err" role="alert" hidden></p>
@@ -121,6 +123,6 @@
   <p class="hint">Synthetic demo data: fictional agencies, bidders and people. Do not paste real or confidential documents.</p>
 </footer>
 
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* TenderCheck page. Every string from a report, a model or a user goes in through textContent (no innerHTML).
-   Interaction and motion rationale: docs/design-direction.md. */
+   Interaction and motion rationale: docs/design-direction.md; review fixes: docs/design/review-20261028.md. */
 (() => {
   "use strict";
 
@@ -22,12 +22,13 @@
     DONE:  ["code", "Checked the invariants", "no status without a verified quote; no secrets in the output"],
   };
   const STAGES = ["U", "E1", "E2", "E3", "E4", "M", "C", "RULES", "DONE"];
+  const DEFAULT_CASE = "A-M2";
   const SMALL = matchMedia("(max-width: 672px)");
   const CALM = matchMedia("(prefers-reduced-motion: reduce)");
 
   const $ = (id) => document.getElementById(id);
   const S = { samples: [], data: null, report: null, filter: null, docs: [], index: {}, cited: new Set(), injected: new Set(),
-              live: null, busy: false, lastFocus: null };
+              live: null, busy: false, lastFocus: null, loading: 0 };
 
   function h(tag, props, ...kids) {
     const el = document.createElement(tag);
@@ -45,6 +46,7 @@
   }
   const clear = (el) => { el.replaceChildren(); return el; };
   const norm = (s) => String(s || "").replace(/\s+/g, " ").trim();
+  const say = (text) => { $("announce").textContent = ""; requestAnimationFrame(() => { $("announce").textContent = text; }); };
 
   /* status icon: shape carries the meaning as well as colour */
   function icon(status) {
@@ -83,14 +85,41 @@
   }
   $("case").addEventListener("change", (e) => select(e.target.value));
 
+  function setBanner(text, retryId) {
+    const b = clear($("banner"));
+    b.hidden = !text;
+    if (!text) return;
+    b.append(text);
+    if (retryId) b.append(" ", h("button", { type: "button", class: "link", onclick: () => select(retryId) }, "Retry"));
+  }
+
   async function select(id) {
+    const ticket = ++S.loading;
+    $("split").setAttribute("aria-busy", "true");
+    let data;
+    try {
+      data = await getJSON(`data/${encodeURIComponent(id)}.json`);
+    } catch {
+      if (ticket !== S.loading) return;
+      $("split").removeAttribute("aria-busy");
+      if (S.data) {
+        $("case").value = S.data.id;
+        history.replaceState(null, "", `#${S.data.id}`);
+        setBanner(`Could not load ${id}; still showing ${S.data.id}.`, id);
+      } else {
+        setBanner(`Could not load ${id}.`, id);
+      }
+      return;
+    }
+    if (ticket !== S.loading) return;  // a later choice won
+    $("split").removeAttribute("aria-busy");
     if (location.hash.slice(1) !== id) history.replaceState(null, "", `#${id}`);
     $("case").value = id;
-    const data = await getJSON(`data/${encodeURIComponent(id)}.json`);
     S.data = data;
     S.filter = null;
     $("case-title").textContent = data.title;
     $("case-blurb").textContent = data.blurb;
+    for (const el of ["rows", "act", "pre", "conflicts", "questions", "summary", "doc-view", "bidder", "nis", "flags"]) $(el).lang = data.lang;
     setDocs(data.sources);
     $("bidder").textContent = data.manifest_text || "";
     $("bidder-note").hidden = !data.user_message;
@@ -111,9 +140,10 @@
     const tabs = clear($("doc-tabs"));
     S.docs.forEach((d, i) => {
       const flagged = [...S.injected].some((s) => s.startsWith(`${d.doc_id}-`));
-      tabs.append(h("button", { type: "button", role: "tab", class: "doc-tab", "aria-selected": String(i === active),
+      tabs.append(h("button", { type: "button", class: "doc-tab", "aria-pressed": String(i === active),
         onclick: () => showDoc(i) }, d.title, h("small", null, d.doc_id),
-        flagged ? h("span", { class: "dot", title: "Contains an instruction aimed at AI (ignored)" }) : null));
+        flagged ? h("span", { class: "dot", title: "Contains an instruction aimed at AI (ignored)" }) : null,
+        flagged ? h("span", { class: "sr-only" }, " (contains an ignored instruction aimed at AI)") : null));
     });
   }
 
@@ -137,6 +167,7 @@
       const top = target.offsetTop - view.clientHeight * 0.3;
       view.scrollTo({ top: Math.max(0, top), behavior: CALM.matches ? "auto" : "smooth" });
     } else view.scrollTop = 0;
+    return target;
   }
 
   function findSeg(quote, hint) {
@@ -151,26 +182,40 @@
 
   function openLine(quote, segHint, from, ref) {
     const seg = findSeg(quote, segHint);
-    if (!seg) return;
+    if (!seg) { say("The quoted line was not found in the documents shown."); return; }
     const { doc, line } = S.index[seg];
     showDoc(doc, seg, line.text.includes(quote) ? quote : null, ref);
+    say(`${ref ? `${ref}: ` : ""}${S.docs[doc].title}, line ${line.n} opened.`);
     if (SMALL.matches) openSheet(from);
   }
 
+  /* mobile: the documents pane is a modal bottom sheet */
+  const BACKGROUND = [".topbar", ".casebar", ".findings", ".foot", ".skip"];
   function openSheet(from) {
     S.lastFocus = from || document.activeElement;
-    $("evidence").classList.add("open");
+    const ev = $("evidence");
+    ev.classList.add("open");
+    ev.setAttribute("role", "dialog");
+    ev.setAttribute("aria-modal", "true");
+    for (const sel of BACKGROUND) document.querySelector(sel).inert = true;
+    document.body.classList.add("locked");
     $("scrim").hidden = false;
     $("ev-close").focus();
   }
   function closeSheet() {
-    $("evidence").classList.remove("open");
+    const ev = $("evidence");
+    ev.classList.remove("open");
+    ev.removeAttribute("role");
+    ev.removeAttribute("aria-modal");
+    for (const sel of BACKGROUND) document.querySelector(sel).inert = false;
+    document.body.classList.remove("locked");
     $("scrim").hidden = true;
     if (S.lastFocus && S.lastFocus.focus) S.lastFocus.focus();
   }
   $("ev-close").addEventListener("click", closeSheet);
   $("scrim").addEventListener("click", closeSheet);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("evidence").classList.contains("open")) closeSheet(); });
+  SMALL.addEventListener("change", () => { if (!SMALL.matches && $("evidence").classList.contains("open")) closeSheet(); });
 
   /* ── findings ──────────────────────────────────────── */
   function render(report, run) {
@@ -183,114 +228,191 @@
     $("model").textContent = (run.models && run.models.length ? run.models : (x.model || {}).resolved || ["n/a"]).join(", ");
     $("as-of").textContent = (x.as_of || "n/a").replace("T", " ").replace(/:00([+-]\d\d:\d\d)$/, " $1");
     $("disclaimer").textContent = report.disclaimer || "";
-    $("banner").hidden = !x.banner;
-    $("banner").textContent = x.banner || "";
+    setBanner(x.banner || "");
     $("summary").textContent = [report.basis, x.summary_line].filter(Boolean).join(" ");
 
     S.cited = new Set(Object.values(rows).map((r) => r.seg_id).filter(Boolean));
     S.injected = new Set((report.untrusted_instructions || []).map((u) => findSeg(u.quote)).filter(Boolean));
     showDoc(0);
 
+    renderProofline(report, x);
     renderTally(report.status_counts || {});
-    const act = clear($("act"));
-    for (const t of x.top_actions || []) act.append(h("li", null, t));
-    $("act-sec").hidden = !(x.top_actions || []).length;
 
     const byId = Object.fromEntries(report.requirements.map((r) => [r.id, r]));
-    const order = (x.display_order || []).filter((id) => byId[id]);
-    for (const r of report.requirements) if (!order.includes(r.id)) order.push(r.id);
+    const pos = Object.fromEntries((x.display_order || []).map((id, i) => [id, i]));
+    const order = report.requirements.map((r) => r.id).sort((a, b) =>
+      ORDER.indexOf(byId[a].status) - ORDER.indexOf(byId[b].status) || (pos[a] ?? 1e3) - (pos[b] ?? 1e3));
     const list = clear($("rows"));
-    for (const id of order) list.append(row(byId[id], rows[id] || {}));
+    order.forEach((id, i) => list.append(row(byId[id], rows[id] || {}, i === 0)));
     $("rows-empty").hidden = true;
 
-    renderConflicts(report.conflicts || []);
+    renderAct(x.top_actions || [], byId, rows);
+    renderConflicts(report.conflicts || [], x.agency_questions || []);
     renderQuestions(x.agency_questions || [], report.bidder_questions || []);
     const nis = clear($("nis"));
     for (const t of report.not_in_source || []) nis.append(h("li", null, t));
     $("nis-sec").hidden = !(report.not_in_source || []).length;
     const pre = clear($("pre"));
-    for (const t of x.pre_submission_checklist || []) pre.append(h("li", null, t.replace(/^\[ \]\s*/, "")));
+    (x.pre_submission_checklist || []).forEach((t, i) => {
+      const id = `pre-${i}`;
+      pre.append(h("li", null, h("input", { type: "checkbox", id }), h("label", { for: id }, t.replace(/^\[ \]\s*/, ""))));
+    });
     renderFlags(report, x.flags || {});
     renderLog(x, run);
+  }
+
+  function quoteStats(x) {
+    const q = (x.verification_log || {}).quote_checks || {};
+    const total = q.total ?? 0, passed = q.passed ?? 0, unverified = q.unverified ?? 0;
+    return { total, passed, unverified, removed: Math.max(0, total - passed - unverified), requoted: q.requoted || 0,
+             retracted: q.retracted || 0 };
+  }
+
+  function renderProofline(report, x) {
+    const box = clear($("proofline"));
+    const q = quoteStats(x);
+    const inv = x.invariants || {};
+    const invOk = (inv.checks || []).filter((c) => c.ok).length;
+    const go = (target, open) => () => {
+      const el = $(target);
+      if (open) el.open = true;
+      el.scrollIntoView({ behavior: CALM.matches ? "auto" : "smooth", block: "start" });
+    };
+    const item = (label, value, target, open) => h("button", { type: "button", class: "proof-item", onclick: go(target, open) },
+      h("b", null, value), label);
+    box.append(...[
+      item("quotes verified by code", `${q.passed} of ${q.passed + q.unverified}`, "log", true),
+      item("invariants hold", `${invOk} of ${(inv.checks || []).length}`, "log", true),
+      (report.conflicts || []).length ? item(report.conflicts.length > 1 ? "conflicts between documents" : "conflict between documents", String(report.conflicts.length), "conf-sec") : null,
+      (report.untrusted_instructions || []).length ? item("AI instruction in the tender, ignored", String(report.untrusted_instructions.length), "flag-sec") : null,
+      ((x.flags || {}).pii_masked || []).length ? item("kinds of personal data masked", String(x.flags.pii_masked.length), "flag-sec") : null,
+    ].filter(Boolean));
   }
 
   function renderTally(counts) {
     const tally = $("tally");
     for (const b of tally.querySelectorAll("button")) b.remove();
     const all = Object.values(counts).reduce((a, b) => a + b, 0);
-    const mk = (key, label, n, st) => h("button", { type: "button", role: "tab", "aria-selected": String(S.filter === key),
-      "data-key": key, onclick: (e) => setFilter(key, e.currentTarget) }, st ? icon(st) : null, label, h("b", null, String(n)));
+    const mk = (key, label, n, st) => h("button", { type: "button", class: st ? `st ${st}` : null, "aria-pressed": String(S.filter === key),
+      "data-key": key || "", disabled: key && !n ? true : null, onclick: (e) => setFilter(key, e.currentTarget) },
+      st ? icon(st) : null, h("span", null, label), h("b", null, String(n)));
     tally.append(mk(null, "All", all, null));
-    for (const k of ORDER) {
-      const b = mk(k, STATUS[k], counts[k] || 0, k);
-      b.classList.add(`st`, k);
-      tally.append(b);
-    }
-    moveInk(tally.querySelector('button[aria-selected="true"]'));
+    for (const k of ORDER) tally.append(mk(k, STATUS[k], counts[k] || 0, k));
+    moveInk();
   }
-  function moveInk(btn) {
+  function moveInk() {
+    const btn = $("tally").querySelector('button[aria-pressed="true"]');
     const ink = $("tally-ink");
-    if (!btn) { ink.style.width = "0"; return; }
-    ink.style.width = `${btn.offsetWidth}px`;
-    ink.style.transform = `translateX(${btn.offsetLeft}px)`;
+    if (!btn) { ink.style.transform = "scaleX(0)"; return; }
+    ink.style.transform = `translateX(${btn.offsetLeft}px) scaleX(${btn.offsetWidth})`;
   }
-  function setFilter(key, btn) {
-    S.filter = S.filter === key || key === null ? null : key;
-    for (const b of $("tally").querySelectorAll("button")) b.setAttribute("aria-selected", String((b.dataset.key || null) === S.filter || (!b.dataset.key && S.filter === null)));
-    moveInk($("tally").querySelector('button[aria-selected="true"]') || btn);
+  function setFilter(key) {
+    S.filter = key;
+    for (const b of $("tally").querySelectorAll("button")) b.setAttribute("aria-pressed", String((b.dataset.key || null) === key));
+    moveInk();
     let shown = 0;
-    for (const li of $("rows").children) { li.hidden = !!S.filter && li.dataset.status !== S.filter; shown += li.hidden ? 0 : 1; }
+    for (const li of $("rows").children) { li.hidden = !!key && li.dataset.status !== key; shown += li.hidden ? 0 : 1; }
     $("rows-empty").hidden = shown > 0;
+    rove($("rows").querySelector(".row:not([hidden])"));
+    say(key ? `${shown} ${STATUS[key]} shown.` : "All requirements shown.");
   }
-  addEventListener("resize", () => moveInk($("tally").querySelector('button[aria-selected="true"]')));
-  document.fonts.ready.then(() => moveInk($("tally").querySelector('button[aria-selected="true"]')));
+  $("show-all").addEventListener("click", () => setFilter(null));
+  addEventListener("resize", moveInk);
+  document.fonts.ready.then(moveInk);
 
-  function row(r, meta) {
+  function checkFacts(meta) {
+    const checks = meta.checks || [];
+    const bad = checks.filter((c) => c.result === "fail" || c.result === "unknown");
+    const passed = checks.filter((c) => c.result === "pass").map((c) => c.id);
+    const na = checks.filter((c) => c.result === "not_applicable").length;
+    return h("dd", null,
+      bad.map((c) => h("span", { class: `chk-line ${c.result}` }, `${c.id} ${c.result === "fail" ? "failed" : "could not be decided"}`, c.detail ? `: ${c.detail}` : "")),
+      h("span", { class: "chk-sum" }, [passed.length ? `Passed: ${passed.join(", ")}` : "", na ? `${na} not applicable` : ""].filter(Boolean).join(" · ")));
+  }
+
+  function row(r, meta, first) {
     const cond = r.condition_state ? COND[r.condition_state] : "";
-    const checks = (meta.checks || []).map((c) => h("span", { class: `chk ${c.result}`, title: c.detail || null }, `${c.id} ${c.result}`));
     const p = meta.provenance;
     const facts = h("dl", { class: "facts" },
       r.evidence_files && r.evidence_files.length ? [h("dt", null, "Files"), h("dd", { class: "mono" }, r.evidence_files.join(", "))] : null,
       r.depends_on ? [h("dt", null, "Depends on"), h("dd", { class: "mono" }, r.depends_on)] : null,
       r.depends_on_conflict ? [h("dt", null, "Hinges on"), h("dd", null, `conflict ${r.depends_on_conflict}`)] : null,
-      checks.length ? [h("dt", null, "Quote checks"), h("dd", null, checks)] : null,
-      p ? [h("dt", null, "Who did what"), h("dd", null, `extracted by ${p.extracted_by} · quote verified by ${p.verified_by} · files matched by ${p.matched_by} · status by ${p.status_by}${meta.rule ? ` (rule ${meta.rule})` : ""}`)] : null);
-    const li = h("li", { class: "row", "data-status": r.status, tabindex: "0", "aria-current": "false" },
+      (meta.checks || []).length ? [h("dt", null, "Checks"), checkFacts(meta)] : null,
+      p ? [h("dt", null, "Who did what"), h("dd", null, `extracted by ${p.extracted_by} · quote verified by ${p.verified_by} · files matched by ${p.matched_by} · status by ${p.status_by}`)] : null);
+    const more = h("details", { class: "more", onclick: (e) => e.stopPropagation() }, h("summary", null, "Quote and proof"),
+      h("blockquote", { class: "quote" }, r.quote), facts);
+    const li = h("li", { class: "row", id: `row-${r.id}`, "data-id": r.id, "data-status": r.status, tabindex: first ? "0" : "-1", "aria-current": "false" },
       statusTag(r.status, cond),
       h("div", { class: "row-title" }, h("span", { class: "rid mono" }, r.id), meta.requirement || r.quote, h("span", { class: "kind" }, KIND[r.kind] || r.kind)),
-      h("button", { type: "button", class: "loc", title: "Open this line in the tender", onclick: (e) => { e.stopPropagation(); pick(li, r, meta, e.currentTarget); } },
-        `${r.location || "location not stated"} ↗`),
+      h("button", { type: "button", class: "loc", tabindex: "-1", title: "Open this line in the tender",
+        onclick: (e) => { e.stopPropagation(); pick(li, e.currentTarget); } }, `${r.location || "location not stated"} →`),
       r.reason ? h("div", { class: "row-sub" }, r.reason) : null,
       r.bidder_action ? h("div", { class: "row-act" }, r.bidder_action) : null,
-      h("details", { class: "more", onclick: (e) => e.stopPropagation() }, h("summary", null, "Quote and proof"),
-        h("blockquote", { class: "quote" }, r.quote), facts));
-    li.addEventListener("click", () => pick(li, r, meta, li));
-    li.addEventListener("keydown", (e) => { if (e.target === li && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pick(li, r, meta, li); } });
+      more);
+    li._r = r; li._meta = meta; li._more = more;
+    li.addEventListener("click", () => pick(li, li));
+    li.addEventListener("keydown", (e) => {
+      if (e.target !== li) return;
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(li, li); }
+      else if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); step(li, 1); }
+      else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); step(li, -1); }
+    });
     return li;
   }
 
-  function pick(li, r, meta, from) {
-    for (const x of $("rows").children) x.setAttribute("aria-current", "false");
+  function rove(li) {
+    if (!li) return;
+    for (const x of $("rows").children) x.tabIndex = -1;
+    li.tabIndex = 0;
+  }
+  function step(li, dir) {
+    let n = dir > 0 ? li.nextElementSibling : li.previousElementSibling;
+    while (n && n.hidden) n = dir > 0 ? n.nextElementSibling : n.previousElementSibling;
+    if (n) { rove(n); n.focus(); }
+  }
+
+  function pick(li, from) {
+    for (const x of $("rows").children) { x.setAttribute("aria-current", "false"); x._more.open = false; }
     li.setAttribute("aria-current", "true");
-    openLine(r.quote, meta.seg_id, from, r.id);
+    li._more.open = true;
+    rove(li);
+    openLine(li._r.quote, li._meta.seg_id, from, li._r.id);
+  }
+  function pickById(id, from) {
+    const li = $(`row-${id}`);
+    if (!li) return;
+    if (li.hidden) setFilter(null);
+    li.scrollIntoView({ behavior: CALM.matches ? "auto" : "smooth", block: "nearest" });
+    pick(li, from);
+    li.focus({ preventScroll: true });
   }
 
-  function quoteButton(side, cls) {
-    return h("button", { type: "button", class: `quote ${cls || ""}`, title: "Open this line in the tender",
-      onclick: (e) => openLine(side.quote, null, e.currentTarget) }, side.quote);
-  }
-
-  function renderConflicts(list) {
-    const box = clear($("conflicts"));
-    $("conf-sec").hidden = !list.length;
-    for (const c of list) {
-      const [a, b] = c.sides || [];
-      box.append(h("article", { class: "conflict" },
-        h("div", { class: "conflict-h" }, h("span", { class: "mono" }, c.id), c.topic || ""),
-        h("div", { class: "sides" },
-          [a, b].filter(Boolean).map((s) => h("div", { class: "side" }, h("span", { class: "hint mono" }, s.location || ""), quoteButton(s)))),
-        c.agency_question ? h("p", { class: "ask" }, h("strong", null, "Ask the issuing authority: "), c.agency_question) : null));
+  function linkify(text, byId) {
+    // "R18: …" and "C1" become controls that open the row or the conflict; the rest stays text.
+    const parts = [];
+    let last = 0;
+    for (const m of text.matchAll(/\b([RC]\d{1,3})\b/g)) {
+      const id = m[1];
+      if (id[0] === "R" && !byId[id]) continue;
+      parts.push(text.slice(last, m.index));
+      parts.push(id[0] === "R"
+        ? h("button", { type: "button", class: "ref mono", onclick: (e) => pickById(id, e.currentTarget) }, id)
+        : h("button", { type: "button", class: "ref mono", onclick: () => $(`conf-${id}`) && $(`conf-${id}`).scrollIntoView({ behavior: CALM.matches ? "auto" : "smooth", block: "start" }) }, id));
+      last = m.index + id.length;
     }
+    parts.push(text.slice(last));
+    return parts;
+  }
+
+  function renderAct(actions, byId) {
+    const act = clear($("act"));
+    for (const t of actions) act.append(h("li", null, h("span", null, linkify(t, byId))));
+    $("act-sec").hidden = !actions.length;
+  }
+
+  function quoteButton(side) {
+    return h("button", { type: "button", class: "quote quote-btn", title: "Open this line in the tender",
+      onclick: (e) => openLine(side.quote, null, e.currentTarget) }, side.quote, h("span", { class: "open-line" }, "Open line →"));
   }
 
   function copyButton(text) {
@@ -302,10 +424,25 @@
     } }, "Copy");
   }
 
+  function renderConflicts(list, agency) {
+    const box = clear($("conflicts"));
+    $("conf-sec").hidden = !list.length;
+    for (const c of list) {
+      const [a, b] = c.sides || [];
+      const ask = c.agency_question || (agency.find((q) => q.for === c.id) || {}).question;
+      box.append(h("article", { class: "conflict", id: `conf-${c.id}` },
+        h("div", { class: "conflict-h" }, h("span", { class: "mono" }, c.id), c.topic || ""),
+        h("div", { class: "sides" },
+          [a, b].filter(Boolean).map((s) => h("div", { class: "side" }, h("span", { class: "hint mono" }, s.location || ""), quoteButton(s)))),
+        ask ? h("div", { class: "q" }, h("div", null, h("span", { class: "to" }, "Ask the issuing authority"), ask), copyButton(ask)) : null));
+    }
+  }
+
   function renderQuestions(agency, bidder) {
     const box = clear($("questions"));
-    $("q-sec").hidden = !agency.length && !bidder.length;
-    for (const q of agency) box.append(h("div", { class: "q" }, h("div", null, h("span", { class: "to" }, `To the issuing authority · ${q.for || ""}`), q.question), copyButton(q.question)));
+    const other = agency.filter((q) => !/^C\d+$/.test(q.for || ""));
+    $("q-sec").hidden = !other.length && !bidder.length;
+    for (const q of other) box.append(h("div", { class: "q" }, h("div", null, h("span", { class: "to" }, `To the issuing authority · ${q.for || ""}`), q.question), copyButton(q.question)));
     for (const q of bidder) box.append(h("div", { class: "q" }, h("div", null, h("span", { class: "to" }, "To you, the bidder"), q), copyButton(q)));
   }
 
@@ -336,7 +473,7 @@
       tokens_out: c.tokens_out, cost_usd: c.cost_usd, latency_ms: c.latency_ms, outcome: c.error ? "error" : "response" }));
     const by = {};
     for (const c of calls) (by[c.stage] = by[c.stage] || []).push(c);
-    const qc = v.quote_checks || {};
+    const q = quoteStats(x);
     const steps = h("ol", { class: "steps" });
     const add = (who, title, note, num, warn) => steps.append(h("li", { class: `step ${who}${warn ? " warn" : ""}` },
       h("span", { class: "who" }, who), h("div", null, title, note ? h("span", { class: "hint" }, `: ${note}`) : null, num ? h("span", { class: "n" }, num) : null)));
@@ -349,7 +486,7 @@
         cs.some((c) => c.outcome !== "response"));
       if (st === "E1") {
         add("code", "Verified every quote", "exact text in one place, field values inside the quote, dates recomputed",
-          `${qc.passed ?? "?"} of ${qc.total ?? "?"} verified · ${qc.requoted || 0} re-quoted · ${qc.retracted || 0} retracted · ${qc.unverified || 0} left unverified`);
+          `${q.total} records proposed · ${q.passed} verified (${q.requoted} after re-quoting) · ${q.unverified} left unverified · ${q.removed} removed as duplicates, joins or instruction text · ${q.retracted} retracted`);
         const joins = (v.validity_merges || []).length + (v.list_entry_joins || []).length;
         if (joins) add("code", "Rejoined split items", "one obligation on one line stays one record", `${joins} join${joins > 1 ? "s" : ""}`);
       }
@@ -388,7 +525,7 @@
     $("rerun-note").textContent = rerun
       ? "No model is called: this case's recorded replies go back through the current code, stage by stage."
       : `Calls the model for real · ${S.live.remaining_this_hour ?? "?"} left for you this hour, ${S.live.remaining_today} today.`;
-    $("rerun-btn").disabled = !S.live.live_enabled || S.busy || (rerun && S.data && S.data.rerun === false);
+    $("rerun-btn").disabled = !S.live.live_enabled || S.busy;
   }
 
   function stages(events) {
@@ -427,6 +564,7 @@
         if (S.data.id !== caseId) break;  // the case changed meanwhile: do not paint another case's report
         if (job.state === "done") {
           render(job.report, { mode: job.report.x_meta.mode === "live" ? "live" : "replay", models: (job.report.x_meta.model || {}).resolved || [] });
+          say("Re-run finished.");
           break;
         }
         if (job.state === "failed") throw new Error(`${job.error || "The run stopped"}.`);
@@ -448,16 +586,17 @@
       S.samples = (await getJSON("data/samples.json")).samples || [];
       renderCasePicker();
       const want = location.hash.slice(1);
-      const first = S.samples.find((s) => s.id === want) || S.samples[0];
+      const first = S.samples.find((s) => s.id === want) || S.samples.find((s) => s.id === DEFAULT_CASE) || S.samples[0];
       if (first) await select(first.id);
     } catch {
       $("case-title").textContent = "Could not load the recorded runs.";
+      setBanner("The recorded runs could not be loaded.", null);
     }
     S.live = await probe();
     updateRerun();
   })();
   addEventListener("hashchange", () => {
     const id = location.hash.slice(1);
-    if (S.samples.some((s) => s.id === id) && (!S.data || S.data.id !== id)) select(id);
+    if (S.samples.some((s) => s.id === id) && (!S.data || S.data.id !== id) && !S.busy) select(id);
   });
 })();
