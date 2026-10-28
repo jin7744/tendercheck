@@ -12,12 +12,14 @@
 - Validity record with no parent document and no matched file → needs-confirmation, not S10 `missing` (bid validity case).
 - Background sentences extracted as requirements (e.g. the invitation sentence) → steer to `not_requirements` in the E1 prompt with a generic example.
 
-## First on 10/29 (written 2026-10-28 ~21:50)
-0. Coverage gap: a verbless entry of a document list ("⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)") has no trigger word,
-   so when E1 skips it E4 never sees it (cards2 k1 T07 aux B-M1, gold R10 unmatched). Proposal: also send to E4 the
-   uncited entries of a numbered list (①-⑳, (a), 1) …) in which at least one sibling entry is cited. Changes the E4
-   request, so replay will mismatch at E4 for affected runs: verify with a live K=3 of the B manifests (~$1.2) and
-   the cards (~$6.2) before the 23:00 freeze.
+## First on 10/29 (updated 2026-10-28 ~22:20)
+0. ~~Coverage gap for verbless list entries~~ Done 10/28 22:10 as fix 9 (076123e), live K=3: regression 17/18,
+   cards 21/21, aux 13/15; breaks nothing, but E1 never skipped the line in that pass, so the recovery itself is
+   not yet seen live.
+1. E4 extracts the seal rule of 서식 제3호 with `mandatory = unclear` (4 runs in two passes) -> needs-confirmation
+   instead of met (triggered). Options: (a) leave it, fail-closed, and say so; (b) E4 prompt: an attribute of a
+   document takes the document's mandatory value and conditions (prompt change -> live K=3 again, ~$9).
+   Not code: the model's own doubt should not be overridden by a rule.
 
 ## Carry-over to 10/29 (written 2026-10-28 ~20:40)
 Done on 10/28: K=3 regression (21 runs) -> diagnosis -> 8 engine fixes + 3 prompt bumps; second K=3 12/18;

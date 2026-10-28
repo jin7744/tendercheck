@@ -79,14 +79,17 @@ injection, a deadline conflict across time zones) were run live three times on t
 | 1 | before fixes 5–7 | 18 / 21 | 14 / 15 |
 | 2 | fixes 5–6 | 20 / 21 | 14 / 15 |
 | 3 | fixes 5–7 | 21 / 21 | 13 / 15 |
+| 4 | fixes 5–9 | 21 / 21 | 13 / 15 |
 
 Each pass found something the previous one did not: a time zone the model dropped from a deadline (fix 5), a seal
 rule that lost its form's condition (fix 6), and a merge rule a single bidder would have been told it need not
-follow, the one fail-open case found (fix 7). Fix 8 reads a filename template the model quoted inside a sentence.
-Two aux runs are still not clean: one row reads "needs check" because the model marked it unclear, and one list
-entry with no obligation verb was never extracted (open, see `docs/day2_todo.md`). Replaying all 81 live runs
-through the current code gives 18/18, 63/63 and 43/45; those replays reuse recorded replies, the live numbers are
-the ones in the table.
+follow, the one fail-open case found (fix 7). Fix 8 reads a filename template the model quoted inside a sentence. Fix 9 sends an unextracted entry of a numbered
+list ("⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)", no obligation verb) to the coverage sweep.
+
+With fixes 5–9 the six regression lists were also re-run three times live: 17/18 runs, 332/333 rows. Every
+non-clean run in pass 4, regression or aux, is the same row: the coverage stage extracts the seal rule of the
+usage-seal form as "mandatory: unclear", so it reads "needs check" instead of "met". That is the cautious
+direction, and code does not override the model's own doubt.
 
 ## Run it
 
@@ -94,7 +97,7 @@ Python 3.12, standard library only. Run live mode under Linux or WSL: the cost l
 `fcntl` (on Windows one process is still safe, and that one test is skipped).
 
 ```bash
-cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 605 tests
+cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 609 tests
 python3 -m tools.serve --rerun          # the page at http://127.0.0.1:8765; re-runs at $0
 python3 -m tools.run_scenario --run A-M2 --mode replay --run-id replay_demo --replay-from replays/A-M2
 ```
