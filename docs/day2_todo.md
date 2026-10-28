@@ -11,3 +11,21 @@
 - K=3 live repeats for T01–T07 and the six regression runs (cost so far ~$0.11–0.14 per run).
 - Validity record with no parent document and no matched file → needs-confirmation, not S10 `missing` (bid validity case).
 - Background sentences extracted as requirements (e.g. the invitation sentence) → steer to `not_requirements` in the E1 prompt with a generic example.
+
+## Carry-over to 10/29 (written 2026-10-28 ~20:40)
+Done on 10/28: K=3 regression (21 runs) -> diagnosis -> 8 engine fixes + 3 prompt bumps; second K=3 12/18;
+B x3 on the final engine 9/9; A x1 on the final engine 3/3; web page rebuilt from the design playbook (owner
+approved the direction), impeccable critique applied, server hardened after a security review; README.
+Ledger total about $8.06 of the $10 card-phase cap.
+
+1. Owner: log in to dev.meta.ai in the app's browser so Billing can be read (session expired). If the $150 credit
+   shows, raise the cap to $140 and run: A lists x2 more (K=3 on the final engine), then cards T01-T07 x3 with
+   their own user messages (`--test TXX`, aux runs included).
+2. Owner decisions: GitHub public repository + commit author name and trailer; demo subdomain; deployment
+   (static page with recordings + optional live API behind cloudflared with --trust-proxy).
+3. Engine text: two em dashes in the agency question template (A-M3) -> plain punctuation; long F7 detail
+   strings in "Checks" could read as a sentence.
+4. Grader: decide whether a gold row split across records is judged by its worst fragment (5 rows on 10/28),
+   with the flip list, or leave as is and say so in the README.
+5. MVP freeze 23:00. Video and submission text 11/2-11/3 (11/1 is the AI_TOP_100 judging window: no Meta work on
+   the shared Claude subscription).
