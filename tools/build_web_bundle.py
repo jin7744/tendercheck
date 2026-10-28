@@ -20,15 +20,17 @@ from tools.run_scenario import SCENARIOS, find_run, scenario_inputs
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "web" / "data"
 
-# Latest recorded live run per sample (k1 of the newest K=3 set that covers it).
+# One recorded live run per sample, all on the final engine and prompts (req_rules 1.1.0, m_match 1.1.0,
+# e1_extract 1.1.0), so "re-run" replays them byte for byte. B-M2-PII: the first v4 run is not used, the model
+# copied the consortium numbers into every record and code held 20 records as ungrounded (docs/live_runs_20261028.md).
 DEFAULT_RUNS = {
-    "A-M1": "runs/live_20261028_v2_k1/A-M1",
-    "A-M2": "runs/live_20261028_v2_k1/A-M2",
-    "A-M3": "runs/live_20261028_v2_k1/A-M3",
+    "A-M1": "runs/live_20261028_v4_web/A-M1",
+    "A-M2": "runs/live_20261028_v4_web/A-M2",
+    "A-M3": "runs/live_20261028_v4_web/A-M3",
     "B-M1": "runs/live_20261028_v3_k1/B-M1",
     "B-M2": "runs/live_20261028_v3_k1/B-M2",
     "B-M3": "runs/live_20261028_v3_k1/B-M3",
-    "B-M2-PII": "runs/live_20261028_v2_k1/B-M2-PII",
+    "B-M2-PII": "runs/live_20261028_v4_web2/B-M2-PII",
 }
 TITLES = {
     "A-M1": ("Package A · clean bid", "English tender, every document in order"),

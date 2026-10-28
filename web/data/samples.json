@@ -8,7 +8,7 @@
    "lang": "en",
    "status_counts": {
     "met": 15,
-    "missing": 1,
+    "missing": 0,
     "error": 0,
     "conditional": 3,
     "needs-confirmation": 2
@@ -22,10 +22,10 @@
    "lang": "en",
    "status_counts": {
     "met": 6,
-    "missing": 4,
-    "error": 11,
+    "missing": 3,
+    "error": 9,
     "conditional": 0,
-    "needs-confirmation": 1
+    "needs-confirmation": 2
    }
   },
   {
@@ -36,10 +36,10 @@
    "lang": "en",
    "status_counts": {
     "met": 13,
-    "missing": 1,
+    "missing": 0,
     "error": 1,
     "conditional": 3,
-    "needs-confirmation": 2
+    "needs-confirmation": 4
    }
   },
   {
@@ -91,10 +91,10 @@
    "package": "B",
    "lang": "ko",
    "status_counts": {
-    "met": 6,
-    "missing": 7,
-    "error": 7,
-    "conditional": 9,
+    "met": 3,
+    "missing": 3,
+    "error": 8,
+    "conditional": 5,
     "needs-confirmation": 3
    }
   }

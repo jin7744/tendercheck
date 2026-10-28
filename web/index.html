@@ -3,133 +3,124 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TenderCheck — pre-submission checklist</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<title>TenderCheck: pre-submission checklist</title>
 <meta name="description" content="A verification agent that checks a bid package against the tender's own documents. Every requirement is quoted from the source; every status is computed by code.">
-<link rel="stylesheet" href="app.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231c1a17'/%3E%3Cpath d='M8 17l5 5 11-12' stroke='%23e9dfc9' stroke-width='3.2' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css?v=3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161616'/%3E%3Cpath d='M8 17l5 5 11-12' stroke='%23ffffff' stroke-width='3' fill='none'/%3E%3C/svg%3E">
 </head>
 <body>
-<a class="skip" href="#findings">Skip to findings</a>
+<a class="skip" href="#rows">Skip to findings</a>
 
-<header class="mast">
-  <div class="mast-id">
-    <div class="wordmark" aria-label="TenderCheck">Tender<span>Check</span></div>
-    <p class="tagline">Pre-submission checklist for public tenders. <em>Never states eligibility or submission status — a person makes the final call.</em></p>
-  </div>
-  <dl class="mast-run" aria-label="Run">
-    <div><dt>Mode</dt><dd id="mode-badge" class="mode mode-replay">Replay</dd></div>
-    <div><dt>Model</dt><dd id="model-name">—</dd></div>
-    <div><dt>Scenario date</dt><dd id="as-of">—</dd></div>
+<header class="topbar">
+  <span class="brand">TenderCheck</span>
+  <label class="case-pick">
+    <span class="sr-only">Case</span>
+    <select id="case"></select>
+  </label>
+  <dl class="run">
+    <div><dt>Mode</dt><dd><span id="mode" class="mode">Replay</span></dd></div>
+    <div><dt>Model</dt><dd id="model" class="mono">n/a</dd></div>
+    <div class="hide-s"><dt>Scenario date</dt><dd id="as-of" class="mono">n/a</dd></div>
   </dl>
 </header>
 
-<nav class="samples" aria-label="Samples">
-  <span class="samples-label">Case files</span>
-  <div id="sample-list" class="sample-list" role="tablist"></div>
-</nav>
+<div class="casebar">
+  <div class="case-head">
+    <h1 id="case-title">Loading…</h1>
+    <p id="case-blurb"></p>
+  </div>
+  <p class="claim">Model finds and matches. <strong>Code verifies every quote and decides every status.</strong> It never says a bid is eligible; a person makes that call.</p>
+  <div class="tally" id="tally" role="tablist" aria-label="Filter findings by status">
+    <span class="tally-ink" id="tally-ink" aria-hidden="true"></span>
+  </div>
+</div>
 
-<main class="desk">
-  <section class="evidence" aria-labelledby="ev-h">
-    <div class="pane-head">
-      <h2 id="ev-h">Evidence</h2>
-      <p class="pane-note">The tender as provided, split into the lines the agent cites. Click a citation on the right to open its line.</p>
-    </div>
-    <div id="doc-tabs" class="doc-tabs" role="tablist" aria-label="Source documents"></div>
-    <div id="doc-view" class="doc-view" tabindex="0" aria-label="Document text"></div>
-    <details class="bidder" id="bidder-box" open>
-      <summary>Bidder's file list</summary>
-      <pre id="bidder-list" class="bidder-list"></pre>
-      <p id="bidder-msg" class="bidder-msg" hidden></p>
-    </details>
-    <section class="live" id="live-box" hidden aria-labelledby="live-h">
-      <h3 id="live-h">Run live</h3>
-      <p class="pane-note" id="live-note"></p>
-      <div class="live-actions">
-        <button type="button" id="run-sample" class="btn">Re-run this case live</button>
-        <button type="button" id="toggle-own" class="btn btn-quiet">Paste your own…</button>
-      </div>
-      <form id="own-form" class="own" hidden>
-        <label>Tender text <small>(one document per box; synthetic only)</small>
-          <textarea id="own-doc" rows="8" maxlength="60000" spellcheck="false"></textarea></label>
-        <label>Bidder file list <small>(same format as the case files)</small>
-          <textarea id="own-list" rows="6" spellcheck="false"></textarea></label>
-        <label>Your note <small>(optional — read as data, never as an instruction)</small>
-          <input id="own-msg" type="text" maxlength="500"></label>
-        <fieldset class="lang"><legend>Output language</legend>
-          <label><input type="radio" name="lang" value="en" checked> English</label>
-          <label><input type="radio" name="lang" value="ko"> 한국어</label>
-        </fieldset>
-        <button type="submit" class="btn">Run check</button>
-      </form>
-      <ol id="progress" class="progress" hidden aria-live="polite"></ol>
-      <p id="live-error" class="live-error" role="alert" hidden></p>
-    </section>
-  </section>
-
-  <section class="findings" id="findings" aria-labelledby="fi-h" tabindex="-1">
-    <div class="pane-head">
-      <h2 id="fi-h">Findings</h2>
-      <p class="pane-note" id="basis"></p>
-    </div>
-
+<main class="split">
+  <section class="findings" aria-label="Findings">
     <div id="banner" class="banner" role="status" hidden></div>
-    <div id="tally" class="tally" role="group" aria-label="Filter by status"></div>
     <p id="summary" class="summary"></p>
 
-    <section class="block do-first" aria-labelledby="do-h">
-      <h3 id="do-h">Do first</h3>
-      <ol id="do-first"></ol>
+    <section class="sec" id="act-sec" aria-labelledby="act-h">
+      <h2 id="act-h">Act first</h2>
+      <ol id="act" class="act"></ol>
     </section>
 
-    <section class="block" aria-labelledby="cl-h">
-      <div class="block-head">
-        <h3 id="cl-h">Checklist</h3>
-        <span class="legend"><b>Model</b> finds &amp; matches · <b>Code</b> verifies every quote and decides every status</span>
+    <section class="sec" aria-labelledby="rows-h">
+      <div class="sec-head">
+        <h2 id="rows-h">Requirements</h2>
+        <span class="hint">Select a row to open its line in the tender.</span>
       </div>
-      <ol id="ledger" class="ledger"></ol>
+      <ol id="rows" class="rows" tabindex="-1"></ol>
+      <p id="rows-empty" class="empty" hidden>No requirement has this status.</p>
     </section>
 
-    <section class="block" id="conflicts-block" aria-labelledby="cf-h" hidden>
-      <h3 id="cf-h">Conflicts between documents</h3>
+    <section class="sec" id="conf-sec" aria-labelledby="conf-h" hidden>
+      <h2 id="conf-h">Documents that disagree</h2>
       <div id="conflicts"></div>
     </section>
 
-    <section class="block" id="questions-block" aria-labelledby="q-h" hidden>
-      <h3 id="q-h">Questions</h3>
+    <section class="sec" id="q-sec" aria-labelledby="q-h" hidden>
+      <h2 id="q-h">Questions to send</h2>
       <div id="questions"></div>
     </section>
 
-    <section class="block" id="nis-block" aria-labelledby="nis-h" hidden>
-      <h3 id="nis-h">Asked for, but not in the documents</h3>
-      <ul id="not-in-source" class="plain"></ul>
+    <section class="sec" id="nis-sec" aria-labelledby="nis-h" hidden>
+      <h2 id="nis-h">Asked for, but not in the documents</h2>
+      <ul id="nis" class="plain"></ul>
     </section>
 
-    <section class="block" aria-labelledby="pre-h">
-      <h3 id="pre-h">Before you submit</h3>
-      <ul id="pre-submit" class="checks"></ul>
+    <section class="sec" aria-labelledby="pre-h">
+      <h2 id="pre-h">Before you submit</h2>
+      <ul id="pre" class="pre"></ul>
     </section>
 
-    <section class="block" id="flags-block" aria-labelledby="fl-h" hidden>
-      <h3 id="fl-h">Flags</h3>
+    <section class="sec" id="flag-sec" aria-labelledby="flag-h" hidden>
+      <h2 id="flag-h">Flags</h2>
       <div id="flags"></div>
     </section>
 
-    <details class="block custody" id="custody">
-      <summary><h3>Chain of custody</h3><span class="pane-note">every model call, every code check</span></summary>
-      <div id="custody-body"></div>
+    <details class="sec log" id="log">
+      <summary><h2>Run log</h2><span class="hint">every model call and every code check, from this run</span></summary>
+      <div id="log-body"></div>
     </details>
 
-    <div class="actions-row">
-      <button type="button" id="download" class="btn btn-quiet">Download report JSON</button>
+    <div class="tools">
+      <button type="button" id="download" class="btn btn-ghost">Download report JSON</button>
     </div>
   </section>
+
+  <aside class="evidence" id="evidence" aria-label="Tender documents">
+    <div class="ev-head">
+      <div id="doc-tabs" class="doc-tabs" role="tablist" aria-label="Documents"></div>
+      <button type="button" id="ev-close" class="ev-close" aria-label="Close the document">Close</button>
+    </div>
+    <div id="doc-view" class="doc-view" tabindex="0" aria-label="Document text"></div>
+    <details class="bidder">
+      <summary>Bidder's file list</summary>
+      <pre id="bidder" class="mono"></pre>
+      <p id="bidder-note" class="bidder-note" hidden></p>
+    </details>
+    <section class="rerun" id="rerun" hidden aria-labelledby="rerun-h">
+      <div class="rerun-row">
+        <div>
+          <h2 id="rerun-h">Re-run</h2>
+          <p id="rerun-note" class="hint"></p>
+        </div>
+        <button type="button" id="rerun-btn" class="btn">Re-run this case</button>
+      </div>
+      <ol id="stages" class="stages" hidden aria-live="polite"></ol>
+      <p id="rerun-err" class="err" role="alert" hidden></p>
+    </section>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
 </main>
 
 <footer class="foot">
-  <p id="disclaimer" class="disclaimer"></p>
-  <p>Synthetic demo data — fictional agencies, bidders and people. Do not paste real or confidential documents.</p>
+  <p id="disclaimer"></p>
+  <p class="hint">Synthetic demo data: fictional agencies, bidders and people. Do not paste real or confidential documents.</p>
 </footer>
 
-<script src="app.js"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
