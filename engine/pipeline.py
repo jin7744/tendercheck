@@ -237,6 +237,45 @@ def merge_split_validity(vreqs: list[dict], segs: dict) -> tuple[list[dict], lis
     return out, merges
 
 
+# Words that name a consortium, most specific first: the first one found in the quote becomes the condition quote
+# ("공동수급 … 대표사" quotes "공동수급"). English terms match as whole words, case-insensitive except "JV".
+CONSORTIUM_TERMS = ("joint venture", "consortium", "JV", "lead member", "lead partner",
+                    "공동수급", "공동이행", "공동도급", "컨소시엄", "대표사", "구성원")
+
+
+def _consortium_word(quote: str) -> str:
+    for term in CONSORTIUM_TERMS:
+        if term.isascii():
+            m = re.search(r"\b" + re.escape(term) + r"\b", quote, 0 if term == "JV" else re.IGNORECASE)
+            if m:
+                return m.group(0)
+        elif term in quote:
+            return term
+    return ""
+
+
+def add_member_rule_conditions(vreqs: list[dict]) -> tuple[list[dict], list[dict]]:
+    """A member rule (member count, lead share) binds only a consortium. When the model gave such a record no
+    condition, add consortium = yes, quoting the consortium word found in the record's own quote (source case kept),
+    so a single bidder gets "applies only to a joint venture" instead of met or a missing value. Records without a
+    member rule or such a word, already conditional, or not verified and grounded stay as they are.
+    Returns (reqs, log)."""
+    out, log = [], []
+    for v in vreqs:
+        r, c = v["req"], v["check"]
+        mr = r.get("member_rule") or {}
+        has_rule = int(mr.get("max_members") or 0) > 0 or float(mr.get("lead_share_min_pct") or 0) > 0
+        word = _consortium_word(r.get("quote", "")) if has_rule else ""
+        if not (c.get("verified") and c.get("grounded")) or r.get("conditions") \
+                or r.get("mandatory") == "conditional" or not word:
+            out.append(r)
+            continue
+        out.append({**r, "mandatory": "conditional",
+                    "conditions": [{"condition_quote": word, "fact_key": "consortium", "applies_when": "yes"}]})
+        log.append({"tmp_id": r.get("tmp_id", ""), "condition_quote": word})
+    return out, log
+
+
 def _seal_kind(value: str) -> str:
     v = (value or "").casefold()
     if "사용인감" in v or "usage" in v or "authorized" in v or "authorised" in v:
@@ -489,6 +528,11 @@ class _Run:
                 self.recheck()
             self.match_files()
             self.adjudicate()
+            # After the last model stage: the condition only feeds S5/S6, and M/C requests stay as recorded.
+            self.reqs, added = add_member_rule_conditions(self.vreqs)
+            if added:
+                self.stats["member_rule_conditions"] = added
+                self.recheck()
         except STOP_ERRORS as exc:
             self.stop = {"key": _stop_key(exc), "class": type(exc).__name__, "stage": self.tap.attempted}
 
@@ -591,6 +635,7 @@ class _Run:
                              "sent": self.stats["coverage_sent"], "unexplained": self.stats["coverage_unexplained"]},
                 "status_hint_downgrades": downgrades,
                 "validity_merges": self.stats.get("validity_merges", []),
+                "member_rule_conditions": self.stats.get("member_rule_conditions", []),
                 "stages": self.stage_log,
             },
             "cost_total_usd": self.tap.spent_usd(),
