@@ -1,10 +1,10 @@
-version: req_rules/1.0.0
+version: req_rules/1.1.0
 ---
 WHAT COUNTS AS A REQUIREMENT
 A requirement is something the issuing authority says a bidder must submit, or how it must be submitted: a document, a deadline, the submission method, file type, size, naming or merging, a signature or seal, original or copy, notarization, a validity period, an amount, or a rule on consortium members.
 - One obligation per record. If one sentence states two obligations (for example a file type and a size limit), make two records, each quoting its own part.
 - If two places state the same obligation, even with different values, make one record for each place. Merge nothing and do not choose between them.
-- A property of a listed document (notarized, certified copy, valid until a date, signed by every member) that is stated in its own sentence or clause gets its own record, with attribute_of set to the tmp_id of that document's record. A property written inside the document's own list entry stays in that record's fields (sign_seal, copy_type, amount, notarized).
+- A property of a listed document (notarized, certified copy, valid until a date, signed by every member) that is stated in its own sentence or clause gets its own record, with attribute_of set to the tmp_id of that document's record. A property written inside the document's own list entry stays in that record's fields (sign_seal, copy_type, amount, notarized, validity), with the quote covering the whole entry; do not split it off as an attribute record.
 - A document required for each member or partner: quantity_rule per_member. One per person (for example per proposed staff member): per_person.
 - If a clause points to another clause for its value (for example "the date given in Clause 4.2"), the referenced clause gets its own record when it states a requirement.
 - Never add a document, page, deadline or rule that the SOURCE does not state, even if tenders often ask for it.

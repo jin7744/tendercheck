@@ -237,6 +237,83 @@ def merge_split_validity(vreqs: list[dict], segs: dict) -> tuple[list[dict], lis
     return out, merges
 
 
+# Field -> "not stated" test, for the fields an attribute may carry into its document.
+_UNSTATED = {
+    "validity": lambda v: (v or {}).get("rule_type", "none") == "none",
+    "amount": lambda v: not ((v or {}).get("value") or (v or {}).get("ratio_pct") or (v or {}).get("currency")),
+    "member_rule": lambda v: not ((v or {}).get("max_members") or (v or {}).get("lead_share_min_pct")),
+    "sign_seal": lambda v: (v or "not_stated") == "not_stated",
+    "copy_type": lambda v: (v or "not_stated") == "not_stated",
+    "notarized": lambda v: (v or "not_stated") == "not_stated",
+}
+_JOIN_GAP = re.compile(r"[\s:,;·\-]{0,3}")
+
+
+def rejoin_list_entry_attributes(vreqs: list[dict], segs: dict) -> tuple[list[dict], list[dict]]:
+    """A property written inside a document's own list entry belongs to that document's record (req_rules). When
+    the model split it off as an `attribute_of` record on the same line, fold the attribute's fields into the
+    document and widen the quote to the contiguous source span. Skips a child with its own condition or deadline,
+    a field the document already states differently, and anything across lines. Returns (reqs, joins)."""
+    by_tmp = {tmp_id_of(v): v for v in vreqs}
+    current = {t: v["req"] for t, v in by_tmp.items()}
+    quote = {t: v["check"]["quote"] for t, v in by_tmp.items()}
+    absorbed: dict[str, str] = {}
+    joins = []
+    for v in vreqs:
+        tmp, c, cc = tmp_id_of(v), v["req"], v["check"]
+        parent = c.get("attribute_of") or ""
+        while parent in absorbed:
+            parent = absorbed[parent]
+        if not parent or parent == tmp or parent not in by_tmp:
+            continue
+        pc = by_tmp[parent]["check"]
+        if not (cc["verified"] and cc["grounded"] and pc["verified"] and pc["grounded"]) or cc["seg_id"] != pc["seg_id"]:
+            continue
+        if c.get("conditions") or (c.get("deadline") or {}).get("kind", "none") != "none":
+            continue
+        p = current[parent]
+        fields, clash = {}, False
+        for f, unstated in _UNSTATED.items():
+            if unstated(c.get(f)):
+                continue
+            if unstated(p.get(f)):
+                fields[f] = c[f]
+            elif p.get(f) != c.get(f):
+                clash = True
+        if clash or not fields:
+            continue
+        text, pq, cq = segs[cc["seg_id"]]["text"], quote[parent], quote[tmp]
+        if cq in pq:
+            span = pq
+        else:
+            sp, sc = text.find(pq), text.find(cq)
+            if sp < 0 or sc < 0:
+                continue
+            (a0, a1), (b0, b1) = sorted([(sp, sp + len(pq)), (sc, sc + len(cq))])
+            if b0 > a1 and not _JOIN_GAP.fullmatch(text[a1:b0]):
+                continue
+            if max(a1, b1) - a0 > MAX_MERGED_QUOTE:
+                continue
+            span = text[a0:max(a1, b1)]
+        current[parent] = {**p, **fields, "quote": span}
+        quote[parent] = span
+        absorbed[tmp] = parent
+        joins.append({"kept": parent, "absorbed": tmp, "seg_id": cc["seg_id"]})
+    out = []
+    for v in vreqs:
+        tmp = tmp_id_of(v)
+        if tmp in absorbed:
+            continue
+        r = current[tmp]
+        parent = r.get("attribute_of") or ""
+        while parent in absorbed:
+            parent = absorbed[parent]
+        if parent != (r.get("attribute_of") or ""):
+            r = {**r, "attribute_of": parent}
+        out.append(r)
+    return out, joins
+
+
 # Words that name a consortium, most specific first: the first one found in the quote becomes the condition quote
 # ("공동수급 … 대표사" quotes "공동수급"). English terms match as whole words, case-insensitive except "JV".
 CONSORTIUM_TERMS = ("joint venture", "consortium", "JV", "lead member", "lead partner",
@@ -543,6 +620,12 @@ class _Run:
                 for m in merges:
                     self.removed.append({"tmp_id": m["absorbed"], "why": f"joined into {m['kept']} (split validity)"})
                 self.recheck()
+            self.reqs, joins = rejoin_list_entry_attributes(self.vreqs, self.segs)
+            if joins:
+                self.stats["list_entry_joins"] = joins
+                for j in joins:
+                    self.removed.append({"tmp_id": j["absorbed"], "why": f"joined into {j['kept']} (same list entry)"})
+                self.recheck()
             self.match_files()
             self.adjudicate()
             # After the last model stage: the condition only feeds S5/S6, and M/C requests stay as recorded.
@@ -653,6 +736,7 @@ class _Run:
                              "sent": self.stats["coverage_sent"], "unexplained": self.stats["coverage_unexplained"]},
                 "status_hint_downgrades": downgrades,
                 "validity_merges": self.stats.get("validity_merges", []),
+                "list_entry_joins": self.stats.get("list_entry_joins", []),
                 "member_rule_conditions": self.stats.get("member_rule_conditions", []),
                 "stages": self.stage_log,
             },
