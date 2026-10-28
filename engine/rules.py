@@ -13,6 +13,9 @@ INFO_ONLY = ("LOCATION_CORRECTED", "TZ_NOT_STATED", "WEEKDAY_MISMATCH", "ISSUE_D
 FILE_CATEGORIES = ("document", "signature_seal", "original_copy", "validity")
 DEADLINE_CATEGORIES = ("deadline", "submission_method")
 FILE_RULE_CATEGORIES = ("file_format", "file_naming", "merge_rule")
+# Subjects that name the bid itself rather than a document ("Bids shall remain valid until …"), compared whole.
+BID_ITSELF = ("bid", "bids", "bid validity", "bid validity period", "tender", "tenders", "tender validity",
+              "offer", "offer validity", "proposal validity", "입찰서", "입찰서 유효기간")
 FACT_KEYS = ("consortium", "usage_seal", "foreign_entity", "subcontracting", "sme")
 # ATTRIBUTE_UNKNOWN fields that are gaps in the source rule, not bidder facts (no bidder question).
 RULE_SIDE_FIELDS = ("anchor_date", "period", "required_until", "evidence")
@@ -217,6 +220,9 @@ def decide(vreq: dict, *, file_check: dict | None = None, match: dict | None = N
         return done("S9", NC, ["ACTION_PENDING"], ev=[])
 
     if req.get("category") in FILE_CATEGORIES and not attr_parent and not rows:
+        if req.get("category") == "validity" and " ".join((req.get("subject") or "").casefold().split()) in BID_ITSELF:
+            # The bid's own validity period is not a file to add, and the file list cannot show it.
+            return done("S14", NC, ["ATTRIBUTE_UNKNOWN:evidence"], ev=[])
         return done("S10", "missing", ["NO_MATCHING_FILE"], ev=[])
     if attr_parent and _parent_absent(parent, match, attr_parent, rows):
         return done("S11", "missing", ["PARENT_MISSING"], depends_on=attr_parent, ev=[])

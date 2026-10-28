@@ -287,6 +287,22 @@ class ModelHint(unittest.TestCase):
             with self.subTest(want=want):
                 self.assertEqual(decide(v, match=m, file_check=f, profile=facts(consortium="no"))["status"], want)
 
+    def test_period_rule_without_a_document_is_not_missing(self):
+        # Live K=3 2026-10-28: "Bids shall remain valid until 31 March 2027" (the bid's own validity) read
+        # `missing` in 8 of 9 A runs, telling the bidder to add a file that does not exist. A period rule tied to
+        # no document and no listed file cannot be checked from the list.
+        for subject in ("bid validity", "Bid", "bids"):
+            with self.subTest(subject=subject):
+                d = decide(vr(category="validity", subject=subject), match=rows())
+                self.assertEqual((d["rule"], d["status"], d["reason_codes"]),
+                                 ("S14", NC, ["ATTRIBUTE_UNKNOWN:evidence"]))
+        # A document written as its validity ("법인인감증명서: … 최근 3개월 이내 발급분", 08 B R06 in B-M2) is
+        # still a file to add; so is a document whose subject merely starts with "bid".
+        for subject in ("corporate seal certificate", "bid security"):
+            with self.subTest(subject=subject):
+                d = decide(vr(category="validity", subject=subject), match=rows())
+                self.assertEqual((d["rule"], d["status"]), ("S10", "missing"))
+
     def test_hint_does_not_reach_file_rules(self):
         # Live K=3 2026-10-28, B-M3 k1/k2: the doubt "scan top cut off" on one merged document was put on the
         # merge rule. Format, naming and merge rules are decided from file facts; a doubt about a document's
