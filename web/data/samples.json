@@ -1,0 +1,102 @@
+{
+ "samples": [
+  {
+   "id": "A-M1",
+   "title": "Package A · clean bid",
+   "blurb": "English tender, every document in order",
+   "package": "A",
+   "lang": "en",
+   "status_counts": {
+    "met": 15,
+    "missing": 1,
+    "error": 0,
+    "conditional": 3,
+    "needs-confirmation": 2
+   }
+  },
+  {
+   "id": "A-M2",
+   "title": "Package A · missing & wrong",
+   "blurb": "Joint venture bid with gaps, expired and unsigned files",
+   "package": "A",
+   "lang": "en",
+   "status_counts": {
+    "met": 6,
+    "missing": 4,
+    "error": 11,
+    "conditional": 0,
+    "needs-confirmation": 1
+   }
+  },
+  {
+   "id": "A-M3",
+   "title": "Package A · edge cases",
+   "blurb": "Two deadlines that disagree, unknown JV status",
+   "package": "A",
+   "lang": "en",
+   "status_counts": {
+    "met": 13,
+    "missing": 1,
+    "error": 1,
+    "conditional": 3,
+    "needs-confirmation": 2
+   }
+  },
+  {
+   "id": "B-M1",
+   "title": "Package B · clean bid",
+   "blurb": "Korean tender, usage seal, every document in order",
+   "package": "B",
+   "lang": "ko",
+   "status_counts": {
+    "met": 19,
+    "missing": 0,
+    "error": 0,
+    "conditional": 0,
+    "needs-confirmation": 3
+   }
+  },
+  {
+   "id": "B-M2",
+   "title": "Package B · missing & wrong",
+   "blurb": "HWP file, old certificates, short signatures",
+   "package": "B",
+   "lang": "ko",
+   "status_counts": {
+    "met": 4,
+    "missing": 6,
+    "error": 8,
+    "conditional": 8,
+    "needs-confirmation": 3
+   }
+  },
+  {
+   "id": "B-M3",
+   "title": "Package B · edge cases",
+   "blurb": "Deadline conflict, cut-off scan, unknown JV status",
+   "package": "B",
+   "lang": "ko",
+   "status_counts": {
+    "met": 13,
+    "missing": 0,
+    "error": 0,
+    "conditional": 7,
+    "needs-confirmation": 8
+   }
+  },
+  {
+   "id": "B-M2-PII",
+   "title": "Package B · sensitive data",
+   "blurb": "A bidder list carrying personal numbers, masked before the model",
+   "package": "B",
+   "lang": "ko",
+   "status_counts": {
+    "met": 6,
+    "missing": 7,
+    "error": 7,
+    "conditional": 9,
+    "needs-confirmation": 3
+   }
+  }
+ ]
+}

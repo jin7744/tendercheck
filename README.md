@@ -24,6 +24,6 @@ Status: work in progress. Everything in `scenarios/` is synthetic test data (fic
 | `engine/` | Normalization, model adapter, verification checks, matching, rules, report |
 | `scenarios/` | Synthetic tender packages, bidder manifests, answer keys, adversarial test cards |
 | `eval/` | Independent grader (does not import `engine/`) |
-| `web/` | Single-page UI |
-| `tools/` | Dev utilities (pre-commit scrub check) |
+| `web/` | Single-page UI (`index.html`, `app.css`, `app.js`) and the replay bundle in `web/data/` |
+| `tools/` | `run_scenario.py` (fake / replay / live runs + grading), `build_web_bundle.py` (replay bundle for the page), `serve.py` (page + API; `--rerun` re-sends recorded replies at $0, `--live` calls the model under caps), pre-commit scrub check |
 | `docs/` | Experiment and decision logs |

@@ -413,9 +413,10 @@ def apply_attribute_findings(manifest: dict, match: dict | None) -> dict:
 # ---------------------------------------------------------------------------------------------
 
 class _Run:
-    def __init__(self, bundle, manifest, *, lang, as_of, tap, user_message):
+    def __init__(self, bundle, manifest, *, lang, as_of, tap, user_message, on_event=None):
         self.bundle, self.manifest, self.lang, self.as_of, self.tap = bundle, manifest, lang, as_of, tap
         self.user_message = user_message
+        self.on_event = on_event
         self.segs = segment_map(bundle)
         self.reqs: list[dict] = []
         self.vreqs: list[dict] = []
@@ -442,6 +443,15 @@ class _Run:
         self.stage_log.append({"stage": env["stage"], "attempt": env["attempt"], "called": env["called"],
                                "prompt_version": env["prompt_version"], "error": env["error"],
                                "dropped": list(env["dropped"]), "notes": list(env["notes"])})
+        self.emit(env["stage"], attempt=env["attempt"], error=bool(env["error"]))
+
+    def emit(self, stage: str, **info) -> None:
+        """Progress for a live UI: stage names and counts only, never document text. A failing listener is ignored."""
+        if self.on_event is not None:
+            try:
+                self.on_event({"stage": stage, **info})
+            except Exception:  # noqa: BLE001 - the run must not depend on the listener
+                pass
 
     def _gap(self, seg_id: str, key: str) -> None:
         seg = self.segs.get(seg_id)
@@ -834,8 +844,9 @@ def check_invariants(report: dict, grading: dict, bundle: dict, tap_calls: list[
 # ---------------------------------------------------------------------------------------------
 
 def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, run_id: str, client,
-        user_message: str = "", source_lang: str | None = None) -> dict:
+        user_message: str = "", source_lang: str | None = None, on_event=None) -> dict:
     """One analysis run. bundle_docs = [{doc_id, title, text, header?, doc_type?}] (normalize.build_source_bundle).
+    on_event(dict) receives stage progress ({"stage": "E1", "attempt": 0, ...}, then "RULES", "DONE").
     Returns {"report", "grading", "text", "calls", "invariants"}; never raises on a stop condition."""
     bundle = build_source_bundle([dict(d) for d in bundle_docs], bundle_id=_bundle_id(run_id), output_lang=lang,
                                  as_of=as_of, source_lang=source_lang)
@@ -846,11 +857,12 @@ def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, r
     flags = {"forced_verdict_request_ignored": bool(detect_forced_verdict(masked_msg.text)),
              "pii_masked": counts_list(masked_msg.counts)}
 
-    r = _Run(bundle, manifest, lang=lang, as_of=as_of, tap=tap, user_message=user_message)
+    r = _Run(bundle, manifest, lang=lang, as_of=as_of, tap=tap, user_message=user_message, on_event=on_event)
     r.manifest_sha = _sha(manifest_text or "")
     if not rules.source_missing(bundle):
         r.model_phase()
 
+    r.emit("RULES", requirements=len(r.vreqs))
     items, conflicts, adj = r.decide_all() if r.vreqs else ([], [], {"log": []})
     reason_key = (r.stop or {}).get("key") or ("extract" if r.extract_failed else "match" if r.match_error else "")
     if reason_key:
@@ -862,6 +874,7 @@ def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, r
     grading = report_mod.grading_view(report)
     invariants = check_invariants(report, grading, bundle, tap.calls, tap.pii_in_requests, tap.pii_in_replies)
     report["x_meta"]["invariants"] = invariants
+    r.emit("DONE", ok=invariants.get("ok", False))
     return {"report": report, "grading": grading, "text": report_mod.render_text(report, lang),
             "calls": list(tap.calls), "invariants": invariants}
 
