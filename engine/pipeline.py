@@ -43,6 +43,23 @@ TRIGGER_RE = re.compile(
     r"certified)\b|제출|하여야|해야|필수|마감|서명|날인|인감|유효|첨부|파일|이하|이내|공증|원본|사본|병합|기한",
     re.IGNORECASE)
 
+# The last marker of a numbered list entry's section: 3.⑨, §3(f), §4(ii), 2.가, Ⅳ-4.
+_LIST_TAIL = re.compile(r"(?:[①-⑳]|\((?:[a-z]{1,4}|\d{1,2})\)|[가나다라마바사아자차카타파하]|-\d{1,2})$")
+
+
+def _list_parent(section: str) -> str:
+    m = _LIST_TAIL.search(section or "")
+    return section[:m.start()] if m and m.start() > 0 else ""
+
+
+def list_sibling_targets(segments: list[dict], cited: set[str]) -> list[str]:
+    """Uncited entries of a numbered list in which another entry was cited, in document order. A list entry can
+    name a document with no obligation word ("⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)"), so TRIGGER_RE alone misses it."""
+    lists = {(s["doc_id"], _list_parent(s.get("section", ""))) for s in segments if s["seg_id"] in cited}
+    return [s["seg_id"] for s in segments if s["seg_id"] not in cited and _list_parent(s.get("section", ""))
+            and (s["doc_id"], _list_parent(s.get("section", ""))) in lists]
+
+
 STOP_TEXT = {
     "call_cap": {"en": "the model call limit for one run was reached", "ko": "실행당 모델 호출 상한에 도달했습니다"},
     "budget": {"en": "the cost limit was reached", "ko": "비용 상한에 도달했습니다"},
@@ -559,8 +576,11 @@ class _Run:
         return cited
 
     def coverage_targets(self) -> list[str]:
-        trig = [s["seg_id"] for s in self.bundle["segments"] if TRIGGER_RE.search(s["text"])]
         cited = self._cited()
+        siblings = set(list_sibling_targets(self.bundle["segments"], cited))
+        trig = [s["seg_id"] for s in self.bundle["segments"] if TRIGGER_RE.search(s["text"]) or s["seg_id"] in siblings]
+        self.stats["list_entry_targets"] = len([s for s in siblings
+                                                if not TRIGGER_RE.search(self.segs[s]["text"])])
         explained = {s["seg_id"] for s in self.not_requirements} | {s["seg_id"] for s in self.uncertain} \
             | {s["seg_id"] for s in self.bundle.get("injection_suspects") or []}
         self.stats["trigger_segments"] = len(trig)
@@ -765,7 +785,8 @@ class _Run:
                 "rechecks": {"requested": self.stats["recheck_requested"], "resolved": self.stats["recheck_new"]},
                 "coverage": {"trigger_segments": self.stats["trigger_segments"],
                              "cited": self.stats["cited_triggers"], "explained": self.stats["explained"],
-                             "sent": self.stats["coverage_sent"], "unexplained": self.stats["coverage_unexplained"]},
+                             "sent": self.stats["coverage_sent"], "unexplained": self.stats["coverage_unexplained"],
+                             "list_entries": self.stats.get("list_entry_targets", 0)},
                 "status_hint_downgrades": downgrades,
                 "validity_merges": self.stats.get("validity_merges", []),
                 "list_entry_joins": self.stats.get("list_entry_joins", []),
