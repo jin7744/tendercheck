@@ -101,21 +101,47 @@ def _row_ids_for(file_name: str, manifest: dict) -> list[str]:
 
 # ---------------- F1-F3: format, size, filename ----------------
 
+# A clause that refuses files ("…은 접수하지 않는다", "will not be accepted") makes the extensions named in it
+# refused, unless it names them as the exception ("PDF 이외의 파일", "other than PDF").
+_REFUSE = re.compile(r"접수하지\s*않|제출할\s*수\s*없|제출하지\s*않|허용하지\s*않|인정하지\s*않|받지\s*않|불가|금지"
+                     r"|\bnot\s+(?:be\s+)?(?:accepted|allowed|permitted)\b|\b(?:shall|must|may)\s+not\b"
+                     r"|\brejected\b|\bprohibited\b", re.IGNORECASE)
+_EXCEPT = re.compile(r"이외|외의|외에는|제외한|아닌|\bother\s+than\b|\bexcept\b", re.IGNORECASE)
+
+
+def split_extensions(req: dict) -> tuple[set[str], set[str]]:
+    """(allowed, refused) extensions of a format record. An extension is refused when every clause of the quote
+    that names it refuses files without naming it as the exception; otherwise it is allowed (the old reading)."""
+    exts = {_norm_ext(e) for e in _fmt(req).get("extensions") or [] if _norm_ext(e)}
+    clauses = re.split(r"(?<=[.;。!?])\s+", req.get("quote", ""))
+    refused = set()
+    for e in exts:
+        token = re.compile(r"(?<![A-Za-z])" + re.escape(e) + r"(?![A-Za-z])", re.IGNORECASE)
+        named = [c for c in clauses if token.search(c)]
+        if named and all(_REFUSE.search(c) and not _EXCEPT.search(c) for c in named):
+            refused.add(e)
+    return exts - refused, refused
+
+
 def _f1(req: dict, files: list[dict]) -> list[dict]:
-    allowed = {_norm_ext(e) for e in _fmt(req).get("extensions") or [] if _norm_ext(e)}
+    allowed, refused = split_extensions(req)
+
+    def ok(e):
+        return e in allowed if allowed else e not in refused
+
     out = []
     for r in files:
         ext, decl = r.get("ext", ""), _norm_ext(r.get("declared_format", ""))
         if not ext and not decl:
             out.append(_entry(r, "unknown", "no extension or format stated", "extension"))
-        elif ext and decl and ext != decl and (ext in allowed) != (decl in allowed):
+        elif ext and decl and ext != decl and ok(ext) != ok(decl):
             out.append(_entry(r, "unknown", f"file extension .{ext} vs declared format {r['declared_format']}",
                               "extension"))
         else:
             e = ext or decl
-            ok = e in allowed
-            out.append(_entry(r, "pass" if ok else "fail",
-                              "" if ok else f".{e} not in allowed {sorted(allowed)}"))
+            good = ok(e)
+            why = f".{e} not in allowed {sorted(allowed)}" if allowed else f".{e} is refused {sorted(refused)}"
+            out.append(_entry(r, "pass" if good else "fail", "" if good else why))
     return out
 
 
