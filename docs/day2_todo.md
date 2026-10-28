@@ -12,6 +12,13 @@
 - Validity record with no parent document and no matched file → needs-confirmation, not S10 `missing` (bid validity case).
 - Background sentences extracted as requirements (e.g. the invitation sentence) → steer to `not_requirements` in the E1 prompt with a generic example.
 
+## First on 10/29 (written 2026-10-28 ~21:50)
+0. Coverage gap: a verbless entry of a document list ("⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)") has no trigger word,
+   so when E1 skips it E4 never sees it (cards2 k1 T07 aux B-M1, gold R10 unmatched). Proposal: also send to E4 the
+   uncited entries of a numbered list (①-⑳, (a), 1) …) in which at least one sibling entry is cited. Changes the E4
+   request, so replay will mismatch at E4 for affected runs: verify with a live K=3 of the B manifests (~$1.2) and
+   the cards (~$6.2) before the 23:00 freeze.
+
 ## Carry-over to 10/29 (written 2026-10-28 ~20:40)
 Done on 10/28: K=3 regression (21 runs) -> diagnosis -> 8 engine fixes + 3 prompt bumps; second K=3 12/18;
 B x3 on the final engine 9/9; A x1 on the final engine 3/3; web page rebuilt from the design playbook (owner
@@ -23,9 +30,15 @@ Ledger total about $8.06 of the $10 card-phase cap.
    their own user messages (`--test TXX`, aux runs included).
 2. Owner decisions: GitHub public repository + commit author name and trailer; demo subdomain; deployment
    (static page with recordings + optional live API behind cloudflared with --trust-proxy).
-3. Engine text: two em dashes in the agency question template (A-M3) -> plain punctuation; long F7 detail
-   strings in "Checks" could read as a sentence.
-4. Grader: decide whether a gold row split across records is judged by its worst fragment (5 rows on 10/28),
-   with the flip list, or leave as is and say so in the README.
+3. Engine text: ~~two em dashes in the agency question template (A-M3)~~ Checked 10/28: there is no such
+   template; the dashes are in the model-drafted agency question (C stage, `question_source` = model), around
+   source quotes that must stay verbatim, so code leaves them. The banner "Incomplete analysis — {reason}" is the
+   09 §2-13 wording. Still open: long F7 detail strings in "Checks" could read as a sentence.
+4. ~~Grader: decide whether a gold row split across records is judged by its worst fragment~~ Closed 10/28:
+   the grader stays as the pre-build spec (08 §4.1-5). On the final engine no graded row is split (18/18 runs, all
+   rows equal); the one card case (T02 k2) was an engine inconsistency, fixed in edbdc04.
+6. Web bundle: the recordings in `web/data/` are the live reports as produced (B from engine 8f90c6a). After the
+   freeze, re-record the seven cases on the frozen engine so the page and "Re-run" show the same text (B-M2 R26
+   still says "원문에 적힌 조건에 해당하는 경우" in the recording).
 5. MVP freeze 23:00. Video and submission text 11/2-11/3 (11/1 is the AI_TOP_100 judging window: no Meta work on
    the shared Claude subscription).

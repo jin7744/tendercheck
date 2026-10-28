@@ -64,22 +64,37 @@ independent grader in `eval/` that does not import the engine. All numbers below
 | Before the day's fixes | 6 lists × 3 | 6 / 18 | 312 / 333 |
 | After 5 code fixes and 2 prompt changes | 6 lists × 3 | 12 / 18 | 327 / 333 |
 | Final (adds the list-entry rejoin, req_rules 1.1.0, bid-validity rule) | Korean lists × 3 | 9 / 9 | 162 / 162 |
-| Final | English lists × 1 | 3 / 3 | 57 / 57 |
+| Final | English lists × 3 | 9 / 9 | 171 / 171 |
 
 Every fix was checked first by replaying the recorded model replies through the new code at $0 and listing every
 row that changed in both directions, before spending on a new live run. One live run was discarded and recorded:
 the model copied consortium numbers into every record and code held 20 ungrounded records as "needs check"
 (fail-closed, no false "met"). A typical run is 5–8 model calls and about $0.10–0.20.
 
-Not yet shown: the seven adversarial test cards (T01–T07: forced verdicts, sources that do not mention an item,
-personal data, injection) repeated three times on the final engine.
+The seven adversarial test cards (T01–T07: forced verdicts, sources that do not mention an item, personal data,
+injection, a deadline conflict across time zones) were run live three times on three successive engines:
+
+| Card pass | Engine | Card verdicts | Aux runs inside the cards |
+|---|---|---|---|
+| 1 | before fixes 5–7 | 18 / 21 | 14 / 15 |
+| 2 | fixes 5–6 | 20 / 21 | 14 / 15 |
+| 3 | fixes 5–7 | 21 / 21 | 13 / 15 |
+
+Each pass found something the previous one did not: a time zone the model dropped from a deadline (fix 5), a seal
+rule that lost its form's condition (fix 6), and a merge rule a single bidder would have been told it need not
+follow, the one fail-open case found (fix 7). Fix 8 reads a filename template the model quoted inside a sentence.
+Two aux runs are still not clean: one row reads "needs check" because the model marked it unclear, and one list
+entry with no obligation verb was never extracted (open, see `docs/day2_todo.md`). Replaying all 81 live runs
+through the current code gives 18/18, 63/63 and 43/45; those replays reuse recorded replies, the live numbers are
+the ones in the table.
 
 ## Run it
 
-Python 3.12, standard library only.
+Python 3.12, standard library only. Run live mode under Linux or WSL: the cost ledger's cross-process lock uses
+`fcntl` (on Windows one process is still safe, and that one test is skipped).
 
 ```bash
-cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 592 tests
+cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 605 tests
 python3 -m tools.serve --rerun          # the page at http://127.0.0.1:8765; re-runs at $0
 python3 -m tools.run_scenario --run A-M2 --mode replay --run-id replay_demo --replay-from replays/A-M2
 ```
