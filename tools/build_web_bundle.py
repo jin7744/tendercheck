@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from tools.run_scenario import SCENARIOS, find_run, scenario_inputs
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "web" / "data"
+REPLAYS = ROOT / "replays"  # committed: runs/live_* is git-ignored, and the server's re-run needs the replies
 
 # One recorded live run per sample, all on the final engine and prompts (req_rules 1.1.0, m_match 1.1.0,
 # e1_extract 1.1.0), so "re-run" replays them byte for byte. B-M2-PII: the first v4 run is not used, the model
@@ -102,6 +104,8 @@ def main(argv=None) -> int:
             continue
         data = sample(sid, run_dir)
         (OUT / f"{sid}.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        (REPLAYS / sid).mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(run_dir / "calls.jsonl", REPLAYS / sid / "calls.jsonl")
         sc = data["report"]["status_counts"]
         index.append({"id": sid, "title": data["title"], "blurb": data["blurb"], "package": data["package"],
                       "lang": data["lang"], "status_counts": sc})

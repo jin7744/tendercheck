@@ -406,28 +406,37 @@
 
   $("rerun-btn").addEventListener("click", async () => {
     if (!S.data) return;
+    const caseId = S.data.id;
     S.busy = true;
+    $("case").disabled = true;
     updateRerun();
     $("rerun-err").hidden = true;
     stages([]);
     try {
       const { job_id } = await getJSON("api/jobs", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sample_id: S.data.id }) });
+        body: JSON.stringify({ sample_id: caseId }) });
+      const until = Date.now() + 5 * 60 * 1000;
+      let misses = 0;
       for (;;) {
         await new Promise((r) => setTimeout(r, 1200));
-        const job = await getJSON(`api/jobs/${job_id}`);
+        if (Date.now() > until) throw new Error("No answer after 5 minutes.");
+        let job;
+        try { job = await getJSON(`api/jobs/${job_id}`); misses = 0; }
+        catch (err) { if (++misses >= 3) throw err; continue; }
         stages(job.stage_events || []);
+        if (S.data.id !== caseId) break;  // the case changed meanwhile: do not paint another case's report
         if (job.state === "done") {
           render(job.report, { mode: job.report.x_meta.mode === "live" ? "live" : "replay", models: (job.report.x_meta.model || {}).resolved || [] });
           break;
         }
-        if (job.state === "failed") throw new Error(job.error || "The run stopped.");
+        if (job.state === "failed") throw new Error(`${job.error || "The run stopped"}.`);
       }
     } catch (err) {
       $("rerun-err").hidden = false;
       $("rerun-err").textContent = `${err.message} The recorded result stays on screen.`;
     } finally {
       S.busy = false;
+      $("case").disabled = false;
       S.live = await probe();
       updateRerun();
     }
