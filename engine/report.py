@@ -273,10 +273,13 @@ def _files_text(files: list[str], lang: str, limit: int = 5) -> str:
     return shown if len(files) <= limit else t["MORE"].format(shown=shown, n=len(files) - limit)
 
 
-def _conds_text(req: dict, lang: str) -> str:
+def _conds_text(req: dict, lang: str, ctx: "_Ctx | None" = None) -> str:
+    """A row without conditions of its own that inherits its `attribute_of` document's state names that
+    document's conditions."""
     table = CONDITIONS[lang]
     parts = []
-    for c in req.get("conditions") or []:
+    own = req.get("conditions") or []
+    for c in own or (ctx.conds.get(req.get("attribute_of") or "", []) if ctx else []):
         key = c.get("fact_key", "other")
         side = "no" if c.get("applies_when") == "no" else "yes"
         parts.append(table[side].get(key, table[side]["other"]))
@@ -355,9 +358,10 @@ def _failing_files(file_check: dict | None, ids: list[str]) -> list[str]:
 # ---------------------------------------------------------------- reason / action per row
 
 class _Ctx:
-    def __init__(self, lang, conflicts, ids, rows_by_id, profile, as_of, log):
+    def __init__(self, lang, conflicts, ids, rows_by_id, profile, as_of, log, conds=None):
         self.lang, self.conflicts, self.ids = lang, {c["id"]: c for c in conflicts}, ids
         self.rows_by_id, self.profile, self.as_of, self.log = rows_by_id, profile or {}, as_of, log
+        self.conds = conds or {}
 
 
 def _upload_sentence(conflict: dict, upload: str, lang: str) -> str:
@@ -465,7 +469,7 @@ def _texts(ctx: _Ctx, item: dict, dec: dict, files: list[str]):
         return [r + (f" ({detail})" if detail else "") + suffix, r], [a]
     if first in ("CONDITION_UNKNOWN", "NOT_TRIGGERED"):
         r, a = t[first]
-        return [r.format(conds=_conds_text(req, lang)), r.format(conds=CONDITIONS[lang]["yes"]["other"])], [a]
+        return [r.format(conds=_conds_text(req, lang, ctx)), r.format(conds=CONDITIONS[lang]["yes"]["other"])], [a]
     if first in ("UPLOAD_BEFORE_DEADLINE", "UPLOAD_AFTER_DEADLINE"):
         r, a = t[first]
         kw = {"up": _fmt_dt(timing.get("upload", "")), "up_conv": _fmt_dt(timing.get("upload_in_deadline_tz", "")),
@@ -524,7 +528,7 @@ def _texts(ctx: _Ctx, item: dict, dec: dict, files: list[str]):
         r, a = t[first]
         return [r + suffix, r], [a]
     if first == "ALL_CHECKS_PASSED":
-        lead = t["TRIGGERED"].format(conds=_conds_text(req, lang)) if dec.get("condition_state") == "triggered" else ""
+        lead = t["TRIGGERED"].format(conds=_conds_text(req, lang, ctx)) if dec.get("condition_state") == "triggered" else ""
         if files_txt:
             r, a = t["ALL_CHECKS_PASSED"]
             return [lead + r.format(files=files_txt) + suffix, r.format(files=files_txt)], [a]
@@ -625,7 +629,8 @@ def build_report(run_id: str, decisions_in_doc_order: list[dict], conflicts: lis
     ids = {}
     for n, it in enumerate(items, 1):
         ids[it["vreq"]["req"].get("tmp_id") or it["vreq"]["check"].get("tmp_id", f"_{n}")] = f"R{n:0{width}d}"
-    ctx = _Ctx(lang, conflicts, ids, mrows, profile, as_of, log)
+    conds = {it["vreq"]["req"].get("tmp_id", ""): it["vreq"]["req"].get("conditions") or [] for it in items}
+    ctx = _Ctx(lang, conflicts, ids, mrows, profile, as_of, log, conds)
 
     counts = _pii_counts(manifest, bundle, flags)
     types = type_labels(counts, lang) if counts else ""

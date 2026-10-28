@@ -155,6 +155,24 @@ class ConditionalRows(unittest.TestCase):
         self.assertEqual((sc(d), d["depends_on"], d["bidder_question_keys"]),
                          (("conditional", "unknown"), "R7", ["fact:consortium"]))
 
+    def test_attribute_of_triggered_parent_is_triggered(self):
+        # 08 §3.5 R07 B-M1 "met (triggered)": the seal rule of the usage-seal form (서식 제3호) applies because the
+        # form applies. Card T02 K=2 (2026-10-28): the model gave that attribute record no condition of its own.
+        parent = {"status": "met", "condition_state": "triggered", "reason_codes": ["ALL_CHECKS_PASSED"],
+                  "bidder_question_keys": []}
+        d = decide(vr(attribute_of="R8", category="signature_seal"), parent=parent, profile=facts(usage_seal="yes"),
+                   file_check=fc(("F9", "pass")), match=rows("M3"))
+        self.assertEqual((d["rule"], sc(d), d["depends_on"]), ("S15", ("met", "triggered"), None))
+        err = decide(vr(attribute_of="R8", category="signature_seal"), parent=parent, profile=facts(usage_seal="yes"),
+                     file_check=fc(("F9", "fail")), match=rows("M3"))
+        self.assertEqual(sc(err), ("error", "triggered"))
+
+    def test_attribute_of_unconditional_parent_stays_unconditional(self):
+        parent = {"status": "met", "condition_state": None, "reason_codes": ["ALL_CHECKS_PASSED"], "bidder_question_keys": []}
+        d = decide(vr(attribute_of="R3", category="signature_seal"), parent=parent, file_check=fc(("F9", "pass")),
+                   match=rows("M1"))
+        self.assertEqual(sc(d), ("met", None))
+
 
 class MandatoryFlags(unittest.TestCase):
     def test_s7_unclear(self):

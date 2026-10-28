@@ -81,6 +81,9 @@ def _condition(req: dict, profile: dict | None, mand: str, parent: dict | None):
     if parent and parent.get("status") == "conditional" and parent.get("condition_state") in ("unknown", "not_triggered"):
         keys = [k.split(":", 1)[1] for k in parent.get("bidder_question_keys", []) if k.startswith("fact:")]
         return parent["condition_state"], keys, True
+    if parent and parent.get("condition_state") == "triggered":
+        # A rule on a conditional document applies because the document does; it is judged by the lower rules.
+        return "triggered", [], True
     return None, [], False
 
 

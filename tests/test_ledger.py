@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from engine import ledger  # noqa: E402
 from engine.ledger import (BudgetExceeded, Caps, Ledger, LedgerCorrupt, Pricing, Reservation,  # noqa: E402
                            atomic_append_line, cost_e8, cost_usd, e8_to_usd)
 
@@ -216,6 +217,8 @@ class Concurrency(unittest.TestCase):
             self.assertEqual(len(successes), 9)  # 16 x 5 attempts against a cap of 9
             self.assertEqual(led.totals("shared").run_calls, 9)
 
+    @unittest.skipIf(ledger.fcntl is None, "the cross-process lock is POSIX-only (docs/model_layer_notes.md); "
+                                           "run live mode under Linux or WSL")
     def test_processes_cannot_slip_past_the_call_cap(self):
         child = (
             "import sys\n"

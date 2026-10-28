@@ -320,6 +320,37 @@ class PackageBReport(unittest.TestCase):
         self.assertIn(KO_DISCLAIMER, txt)
 
 
+class InheritedConditionText(unittest.TestCase):
+    """A rule on a conditional form names the form's condition, not "the condition stated in the source"
+    (08 §3.5 R07: 서식 제3호 is needed only when a usage seal is used; its seal rule sits in the forms annex)."""
+    USAGE = [{"condition_quote": "사용인감을 날인하는 경우에 한하여", "fact_key": "usage_seal", "applies_when": "yes"}]
+
+    def build(self, form_dec, seal_dec):
+        B = bundle_b()
+        form = req("사용인감계[서식 제3호]: 사용인감을 날인하는 경우에 한하여 제출한다.", "B_NOTICE", "B_NOTICE-L21",
+                   tmp_id="R1", subject="usage seal form", mandatory="conditional", conditions=self.USAGE)
+        seal = req("[서식 제3호] 사용인감계 - 사용인감과 법인인감을 함께 날인", "B_FORMS", "B_FORMS-L5", tmp_id="R2",
+                   subject="usage seal form", category="signature_seal", attribute_of="R1")
+        items = [{"vreq": {"req": r, "check": check_requirement(r, B)}, "decision": d}
+                 for r, d in ((form, form_dec), (seal, seal_dec))]
+        manifest = {"profile": {"planned_upload": "", "facts": {"usage_seal": "yes"}},
+                    "rows": [{"row_id": "M1", "doc_label": "사용인감계", "pii": False, "file_name": "물안개시스템_사용인감계.pdf"}],
+                    "pii_counts": {}}
+        return R.build_report("B-M1", items, [], lang="ko", manifest=manifest, bundle=B)["requirements"]
+
+    def test_triggered_attribute_names_the_form_condition(self):
+        rows = self.build(dec("met", ["ALL_CHECKS_PASSED"], "S15", cond="triggered", rows=["M1"]),
+                          dec("met", ["ALL_CHECKS_PASSED"], "S15", cond="triggered", rows=["M1"]))
+        self.assertEqual([(r["id"], r["status"], r["condition_state"]) for r in rows],
+                         [("R01", "met", "triggered"), ("R02", "met", "triggered")])
+        self.assertTrue(rows[1]["reason"].startswith("사용인감을 날인하는 경우에 해당합니다. "), rows[1]["reason"])
+
+    def test_not_triggered_attribute_names_the_form_condition(self):
+        rows = self.build(dec("conditional", ["NOT_TRIGGERED"], "S6", cond="not_triggered"),
+                          dec("conditional", ["NOT_TRIGGERED"], "S6", cond="not_triggered", depends_on="R1"))
+        self.assertEqual(rows[1]["reason"], "사용인감을 날인하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.")
+
+
 class FileCheckTextInReason(unittest.TestCase):
     """Integration fixes (docs/integration_notes.md): FileCheck details are written in English by
     engine.filechecks, so a Korean reason leaves them out; a general file rule has no matched rows, so the
