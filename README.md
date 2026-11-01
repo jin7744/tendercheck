@@ -4,6 +4,9 @@ A verification agent that checks a public-tender bid package against the tender'
 submission. The model finds the requirements and matches the bidder's files; **code verifies every quote against
 the source and decides every status.** It never says a bid is eligible or compliant; a person makes that call.
 
+**Demo:** https://jin7744.github.io/tendercheck/ (the seven recorded live runs, replayed in the page; no model is
+called from it)
+
 > Built for the Meta Global AI Developer Hackathon 2026 (Indie Developer track, "Build for Your World").
 > **All code in this repository was written during the hackathon building period, starting Oct 27, 2026.**
 > The commit history is the record of what was built and when.
