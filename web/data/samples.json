@@ -7,10 +7,10 @@
    "package": "A",
    "lang": "en",
    "status_counts": {
-    "met": 15,
+    "met": 17,
     "missing": 0,
     "error": 0,
-    "conditional": 3,
+    "conditional": 4,
     "needs-confirmation": 2
    }
   },
@@ -25,7 +25,7 @@
     "missing": 3,
     "error": 9,
     "conditional": 0,
-    "needs-confirmation": 2
+    "needs-confirmation": 3
    }
   },
   {
@@ -63,11 +63,11 @@
    "package": "B",
    "lang": "ko",
    "status_counts": {
-    "met": 4,
-    "missing": 6,
+    "met": 3,
+    "missing": 3,
     "error": 8,
-    "conditional": 8,
-    "needs-confirmation": 3
+    "conditional": 5,
+    "needs-confirmation": 4
    }
   },
   {
@@ -77,11 +77,11 @@
    "package": "B",
    "lang": "ko",
    "status_counts": {
-    "met": 13,
+    "met": 11,
     "missing": 0,
     "error": 0,
-    "conditional": 7,
-    "needs-confirmation": 8
+    "conditional": 8,
+    "needs-confirmation": 6
    }
   },
   {
@@ -93,7 +93,7 @@
    "status_counts": {
     "met": 3,
     "missing": 3,
-    "error": 8,
+    "error": 7,
     "conditional": 5,
     "needs-confirmation": 3
    }

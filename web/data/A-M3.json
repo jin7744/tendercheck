@@ -5,101 +5,68 @@
  "package": "A",
  "lang": "en",
  "run": {
-  "run_dir": "live_20261028_v4_web/A-M3",
+  "run_dir": "live_20261101_freeze/A-M3",
   "mode": "replay",
   "models": [
    "muse-spark-1.3"
   ],
-  "calls": 8,
-  "cost_usd": 0.14787,
+  "calls": 5,
+  "cost_usd": 0.121678,
   "call_log": [
    {
     "stage": "U",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 1149,
+    "latency_ms": 651,
     "tokens_in": 327,
-    "tokens_out": 72,
-    "tokens_reasoning": 57,
-    "cost_usd": 0.0007572
+    "tokens_out": 61,
+    "tokens_reasoning": 46,
+    "cost_usd": 0.00071045
    },
    {
     "stage": "E1",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 66596,
+    "latency_ms": 67645,
     "tokens_in": 2415,
-    "tokens_out": 19696,
-    "tokens_reasoning": 12899,
-    "cost_usd": 0.08672675
-   },
-   {
-    "stage": "E3",
-    "attempt": 0,
-    "outcome": "response",
-    "model": "muse-spark-1.3",
-    "latency_ms": 12125,
-    "tokens_in": 3157,
-    "tokens_out": 2666,
-    "tokens_reasoning": 2292,
-    "cost_usd": 0.01527675
-   },
-   {
-    "stage": "E2",
-    "attempt": 0,
-    "outcome": "response",
-    "model": "muse-spark-1.3",
-    "latency_ms": 3048,
-    "tokens_in": 1573,
-    "tokens_out": 630,
-    "tokens_reasoning": 536,
-    "cost_usd": 0.00464375
-   },
-   {
-    "stage": "E2",
-    "attempt": 1,
-    "outcome": "response",
-    "model": "muse-spark-1.3",
-    "latency_ms": 4509,
-    "tokens_in": 1583,
-    "tokens_out": 1024,
-    "tokens_reasoning": 903,
-    "cost_usd": 0.00633075
+    "tokens_out": 20006,
+    "tokens_reasoning": 13085,
+    "cost_usd": 0.0883969
    },
    {
     "stage": "E4",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 2477,
-    "tokens_in": 3182,
-    "tokens_out": 362,
-    "tokens_reasoning": 323,
-    "cost_usd": 0.005516
+    "latency_ms": 4395,
+    "tokens_in": 3151,
+    "tokens_out": 1108,
+    "tokens_reasoning": 1050,
+    "cost_usd": 0.00864775
    },
    {
     "stage": "M",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 18159,
-    "tokens_in": 2643,
-    "tokens_out": 4242,
-    "tokens_reasoning": 2885,
-    "cost_usd": 0.02133225
+    "latency_ms": 12236,
+    "tokens_in": 2569,
+    "tokens_out": 2968,
+    "tokens_reasoning": 1712,
+    "cost_usd": 0.01582525
    },
    {
     "stage": "C",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 4481,
-    "tokens_in": 2841,
-    "tokens_out": 879,
-    "tokens_reasoning": 702,
-    "cost_usd": 0.007287
+    "latency_ms": 6022,
+    "tokens_in": 2789,
+    "tokens_out": 1085,
+    "tokens_reasoning": 897,
+    "cost_usd": 0.0080975
    }
   ]
  },
@@ -365,6 +332,19 @@
   "requirements": [
    {
     "id": "R01",
+    "kind": "deadline",
+    "quote": "invites electronic bids",
+    "location": "Body §1",
+    "status": "needs-confirmation",
+    "condition_state": null,
+    "evidence_files": [],
+    "depends_on": null,
+    "depends_on_conflict": null,
+    "reason": "This is a submission step that the file list cannot show.",
+    "bidder_action": "Follow this step when you submit."
+   },
+   {
+    "id": "R02",
     "kind": "conditional",
     "quote": "Bids may be submitted by a single firm or by a joint venture (JV) of not more than three (3) firms.",
     "location": "Body §2",
@@ -377,7 +357,7 @@
     "bidder_action": "Answer the bidder question; if the condition applies, this item becomes required."
    },
    {
-    "id": "R02",
+    "id": "R03",
     "kind": "document",
     "quote": "Form of Bid (Form BF-1), signed by the authorized signatory and bearing the Bidder's company seal",
     "location": "Body §3(a)",
@@ -392,7 +372,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R03",
+    "id": "R04",
     "kind": "document",
     "quote": "Power of Attorney authorizing the signatory of the Bid",
     "location": "Body §3(b)",
@@ -407,7 +387,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R04",
+    "id": "R05",
     "kind": "document",
     "quote": "Certificate of Incorporation (a copy is acceptable)",
     "location": "Body §3(c)",
@@ -422,7 +402,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R05",
+    "id": "R06",
     "kind": "document",
     "quote": "Tax Clearance Certificate issued by the competent tax authority",
     "location": "Body §3(d)",
@@ -437,7 +417,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R06",
+    "id": "R07",
     "kind": "document",
     "quote": "Audited financial statements for the years 2023, 2024 and 2025",
     "location": "Body §3(e)",
@@ -452,7 +432,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R07",
+    "id": "R08",
     "kind": "document",
     "quote": "Technical Proposal",
     "location": "Body §3(f)",
@@ -467,7 +447,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R08",
+    "id": "R09",
     "kind": "document",
     "quote": "Price Schedule (Form BF-3), signed by the authorized signatory",
     "location": "Body §3(g)",
@@ -482,9 +462,9 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R09",
+    "id": "R10",
     "kind": "document",
-    "quote": "Bid Security (Form BF-2) in the amount of USD 12,000",
+    "quote": "Bid Security (Form BF-2) in the amount of USD 12,000.",
     "location": "Body §3(h)",
     "status": "met",
     "condition_state": null,
@@ -497,7 +477,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R10",
+    "id": "R11",
     "kind": "conditional",
     "quote": "a JV Agreement or a Letter of Intent to form a JV, in either case signed by all members",
     "location": "Body §4(i)",
@@ -510,9 +490,9 @@
     "bidder_action": "Answer the bidder question; if the condition applies, this item becomes required."
    },
    {
-    "id": "R11",
+    "id": "R12",
     "kind": "conditional",
-    "quote": "a JV Member Information Form (Form BF-4) for each member, with that member's Certificate of Incorporation attached",
+    "quote": "a JV Member Information Form (Form BF-4) for each member, with that member's Certificate of Incorporation attached.",
     "location": "Body §4(ii)",
     "status": "conditional",
     "condition_state": "unknown",
@@ -523,7 +503,7 @@
     "bidder_action": "Answer the bidder question; if the condition applies, this item becomes required."
    },
    {
-    "id": "R12",
+    "id": "R13",
     "kind": "deadline",
     "quote": "The deadline for submission of Bids is 30 November 2026, 14:00 hours Corvessa time (UTC+03:00)",
     "location": "Body §5",
@@ -532,13 +512,13 @@
     "evidence_files": [],
     "depends_on": null,
     "depends_on_conflict": "C1",
-    "reason": "Body §5 states 30 November 2026, 14:00 hours Corvessa time (UTC+03:00); Annex 1 ITB 23.1 states Date: 2 December 2026; Time: 14:00 hours. The documents differ (C1). Planned upload 2026-11-30 20:30 UTC+09:00 = 2026-11-30 14:30 UTC+03:00: after the Body §5 deadline (2026-11-30 14:00 UTC+03:00); before the Annex 1 ITB 23.1 deadline (2026-12-02 14:00 UTC+03:00).",
+    "reason": "Body §5 states 30 November 2026, 14:00 hours; Annex 1 ITB 23.1 states 2 December 2026; Time: 14:00 hours. The documents differ (C1). Planned upload 2026-11-30 20:30 UTC+09:00 = 2026-11-30 14:30 UTC+03:00: after the Body §5 deadline (2026-11-30 14:00 UTC+03:00); before the Annex 1 ITB 23.1 deadline (2026-12-02 14:00 UTC+03:00).",
     "bidder_action": "Wait for the agency's answer to C1. To be on time under every reading, upload before 2026-11-30 20:00 UTC+09:00."
    },
    {
-    "id": "R13",
+    "id": "R14",
     "kind": "attribute",
-    "quote": "A Tax Clearance Certificate is valid for 90 days from its date of issue (for example, a certificate issued on 1 March is valid through 30 May). The certificate must be valid on the deadline for submission of Bids",
+    "quote": "A Tax Clearance Certificate is valid for 90 days from its date of issue (for example, a certificate issued on 1 March is valid through 30 May). The certificate must be valid on the deadline for submission of Bids.",
     "location": "Body §6",
     "status": "needs-confirmation",
     "condition_state": null,
@@ -551,7 +531,7 @@
     "bidder_action": "Wait for the agency's answer to C1, or prepare a document that works under every reading."
    },
    {
-    "id": "R14",
+    "id": "R15",
     "kind": "file_rule",
     "quote": "All files shall be in PDF format",
     "location": "Body §7",
@@ -564,7 +544,7 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R15",
+    "id": "R16",
     "kind": "file_rule",
     "quote": "No single file may exceed 10 MB",
     "location": "Body §7",
@@ -577,9 +557,9 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R16",
+    "id": "R17",
     "kind": "validity",
-    "quote": "Bids shall remain valid until 31 March 2027",
+    "quote": "Bids shall remain valid until 31 March 2027.",
     "location": "Annex 1 ITB 19.1",
     "status": "needs-confirmation",
     "condition_state": null,
@@ -590,9 +570,9 @@
     "bidder_action": "Confirm it yourself before upload."
    },
    {
-    "id": "R17",
+    "id": "R18",
     "kind": "attribute",
-    "quote": "The Bid Security shall remain valid until 28 April 2027",
+    "quote": "The Bid Security shall remain valid until 28 April 2027.",
     "location": "Annex 1 ITB 20.2",
     "status": "error",
     "condition_state": null,
@@ -605,9 +585,9 @@
     "bidder_action": "Obtain a document that is valid for the required period."
    },
    {
-    "id": "R18",
+    "id": "R19",
     "kind": "attribute",
-    "quote": "The Power of Attorney shall be notarized",
+    "quote": "The Power of Attorney shall be notarized.",
     "location": "Annex 1 ITB 21.2",
     "status": "met",
     "condition_state": null,
@@ -620,9 +600,9 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R19",
+    "id": "R20",
     "kind": "file_rule",
-    "quote": "Each file shall be named [BidderShortName]_[DocumentCode].pdf, using the document codes in the Submission Checklist below (example: ABC_BF1.pdf)",
+    "quote": "Each file shall be named [BidderShortName]_[DocumentCode].pdf, using the document codes in the Submission Checklist below (example: ABC_BF1.pdf).",
     "location": "Annex 1 ITB 22.1",
     "status": "met",
     "condition_state": null,
@@ -633,9 +613,9 @@
     "bidder_action": "No action needed."
    },
    {
-    "id": "R20",
-    "kind": "file_rule",
-    "quote": "The audited financial statements for 2023, 2024 and 2025 shall be merged into a single PDF file (document code FIN)",
+    "id": "R21",
+    "kind": "attribute",
+    "quote": "The audited financial statements for 2023, 2024 and 2025 shall be merged into a single PDF file (document code FIN).",
     "location": "Annex 1 ITB 22.3",
     "status": "met",
     "condition_state": null,
@@ -646,19 +626,6 @@
     "depends_on_conflict": null,
     "reason": "Matched to OSL_FIN.pdf; the checks for this rule found no problem.",
     "bidder_action": "No action needed."
-   },
-   {
-    "id": "R21",
-    "kind": "validity",
-    "quote": "We offer to provide the services under RFB No. CMWA/ITM/2026/014 for the prices in our Price Schedule. Our Bid is valid until the date stated in BDS ITB 19.1.",
-    "location": "Annex 2 Form BF-1",
-    "status": "needs-confirmation",
-    "condition_state": null,
-    "evidence_files": [],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "The date in the quoted text could not be read by the checker.",
-    "bidder_action": "Check the dates and values in the source before upload."
    }
   ],
   "conflicts": [
@@ -671,11 +638,11 @@
       "location": "Body §5"
      },
      {
-      "quote": "The deadline for submission of Bids is: Date: 2 December 2026; Time: 14:00 hours",
+      "quote": "The deadline for submission of Bids is: Date: 2 December 2026; Time: 14:00 hours.",
       "location": "Annex 1 ITB 23.1"
      }
     ],
-    "agency_question": "Body §5 states '30 November 2026, 14:00 hours Corvessa time (UTC+03:00)' and Annex 1 ITB 23.1 states 'Date: 2 December 2026; Time: 14:00 hours' — does the Body §5 deadline apply? (Yes/No)"
+    "agency_question": "Body §5 states \"The deadline for submission of Bids is 30 November 2026, 14:00 hours Corvessa time (UTC+03:00)\" and Annex 1 ITB 23.1 states \"The deadline for submission of Bids is: Date: 2 December 2026; Time: 14:00 hours.\" Does Body §5 apply? (Yes/No)"
    }
   ],
   "bidder_questions": [
@@ -717,10 +684,10 @@
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 327,
       "tokens_cached": 283,
-      "tokens_out": 72,
-      "tokens_reasoning": 57,
-      "cost_usd": 0.0007572,
-      "latency_ms": 1149,
+      "tokens_out": 61,
+      "tokens_reasoning": 46,
+      "cost_usd": 0.00071045,
+      "latency_ms": 651,
       "error": null
      },
      {
@@ -728,116 +695,87 @@
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 2415,
-      "tokens_cached": 0,
-      "tokens_out": 19696,
-      "tokens_reasoning": 12899,
-      "cost_usd": 0.08672675,
-      "latency_ms": 66596,
-      "error": null
-     },
-     {
-      "stage": "E3",
-      "attempt": 0,
-      "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3157,
-      "tokens_cached": 0,
-      "tokens_out": 2666,
-      "tokens_reasoning": 2292,
-      "cost_usd": 0.01527675,
-      "latency_ms": 12125,
-      "error": null
-     },
-     {
-      "stage": "E2",
-      "attempt": 0,
-      "model_resolved": "muse-spark-1.3",
-      "tokens_in": 1573,
-      "tokens_cached": 0,
-      "tokens_out": 630,
-      "tokens_reasoning": 536,
-      "cost_usd": 0.00464375,
-      "latency_ms": 3048,
-      "error": null
-     },
-     {
-      "stage": "E2",
-      "attempt": 1,
-      "model_resolved": "muse-spark-1.3",
-      "tokens_in": 1583,
-      "tokens_cached": 0,
-      "tokens_out": 1024,
-      "tokens_reasoning": 903,
-      "cost_usd": 0.00633075,
-      "latency_ms": 4509,
+      "tokens_cached": 2351,
+      "tokens_out": 20006,
+      "tokens_reasoning": 13085,
+      "cost_usd": 0.0883969,
+      "latency_ms": 67645,
       "error": null
      },
      {
       "stage": "E4",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3182,
+      "tokens_in": 3151,
       "tokens_cached": 0,
-      "tokens_out": 362,
-      "tokens_reasoning": 323,
-      "cost_usd": 0.005516,
-      "latency_ms": 2477,
+      "tokens_out": 1108,
+      "tokens_reasoning": 1050,
+      "cost_usd": 0.00864775,
+      "latency_ms": 4395,
       "error": null
      },
      {
       "stage": "M",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 2643,
+      "tokens_in": 2569,
       "tokens_cached": 0,
-      "tokens_out": 4242,
-      "tokens_reasoning": 2885,
-      "cost_usd": 0.02133225,
-      "latency_ms": 18159,
+      "tokens_out": 2968,
+      "tokens_reasoning": 1712,
+      "cost_usd": 0.01582525,
+      "latency_ms": 12236,
       "error": null
      },
      {
       "stage": "C",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 2841,
+      "tokens_in": 2789,
       "tokens_cached": 0,
-      "tokens_out": 879,
-      "tokens_reasoning": 702,
-      "cost_usd": 0.007287,
-      "latency_ms": 4481,
+      "tokens_out": 1085,
+      "tokens_reasoning": 897,
+      "cost_usd": 0.0080975,
+      "latency_ms": 6022,
       "error": null
      }
     ],
     "quote_checks": {
      "total": 23,
      "passed": 22,
-     "requoted": 2,
+     "requoted": 0,
      "retracted": 0,
      "unverified": 0,
-     "ungrounded": 1,
-     "fix_rounds": 2
+     "ungrounded": 0,
+     "fix_rounds": 0
     },
     "rechecks": {
-     "requested": 1,
-     "resolved": 1
+     "requested": 0,
+     "resolved": 0
     },
     "coverage": {
      "trigger_segments": 22,
-     "cited": 17,
+     "cited": 16,
      "explained": 4,
-     "sent": 1,
-     "unexplained": 0
+     "sent": 2,
+     "unexplained": 0,
+     "list_entries": 0
     },
     "status_hint_downgrades": 0,
     "validity_merges": [
      {
-      "kept": "R13",
-      "absorbed": "R14",
+      "kept": "R14",
+      "absorbed": "R15",
       "seg_id": "A_BODY-L27"
      }
     ],
     "list_entry_joins": [],
-    "member_rule_conditions": [],
+    "member_rule_conditions": [
+     {
+      "tmp_id": "R2",
+      "condition_quote": "joint venture"
+     }
+    ],
+    "file_rule_scope_conditions": [],
     "stages": [
      {
       "stage": "U",
@@ -853,33 +791,6 @@
       "attempt": 0,
       "called": true,
       "prompt_version": "e1_extract/1.1.0+req_rules/1.1.0",
-      "error": null,
-      "dropped": [],
-      "notes": []
-     },
-     {
-      "stage": "E3",
-      "attempt": 0,
-      "called": true,
-      "prompt_version": "e3_recheck/1.0.0+req_rules/1.1.0",
-      "error": null,
-      "dropped": [],
-      "notes": []
-     },
-     {
-      "stage": "E2",
-      "attempt": 0,
-      "called": true,
-      "prompt_version": "e2_fix/1.0.0",
-      "error": null,
-      "dropped": [],
-      "notes": []
-     },
-     {
-      "stage": "E2",
-      "attempt": 1,
-      "called": true,
-      "prompt_version": "e2_fix/1.0.0",
       "error": null,
       "dropped": [],
       "notes": []
@@ -913,13 +824,13 @@
      }
     ]
    },
-   "cost_total_usd": 0.14787045,
+   "cost_total_usd": 0.12167785,
    "info_gaps": [],
    "asked_items": [],
    "removed_records": [
     {
-     "tmp_id": "R14",
-     "why": "joined into R13 (split validity)"
+     "tmp_id": "R15",
+     "why": "joined into R14 (split validity)"
     }
    ],
    "adjudication_log": [
@@ -940,9 +851,145 @@
    "rows": [
     {
      "id": "R01",
-     "tmp_id": "R9",
+     "tmp_id": "R1",
+     "subject": "bid submission",
+     "requirement": "Submit bids electronically.",
+     "category": "submission_method",
+     "seg_id": "A_BODY-L7",
+     "page": 0,
+     "verify_method": "exact",
+     "rule": "S9",
+     "reason_codes": [
+      "ACTION_PENDING"
+     ],
+     "info_codes": [],
+     "checks": [
+      {
+       "id": "Q1",
+       "result": "pass",
+       "detail": "exact"
+      },
+      {
+       "id": "Q2",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q3",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q4",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q5",
+       "result": "pass",
+       "detail": "not applicable"
+      },
+      {
+       "id": "Q6",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q7",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q8",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "F1",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F2",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F3",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F4",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F5",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F6",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F7",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F8",
+       "result": "not_applicable",
+       "detail": "no issue date or no as_of"
+      },
+      {
+       "id": "F9",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F10",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F11",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F12",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F13",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F14",
+       "result": "not_applicable",
+       "detail": ""
+      }
+     ],
+     "evidence_row_ids": [],
+     "condition_state": null,
+     "deadline_sort": "9999",
+     "provenance": {
+      "extracted_by": "model",
+      "verified_by": "code",
+      "matched_by": "model",
+      "status_by": "code"
+     }
+    },
+    {
+     "id": "R02",
+     "tmp_id": "R2",
      "subject": "joint venture",
-     "requirement": "A joint venture must include not more than three firms.",
+     "requirement": "Limit joint ventures to a maximum of three firms.",
      "category": "other",
      "seg_id": "A_BODY-L9",
      "page": 0,
@@ -1005,10 +1052,10 @@
      }
     },
     {
-     "id": "R02",
-     "tmp_id": "R1",
+     "id": "R03",
+     "tmp_id": "R3",
      "subject": "form of bid",
-     "requirement": "Submit the Form of Bid signed by the authorized signatory with company seal.",
+     "requirement": "Submit the Form of Bid signed and sealed.",
      "category": "document",
      "seg_id": "A_BODY-L12",
      "page": 0,
@@ -1143,10 +1190,10 @@
      }
     },
     {
-     "id": "R03",
-     "tmp_id": "R2",
+     "id": "R04",
+     "tmp_id": "R4",
      "subject": "power of attorney",
-     "requirement": "Submit the Power of Attorney authorizing the bid signatory.",
+     "requirement": "Submit a Power of Attorney authorizing the bid signatory.",
      "category": "document",
      "seg_id": "A_BODY-L13",
      "page": 0,
@@ -1281,8 +1328,8 @@
      }
     },
     {
-     "id": "R04",
-     "tmp_id": "R3",
+     "id": "R05",
+     "tmp_id": "R5",
      "subject": "certificate of incorporation",
      "requirement": "Submit the Certificate of Incorporation, a copy is acceptable.",
      "category": "document",
@@ -1419,10 +1466,10 @@
      }
     },
     {
-     "id": "R05",
-     "tmp_id": "R4",
+     "id": "R06",
+     "tmp_id": "R6",
      "subject": "tax clearance certificate",
-     "requirement": "Submit the Tax Clearance Certificate from the competent tax authority.",
+     "requirement": "Submit the Tax Clearance Certificate from the competent authority.",
      "category": "document",
      "seg_id": "A_BODY-L15",
      "page": 0,
@@ -1557,10 +1604,10 @@
      }
     },
     {
-     "id": "R06",
-     "tmp_id": "R5",
+     "id": "R07",
+     "tmp_id": "R7",
      "subject": "audited financial statements",
-     "requirement": "Submit the audited financial statements for 2023, 2024 and 2025.",
+     "requirement": "Submit audited financial statements for 2023, 2024 and 2025.",
      "category": "document",
      "seg_id": "A_BODY-L16",
      "page": 0,
@@ -1695,8 +1742,8 @@
      }
     },
     {
-     "id": "R07",
-     "tmp_id": "R6",
+     "id": "R08",
+     "tmp_id": "R8",
      "subject": "technical proposal",
      "requirement": "Submit the Technical Proposal.",
      "category": "document",
@@ -1833,8 +1880,8 @@
      }
     },
     {
-     "id": "R08",
-     "tmp_id": "R7",
+     "id": "R09",
+     "tmp_id": "R9",
      "subject": "price schedule",
      "requirement": "Submit the Price Schedule signed by the authorized signatory.",
      "category": "document",
@@ -1971,10 +2018,10 @@
      }
     },
     {
-     "id": "R09",
-     "tmp_id": "R8",
+     "id": "R10",
+     "tmp_id": "R10",
      "subject": "bid security",
-     "requirement": "Submit the Bid Security in the amount of USD 12,000.",
+     "requirement": "Submit Bid Security in the amount of USD 12,000.",
      "category": "document",
      "seg_id": "A_BODY-L19",
      "page": 0,
@@ -2109,10 +2156,10 @@
      }
     },
     {
-     "id": "R10",
-     "tmp_id": "R10",
+     "id": "R11",
+     "tmp_id": "R11",
      "subject": "jv agreement or letter of intent",
-     "requirement": "Submit the JV Agreement or Letter of Intent signed by all members for a JV bid.",
+     "requirement": "Submit a JV Agreement or Letter of Intent signed by all members.",
      "category": "document",
      "seg_id": "A_BODY-L22",
      "page": 0,
@@ -2175,10 +2222,10 @@
      }
     },
     {
-     "id": "R11",
-     "tmp_id": "R11",
+     "id": "R12",
+     "tmp_id": "R12",
      "subject": "jv member information form",
-     "requirement": "Submit a JV Member Information Form with incorporation certificate for each JV member.",
+     "requirement": "Submit a JV Member Information Form for each member with its certificate attached.",
      "category": "document",
      "seg_id": "A_BODY-L23",
      "page": 0,
@@ -2241,10 +2288,10 @@
      }
     },
     {
-     "id": "R12",
-     "tmp_id": "R12",
-     "subject": "submission deadline",
-     "requirement": "Bids must be submitted by the stated submission deadline.",
+     "id": "R13",
+     "tmp_id": "R13",
+     "subject": "bid submission deadline",
+     "requirement": "Submit bids by 30 November 2026 at 14:00 Corvessa time.",
      "category": "deadline",
      "seg_id": "A_BODY-L25",
      "page": 0,
@@ -2377,10 +2424,10 @@
      }
     },
     {
-     "id": "R13",
-     "tmp_id": "R13",
+     "id": "R14",
+     "tmp_id": "R14",
      "subject": "tax clearance certificate",
-     "requirement": "The Tax Clearance Certificate is valid for 90 days from its date of issue.",
+     "requirement": "Ensure the Tax Clearance Certificate is valid for 90 days from issue.",
      "category": "validity",
      "seg_id": "A_BODY-L27",
      "page": 0,
@@ -2516,146 +2563,10 @@
      }
     },
     {
-     "id": "R14",
-     "tmp_id": "R15",
-     "subject": "bid files",
-     "requirement": "All bid files must be in PDF format.",
-     "category": "file_format",
-     "seg_id": "A_BODY-L29",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S15",
-     "reason_codes": [
-      "ALL_CHECKS_PASSED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "pass",
-       "detail": "pass: OSL_BF1.pdf, OSL_POA.pdf, OSL_INC.pdf, OSL_TAX.pdf, OSL_FIN.pdf, OSL_TEC.pdf, OSL_BF3.pdf, OSL_BF2.pdf"
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F8",
-       "result": "not_applicable",
-       "detail": "no issue date or no as_of"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
      "id": "R15",
      "tmp_id": "R16",
      "subject": "bid files",
-     "requirement": "No single bid file may exceed 10 MB in size.",
+     "requirement": "Submit all files in PDF format.",
      "category": "file_format",
      "seg_id": "A_BODY-L29",
      "page": 0,
@@ -2708,13 +2619,13 @@
       },
       {
        "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
+       "result": "pass",
+       "detail": "pass: OSL_BF1.pdf, OSL_POA.pdf, OSL_INC.pdf, OSL_TAX.pdf, OSL_FIN.pdf, OSL_TEC.pdf, OSL_BF3.pdf, OSL_BF2.pdf"
       },
       {
        "id": "F2",
-       "result": "pass",
-       "detail": "pass: OSL_BF1.pdf, OSL_POA.pdf, OSL_INC.pdf, OSL_TAX.pdf, OSL_FIN.pdf, OSL_TEC.pdf, OSL_BF3.pdf, OSL_BF2.pdf"
+       "result": "not_applicable",
+       "detail": ""
       },
       {
        "id": "F3",
@@ -2790,8 +2701,144 @@
     {
      "id": "R16",
      "tmp_id": "R17",
-     "subject": "bid validity",
-     "requirement": "Bids must remain valid until 31 March 2027.",
+     "subject": "bid files",
+     "requirement": "Ensure no single file exceeds 10 MB.",
+     "category": "file_format",
+     "seg_id": "A_BODY-L29",
+     "page": 0,
+     "verify_method": "exact",
+     "rule": "S15",
+     "reason_codes": [
+      "ALL_CHECKS_PASSED"
+     ],
+     "info_codes": [],
+     "checks": [
+      {
+       "id": "Q1",
+       "result": "pass",
+       "detail": "exact"
+      },
+      {
+       "id": "Q2",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q3",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q4",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q5",
+       "result": "pass",
+       "detail": "not applicable"
+      },
+      {
+       "id": "Q6",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q7",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q8",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "F1",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F2",
+       "result": "pass",
+       "detail": "pass: OSL_BF1.pdf, OSL_POA.pdf, OSL_INC.pdf, OSL_TAX.pdf, OSL_FIN.pdf, OSL_TEC.pdf, OSL_BF3.pdf, OSL_BF2.pdf"
+      },
+      {
+       "id": "F3",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F4",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F5",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F6",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F7",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F8",
+       "result": "not_applicable",
+       "detail": "no issue date or no as_of"
+      },
+      {
+       "id": "F9",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F10",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F11",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F12",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F13",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F14",
+       "result": "not_applicable",
+       "detail": ""
+      }
+     ],
+     "evidence_row_ids": [],
+     "condition_state": null,
+     "deadline_sort": "9999",
+     "provenance": {
+      "extracted_by": "model",
+      "verified_by": "code",
+      "matched_by": "model",
+      "status_by": "code"
+     }
+    },
+    {
+     "id": "R17",
+     "tmp_id": "R18",
+     "subject": "bid",
+     "requirement": "Keep bids valid until 31 March 2027.",
      "category": "validity",
      "seg_id": "A_ANNEX1-L5",
      "page": 0,
@@ -2924,10 +2971,10 @@
      }
     },
     {
-     "id": "R17",
-     "tmp_id": "R18",
+     "id": "R18",
+     "tmp_id": "R19",
      "subject": "bid security",
-     "requirement": "The Bid Security must remain valid until 28 April 2027.",
+     "requirement": "Keep the Bid Security valid until 28 April 2027.",
      "category": "validity",
      "seg_id": "A_ANNEX1-L6",
      "page": 0,
@@ -3062,10 +3109,10 @@
      }
     },
     {
-     "id": "R18",
-     "tmp_id": "R19",
+     "id": "R19",
+     "tmp_id": "R20",
      "subject": "power of attorney",
-     "requirement": "The Power of Attorney must be notarized.",
+     "requirement": "Have the Power of Attorney notarized.",
      "category": "other",
      "seg_id": "A_ANNEX1-L7",
      "page": 0,
@@ -3200,10 +3247,10 @@
      }
     },
     {
-     "id": "R19",
-     "tmp_id": "R20",
+     "id": "R20",
+     "tmp_id": "R21",
      "subject": "file naming",
-     "requirement": "Name each file using the specified bidder short name and document code template.",
+     "requirement": "Name each file using the bidder short name and document code.",
      "category": "file_naming",
      "seg_id": "A_ANNEX1-L8",
      "page": 0,
@@ -3256,8 +3303,8 @@
       },
       {
        "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
+       "result": "pass",
+       "detail": "pass: OSL_BF1.pdf, OSL_POA.pdf, OSL_INC.pdf, OSL_TAX.pdf, OSL_FIN.pdf, OSL_TEC.pdf, OSL_BF3.pdf, OSL_BF2.pdf"
       },
       {
        "id": "F2",
@@ -3336,10 +3383,10 @@
      }
     },
     {
-     "id": "R20",
-     "tmp_id": "R21",
+     "id": "R21",
+     "tmp_id": "R22",
      "subject": "audited financial statements",
-     "requirement": "Merge the audited financial statements into a single PDF file.",
+     "requirement": "Merge the 2023-2025 audited statements into a single PDF file.",
      "category": "merge_rule",
      "seg_id": "A_ANNEX1-L9",
      "page": 0,
@@ -3392,8 +3439,8 @@
       },
       {
        "id": "F1",
-       "result": "pass",
-       "detail": "pass: OSL_FIN.pdf"
+       "result": "not_applicable",
+       "detail": ""
       },
       {
        "id": "F2",
@@ -3472,149 +3519,12 @@
       "matched_by": "model",
       "status_by": "code"
      }
-    },
-    {
-     "id": "R21",
-     "tmp_id": "R23",
-     "subject": "bid validity",
-     "requirement": "Bid must remain valid until the date stated in BDS ITB 19.1.",
-     "category": "validity",
-     "seg_id": "A_ANNEX2-L5",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S2",
-     "reason_codes": [
-      "DATE_UNPARSED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "fail",
-       "detail": "validity.raw unparsed: no date found",
-       "code": "DATE_UNPARSED"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "unknown",
-       "detail": "no matched file for this requirement"
-      },
-      {
-       "id": "F8",
-       "result": "not_applicable",
-       "detail": "no issue date or no as_of"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
     }
    ],
    "display_order": [
-    "R12",
-    "R17",
+    "R13",
     "R01",
+    "R18",
     "R02",
     "R03",
     "R04",
@@ -3625,37 +3535,37 @@
     "R09",
     "R10",
     "R11",
-    "R13",
+    "R12",
     "R14",
     "R15",
     "R16",
-    "R18",
+    "R17",
     "R19",
     "R20",
     "R21"
    ],
    "top_actions": [
-    "R12: Wait for the agency's answer to C1. To be on time under every reading, upload before 2026-11-30 20:00 UTC+09:00.",
-    "R17: Obtain a document that is valid for the required period.",
-    "R13: Wait for the agency's answer to C1, or prepare a document that works under every reading."
+    "R13: Wait for the agency's answer to C1. To be on time under every reading, upload before 2026-11-30 20:00 UTC+09:00.",
+    "R01: Follow this step when you submit.",
+    "R18: Obtain a document that is valid for the required period."
    ],
    "pre_submission_checklist": [
-    "[ ] R12 Body §5: Wait for the agency's answer to C1. To be on time under every reading, upload before 2026-11-30 20:00 UTC+09:00.",
-    "[ ] R17 Annex 1 ITB 20.2: Obtain a document that is valid for the required period.",
-    "[ ] R01 Body §2: Answer the bidder question; if the condition applies, this item becomes required.",
-    "[ ] R10 Body §4(i): Answer the bidder question; if the condition applies, this item becomes required.",
-    "[ ] R11 Body §4(ii): Answer the bidder question; if the condition applies, this item becomes required.",
-    "[ ] R13 Body §6: Wait for the agency's answer to C1, or prepare a document that works under every reading.",
-    "[ ] R16 Annex 1 ITB 19.1: Confirm it yourself before upload.",
-    "[ ] R21 Annex 2 Form BF-1: Check the dates and values in the source before upload."
+    "[ ] R13 Body §5: Wait for the agency's answer to C1. To be on time under every reading, upload before 2026-11-30 20:00 UTC+09:00.",
+    "[ ] R01 Body §1: Follow this step when you submit.",
+    "[ ] R18 Annex 1 ITB 20.2: Obtain a document that is valid for the required period.",
+    "[ ] R02 Body §2: Answer the bidder question; if the condition applies, this item becomes required.",
+    "[ ] R11 Body §4(i): Answer the bidder question; if the condition applies, this item becomes required.",
+    "[ ] R12 Body §4(ii): Answer the bidder question; if the condition applies, this item becomes required.",
+    "[ ] R14 Body §6: Wait for the agency's answer to C1, or prepare a document that works under every reading.",
+    "[ ] R17 Annex 1 ITB 19.1: Confirm it yourself before upload."
    ],
    "agency_questions": [
     {
      "for": "C1",
-     "question": "Body §5 states '30 November 2026, 14:00 hours Corvessa time (UTC+03:00)' and Annex 1 ITB 23.1 states 'Date: 2 December 2026; Time: 14:00 hours' — does the Body §5 deadline apply? (Yes/No)"
+     "question": "Body §5 states \"The deadline for submission of Bids is 30 November 2026, 14:00 hours Corvessa time (UTC+03:00)\" and Annex 1 ITB 23.1 states \"The deadline for submission of Bids is: Date: 2 December 2026; Time: 14:00 hours.\" Does Body §5 apply? (Yes/No)"
     },
     {
-     "for": "R13",
+     "for": "R14",
      "question": "Does 'valid for 90 days from its date of issue' mean counting 90 days starting the day after the deadline? (Yes/No)"
     }
    ],
@@ -3663,13 +3573,13 @@
     {
      "id": "C1",
      "members": [
-      "R12",
-      "R22"
+      "R13",
+      "R23"
      ],
      "rule": "K1",
      "values": {
-      "a": "30 November 2026, 14:00 hours Corvessa time (UTC+03:00)",
-      "b": "Date: 2 December 2026; Time: 14:00 hours"
+      "a": "30 November 2026, 14:00 hours",
+      "b": "2 December 2026; Time: 14:00 hours"
      },
      "question_source": "model"
     }

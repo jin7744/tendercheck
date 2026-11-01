@@ -5,68 +5,68 @@
  "package": "B",
  "lang": "ko",
  "run": {
-  "run_dir": "live_20261028_v3_k1/B-M1",
+  "run_dir": "live_20261101_freeze/B-M1",
   "mode": "replay",
   "models": [
    "muse-spark-1.3"
   ],
   "calls": 5,
-  "cost_usd": 0.124942,
+  "cost_usd": 0.113585,
   "call_log": [
    {
     "stage": "U",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 1052,
+    "latency_ms": 2113,
     "tokens_in": 331,
-    "tokens_out": 82,
-    "tokens_reasoning": 67,
-    "cost_usd": 0.0008047
+    "tokens_out": 114,
+    "tokens_reasoning": 99,
+    "cost_usd": 0.00089825
    },
    {
     "stage": "E1",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 65374,
+    "latency_ms": 52299,
     "tokens_in": 2571,
-    "tokens_out": 18693,
-    "tokens_reasoning": 10904,
-    "cost_usd": 0.082659
+    "tokens_out": 16448,
+    "tokens_reasoning": 8999,
+    "cost_usd": 0.07311775
    },
    {
     "stage": "E4",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 6848,
-    "tokens_in": 3504,
-    "tokens_out": 1710,
-    "tokens_reasoning": 1639,
-    "cost_usd": 0.0116475
+    "latency_ms": 8893,
+    "tokens_in": 3518,
+    "tokens_out": 1626,
+    "tokens_reasoning": 1555,
+    "cost_usd": 0.011308
    },
    {
     "stage": "M",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 13874,
-    "tokens_in": 3661,
-    "tokens_out": 3994,
-    "tokens_reasoning": 1954,
-    "cost_usd": 0.02155075
+    "latency_ms": 13815,
+    "tokens_in": 3678,
+    "tokens_out": 3908,
+    "tokens_reasoning": 1912,
+    "cost_usd": 0.0212065
    },
    {
     "stage": "C",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 4803,
-    "tokens_in": 3170,
-    "tokens_out": 1016,
-    "tokens_reasoning": 810,
-    "cost_usd": 0.0082805
+    "latency_ms": 2868,
+    "tokens_in": 3230,
+    "tokens_out": 710,
+    "tokens_reasoning": 499,
+    "cost_usd": 0.007055
    }
   ]
  },
@@ -351,7 +351,7 @@
    {
     "id": "R01",
     "kind": "conditional",
-    "quote": "구성원은 대표사를 포함하여 2개사 이하로 한다.",
+    "quote": "공동수급(공동이행방식)을 허용하며, 구성원은 대표사를 포함하여 2개사 이하로 한다.",
     "location": "공고문 2.나",
     "status": "met",
     "condition_state": "triggered",
@@ -396,7 +396,7 @@
    {
     "id": "R04",
     "kind": "document",
-    "quote": "경쟁입찰참가자격등록증",
+    "quote": "② 경쟁입찰참가자격등록증",
     "location": "공고문 3.②",
     "status": "met",
     "condition_state": null,
@@ -411,7 +411,7 @@
    {
     "id": "R05",
     "kind": "document",
-    "quote": "사업자등록증 사본: 사본에는 '원본대조필'을 표기하고 인감을 날인한다.",
+    "quote": "③ 사업자등록증 사본: 사본에는 '원본대조필'을 표기하고 인감을 날인한다.",
     "location": "공고문 3.③",
     "status": "met",
     "condition_state": null,
@@ -426,7 +426,7 @@
    {
     "id": "R06",
     "kind": "document",
-    "quote": "법인등기부등본(법인등기사항전부증명서): 입찰서 제출 마감일 기준 최근 3개월 이내 발급분",
+    "quote": "④ 법인등기부등본(법인등기사항전부증명서): 입찰서 제출 마감일 기준 최근 3개월 이내 발급분",
     "location": "공고문 3.④",
     "status": "met",
     "condition_state": null,
@@ -441,7 +441,7 @@
    {
     "id": "R07",
     "kind": "document",
-    "quote": "법인인감증명서: 입찰서 제출 마감일 기준 최근 3개월 이내 발급분",
+    "quote": "⑤ 법인인감증명서: 입찰서 제출 마감일 기준 최근 3개월 이내 발급분",
     "location": "공고문 3.⑤",
     "status": "met",
     "condition_state": null,
@@ -456,7 +456,7 @@
    {
     "id": "R08",
     "kind": "conditional",
-    "quote": "사용인감계[서식 제3호]: 사용인감을 날인하는 경우에 한하여 제출한다.",
+    "quote": "⑥ 사용인감계[서식 제3호]: 사용인감을 날인하는 경우에 한하여 제출한다.",
     "location": "공고문 3.⑥",
     "status": "met",
     "condition_state": "triggered",
@@ -471,7 +471,7 @@
    {
     "id": "R09",
     "kind": "document",
-    "quote": "청렴계약이행서약서[서식 제4호]: 인감을 날인한다.",
+    "quote": "⑦ 청렴계약이행서약서[서식 제4호]: 인감을 날인한다.",
     "location": "공고문 3.⑦",
     "status": "met",
     "condition_state": null,
@@ -486,7 +486,7 @@
    {
     "id": "R10",
     "kind": "document",
-    "quote": "개인정보 수집·이용 동의서[서식 제5호]: 투입 예정 인력 전원이 각자 자필 서명한다.",
+    "quote": "⑧ 개인정보 수집·이용 동의서[서식 제5호]: 투입 예정 인력 전원이 각자 자필 서명한다.",
     "location": "공고문 3.⑧",
     "status": "met",
     "condition_state": null,
@@ -501,7 +501,7 @@
    {
     "id": "R11",
     "kind": "document",
-    "quote": "제안서(제안요청서 Ⅲ의 목차에 따름)",
+    "quote": "⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)",
     "location": "공고문 3.⑨",
     "status": "met",
     "condition_state": null,
@@ -516,7 +516,7 @@
    {
     "id": "R12",
     "kind": "document",
-    "quote": "입찰보증보험증권: 보증금액은 입찰금액의 100분의 5 이상, 보증기간은 입찰서 제출 마감일부터 30일 이상으로 한다.",
+    "quote": "⑩ 입찰보증보험증권: 보증금액은 입찰금액의 100분의 5 이상, 보증기간은 입찰서 제출 마감일부터 30일 이상으로 한다.",
     "location": "공고문 3.⑩",
     "status": "met",
     "condition_state": null,
@@ -531,7 +531,7 @@
    {
     "id": "R13",
     "kind": "conditional",
-    "quote": "공동수급협정서[서식 제2호]: 공동수급으로 참가하는 경우에 한하여 제출하며, 구성원 전원의 인감을 날인한다.",
+    "quote": "⑪ 공동수급협정서[서식 제2호]: 공동수급으로 참가하는 경우에 한하여 제출하며, 구성원 전원의 인감을 날인한다.",
     "location": "공고문 3.⑪",
     "status": "met",
     "condition_state": "triggered",
@@ -546,7 +546,7 @@
    {
     "id": "R14",
     "kind": "conditional",
-    "quote": "공동수급으로 참가하는 경우 구성원 각각의 ③ 사업자등록증 사본과 ④ 법인등기부등본",
+    "quote": "⑫ 공동수급으로 참가하는 경우 구성원 각각의 ③ 사업자등록증 사본과 ④ 법인등기부등본",
     "location": "공고문 3.⑫",
     "status": "met",
     "condition_state": "triggered",
@@ -561,7 +561,7 @@
    {
     "id": "R15",
     "kind": "deadline",
-    "quote": "국가종합전자조달시스템(나라장터)으로 전자 제출한다(세부 사항은 제안요청서 Ⅳ 참조).",
+    "quote": "4. 제출 방법: 국가종합전자조달시스템(나라장터)으로 전자 제출한다(세부 사항은 제안요청서 Ⅳ 참조).",
     "location": "공고문 4.",
     "status": "needs-confirmation",
     "condition_state": null,
@@ -641,7 +641,7 @@
    {
     "id": "R21",
     "kind": "file_rule",
-    "quote": "파일명은 '업체명_서류명.pdf'로 하며",
+    "quote": "파일명은 '업체명_서류명.pdf'로 하며, 업체명에는 '(주)' 등 법인 표기를 넣지 않는다.",
     "location": "제안요청서 Ⅳ-5",
     "status": "met",
     "condition_state": null,
@@ -679,7 +679,7 @@
       "location": "제안요청서 Ⅳ-1"
      }
     ],
-    "agency_question": "공고문 5.가의 '전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)'와 제안요청서 Ⅳ-1의 '제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시'가 상이한데, 공고문 5.가의 값이 적용됩니까? (예/아니오)"
+    "agency_question": "공고문 5.가 \"전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)\"과 제안요청서 Ⅳ-1 \"제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시\" 중 공고문 5.가의 값이 적용됩니까? (예/아니오)"
    }
   ],
   "bidder_questions": [],
@@ -718,11 +718,11 @@
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 331,
-      "tokens_cached": 283,
-      "tokens_out": 82,
-      "tokens_reasoning": 67,
-      "cost_usd": 0.0008047,
-      "latency_ms": 1052,
+      "tokens_cached": 0,
+      "tokens_out": 114,
+      "tokens_reasoning": 99,
+      "cost_usd": 0.00089825,
+      "latency_ms": 2113,
       "error": null
      },
      {
@@ -731,51 +731,51 @@
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 2571,
       "tokens_cached": 0,
-      "tokens_out": 18693,
-      "tokens_reasoning": 10904,
-      "cost_usd": 0.082659,
-      "latency_ms": 65374,
+      "tokens_out": 16448,
+      "tokens_reasoning": 8999,
+      "cost_usd": 0.07311775,
+      "latency_ms": 52299,
       "error": null
      },
      {
       "stage": "E4",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3504,
+      "tokens_in": 3518,
       "tokens_cached": 0,
-      "tokens_out": 1710,
-      "tokens_reasoning": 1639,
-      "cost_usd": 0.0116475,
-      "latency_ms": 6848,
+      "tokens_out": 1626,
+      "tokens_reasoning": 1555,
+      "cost_usd": 0.011308,
+      "latency_ms": 8893,
       "error": null
      },
      {
       "stage": "M",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3661,
+      "tokens_in": 3678,
       "tokens_cached": 0,
-      "tokens_out": 3994,
-      "tokens_reasoning": 1954,
-      "cost_usd": 0.02155075,
-      "latency_ms": 13874,
+      "tokens_out": 3908,
+      "tokens_reasoning": 1912,
+      "cost_usd": 0.0212065,
+      "latency_ms": 13815,
       "error": null
      },
      {
       "stage": "C",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3170,
+      "tokens_in": 3230,
       "tokens_cached": 0,
-      "tokens_out": 1016,
-      "tokens_reasoning": 810,
-      "cost_usd": 0.0082805,
-      "latency_ms": 4803,
+      "tokens_out": 710,
+      "tokens_reasoning": 499,
+      "cost_usd": 0.007055,
+      "latency_ms": 2868,
       "error": null
      }
     ],
     "quote_checks": {
-     "total": 24,
+     "total": 23,
      "passed": 23,
      "requoted": 0,
      "retracted": 0,
@@ -788,16 +788,27 @@
      "resolved": 0
     },
     "coverage": {
-     "trigger_segments": 27,
+     "trigger_segments": 29,
      "cited": 18,
-     "explained": 6,
+     "explained": 8,
      "sent": 3,
-     "unexplained": 0
+     "unexplained": 0,
+     "list_entries": 2
     },
     "status_hint_downgrades": 0,
     "validity_merges": [],
     "list_entry_joins": [],
-    "member_rule_conditions": [],
+    "member_rule_conditions": [
+     {
+      "tmp_id": "R1",
+      "condition_quote": "공동수급"
+     },
+     {
+      "tmp_id": "R2",
+      "condition_quote": "대표사"
+     }
+    ],
+    "file_rule_scope_conditions": [],
     "stages": [
      {
       "stage": "U",
@@ -846,16 +857,10 @@
      }
     ]
    },
-   "cost_total_usd": 0.12494245,
+   "cost_total_usd": 0.1135855,
    "info_gaps": [],
    "asked_items": [],
-   "removed_records": [
-    {
-     "tmp_id": "R15",
-     "why": "merged duplicate (Q7)",
-     "flags": []
-    }
-   ],
+   "removed_records": [],
    "adjudication_log": [
     {
      "candidate": "K1",
@@ -875,7 +880,7 @@
     {
      "id": "R01",
      "tmp_id": "R1",
-     "subject": "consortium membership",
+     "subject": "consortium composition",
      "requirement": "공동수급 구성원은 대표사를 포함하여 2개사 이하로 구성해야 한다.",
      "category": "other",
      "seg_id": "B_NOTICE-L13",
@@ -1013,8 +1018,8 @@
     {
      "id": "R02",
      "tmp_id": "R2",
-     "subject": "consortium membership",
-     "requirement": "공동수급에서 대표사의 지분율은 51% 이상이어야 한다.",
+     "subject": "consortium composition",
+     "requirement": "공동수급에서 대표사의 지분율은 51퍼센트 이상이어야 한다.",
      "category": "other",
      "seg_id": "B_NOTICE-L13",
      "page": 0,
@@ -1152,7 +1157,7 @@
      "id": "R03",
      "tmp_id": "R3",
      "subject": "bid application form",
-     "requirement": "입찰참가신청서 서식 제1호를 제출하고 법인인감 또는 사용인감을 날인해야 한다.",
+     "requirement": "입찰참가신청서 서식 제1호에 법인인감 또는 사용인감을 날인하여 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L16",
      "page": 0,
@@ -1289,7 +1294,7 @@
     {
      "id": "R04",
      "tmp_id": "R4",
-     "subject": "bidding qualification certificate",
+     "subject": "competitive bidding qualification certificate",
      "requirement": "경쟁입찰참가자격등록증을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L17",
@@ -1427,7 +1432,7 @@
     {
      "id": "R05",
      "tmp_id": "R5",
-     "subject": "business registration copy",
+     "subject": "business registration certificate copy",
      "requirement": "사업자등록증 사본에 원본대조필을 표기하고 인감을 날인하여 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L18",
@@ -1502,12 +1507,12 @@
       {
        "id": "F5",
        "result": "pass",
-       "detail": "pass: 별누리코드_자격서류.pdf, 별누리코드_자격서류.pdf"
+       "detail": "pass: 별누리코드_자격서류.pdf"
       },
       {
        "id": "F6",
        "result": "pass",
-       "detail": "pass: 별누리코드_자격서류.pdf, 별누리코드_자격서류.pdf"
+       "detail": "pass: 별누리코드_자격서류.pdf"
       },
       {
        "id": "F7",
@@ -1551,8 +1556,7 @@
       }
      ],
      "evidence_row_ids": [
-      "M3",
-      "M6"
+      "M3"
      ],
      "condition_state": null,
      "deadline_sort": "9999",
@@ -1567,7 +1571,7 @@
      "id": "R06",
      "tmp_id": "R6",
      "subject": "corporate registry certificate",
-     "requirement": "법인등기부등본은 입찰서 제출 마감일 기준 최근 3개월 이내 발급분을 제출해야 한다.",
+     "requirement": "입찰서 제출 마감일 기준 최근 3개월 이내 발급된 법인등기부등본을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L19",
      "page": 0,
@@ -1652,7 +1656,7 @@
       {
        "id": "F7",
        "result": "pass",
-       "detail": "pass: 별누리코드_자격서류.pdf, 별누리코드_자격서류.pdf"
+       "detail": "pass: 별누리코드_자격서류.pdf"
       },
       {
        "id": "F8",
@@ -1691,8 +1695,7 @@
       }
      ],
      "evidence_row_ids": [
-      "M4",
-      "M7"
+      "M4"
      ],
      "condition_state": null,
      "deadline_sort": "9999",
@@ -1707,7 +1710,7 @@
      "id": "R07",
      "tmp_id": "R7",
      "subject": "corporate seal certificate",
-     "requirement": "법인인감증명서는 입찰서 제출 마감일 기준 최근 3개월 이내 발급분을 제출해야 한다.",
+     "requirement": "입찰서 제출 마감일 기준 최근 3개월 이내 발급된 법인인감증명서를 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L20",
      "page": 0,
@@ -1845,8 +1848,8 @@
     {
      "id": "R08",
      "tmp_id": "R8",
-     "subject": "usage seal declaration",
-     "requirement": "사용인감을 날인하는 경우에 한하여 사용인감계 서식 제3호를 제출해야 한다.",
+     "subject": "usage seal report",
+     "requirement": "사용인감을 날인하는 경우 사용인감계를 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L21",
      "page": 0,
@@ -1983,8 +1986,8 @@
     {
      "id": "R09",
      "tmp_id": "R9",
-     "subject": "clean contract pledge",
-     "requirement": "청렴계약이행서약서 서식 제4호를 제출하고 인감을 날인해야 한다.",
+     "subject": "integrity pledge",
+     "requirement": "청렴계약이행서약서에 인감을 날인하여 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L22",
      "page": 0,
@@ -2122,7 +2125,7 @@
      "id": "R10",
      "tmp_id": "R10",
      "subject": "privacy consent form",
-     "requirement": "개인정보 수집이용 동의서는 투입 예정 인력 전원이 각자 자필 서명하여 제출해야 한다.",
+     "requirement": "개인정보 수집이용 동의서를 투입 예정 인력 전원이 각자 자필 서명하여 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L23",
      "page": 0,
@@ -2397,8 +2400,8 @@
     {
      "id": "R12",
      "tmp_id": "R12",
-     "subject": "bid guarantee insurance policy",
-     "requirement": "입찰보증보험증권은 보증금액이 입찰금액의 100분의 5 이상이고 보증기간이 입찰서 제출 마감일부터 30일 이상이어야 한다.",
+     "subject": "bid guarantee insurance certificate",
+     "requirement": "입찰금액의 100분의 5 이상의 보증금액으로 입찰서 제출 마감일부터 30일 이상 보증하는 입찰보증보험증권을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L25",
      "page": 0,
@@ -2537,7 +2540,7 @@
      "id": "R13",
      "tmp_id": "R13",
      "subject": "consortium agreement",
-     "requirement": "공동수급으로 참가하는 경우에 한하여 공동수급협정서를 제출하고 구성원 전원의 인감을 날인해야 한다.",
+     "requirement": "공동수급으로 참가하는 경우 구성원 전원의 인감을 날인한 공동수급협정서를 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L26",
      "page": 0,
@@ -2674,8 +2677,8 @@
     {
      "id": "R14",
      "tmp_id": "R14",
-     "subject": "business registration copy",
-     "requirement": "공동수급으로 참가하는 경우 구성원 각각의 사업자등록증 사본을 제출해야 한다.",
+     "subject": "business registration certificate copy",
+     "requirement": "공동수급으로 참가하는 경우 구성원 각각의 사업자등록증 사본과 법인등기부등본을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L27",
      "page": 0,
@@ -2763,8 +2766,8 @@
       },
       {
        "id": "F8",
-       "result": "not_applicable",
-       "detail": "no issue date or no as_of"
+       "result": "pass",
+       "detail": "all issue dates on or before 2026-12-05"
       },
       {
        "id": "F9",
@@ -2798,8 +2801,8 @@
       }
      ],
      "evidence_row_ids": [
-      "M3",
-      "M6"
+      "M6",
+      "M7"
      ],
      "condition_state": "triggered",
      "deadline_sort": "9999",
@@ -2812,9 +2815,9 @@
     },
     {
      "id": "R15",
-     "tmp_id": "R16",
-     "subject": "submission method",
-     "requirement": "모든 제출서류를 국가종합전자조달시스템으로 전자 제출해야 한다.",
+     "tmp_id": "R15",
+     "subject": "electronic submission method",
+     "requirement": "제출서류를 국가종합전자조달시스템으로 전자 제출해야 한다.",
      "category": "submission_method",
      "seg_id": "B_NOTICE-L29",
      "page": 0,
@@ -2948,9 +2951,9 @@
     },
     {
      "id": "R16",
-     "tmp_id": "R17",
-     "subject": "submission deadline",
-     "requirement": "전자입찰서와 제안서를 2026년 12월 9일 10시까지 제출해야 한다.",
+     "tmp_id": "R16",
+     "subject": "electronic bid submission deadline",
+     "requirement": "전자입찰서를 2026년 12월 9일 10시까지 제출해야 한다.",
      "category": "deadline",
      "seg_id": "B_NOTICE-L32",
      "page": 0,
@@ -3086,9 +3089,9 @@
     },
     {
      "id": "R17",
-     "tmp_id": "R19",
-     "subject": "submission file",
-     "requirement": "모든 제출서류는 PDF 형식으로 제출해야 한다.",
+     "tmp_id": "R18",
+     "subject": "file format",
+     "requirement": "모든 제출서류를 피디에프 형식으로 제출해야 한다.",
      "category": "file_format",
      "seg_id": "B_RFP-L5",
      "page": 0,
@@ -3222,9 +3225,9 @@
     },
     {
      "id": "R18",
-     "tmp_id": "R20",
-     "subject": "submission file",
-     "requirement": "한글과 워드 파일은 접수하지 않으므로 해당 형식으로 제출해서는 안 된다.",
+     "tmp_id": "R19",
+     "subject": "file format",
+     "requirement": "한글 및 워드 파일은 접수하지 않으므로 제출해서는 안 된다.",
      "category": "file_format",
      "seg_id": "B_RFP-L5",
      "page": 0,
@@ -3358,9 +3361,9 @@
     },
     {
      "id": "R19",
-     "tmp_id": "R21",
-     "subject": "submission file",
-     "requirement": "파일 1개의 용량은 30MB 이하로 해야 한다.",
+     "tmp_id": "R20",
+     "subject": "file size",
+     "requirement": "파일 1개의 용량을 30엠비 이하로 제출해야 한다.",
      "category": "file_format",
      "seg_id": "B_RFP-L6",
      "page": 0,
@@ -3494,9 +3497,9 @@
     },
     {
      "id": "R20",
-     "tmp_id": "R22",
-     "subject": "submission file",
-     "requirement": "입찰참가자격 확인서류는 하나의 PDF 파일로 병합하여 제출해야 한다.",
+     "tmp_id": "R21",
+     "subject": "eligibility documents merge",
+     "requirement": "입찰참가자격 확인서류를 하나의 피디에프 파일로 병합하여 제출해야 한다.",
      "category": "merge_rule",
      "seg_id": "B_RFP-L7",
      "page": 0,
@@ -3637,9 +3640,9 @@
     },
     {
      "id": "R21",
-     "tmp_id": "R23",
-     "subject": "submission file",
-     "requirement": "파일명은 업체명_서류명.pdf 형식으로 정해야 한다.",
+     "tmp_id": "R22",
+     "subject": "file naming",
+     "requirement": "파일명을 업체명_서류명 형식으로 하여 제출해야 한다.",
      "category": "file_naming",
      "seg_id": "B_RFP-L8",
      "page": 0,
@@ -3773,9 +3776,9 @@
     },
     {
      "id": "R22",
-     "tmp_id": "R24",
-     "subject": "submission file",
-     "requirement": "파일명의 업체명에는 주식회사 등 법인 표기를 넣지 않아야 한다.",
+     "tmp_id": "R23",
+     "subject": "file naming",
+     "requirement": "파일명의 업체명에는 주식회사 등 법인 표기를 넣지 않고 제출해야 한다.",
      "category": "file_naming",
      "seg_id": "B_RFP-L8",
      "page": 0,
@@ -3945,7 +3948,7 @@
    "agency_questions": [
     {
      "for": "C1",
-     "question": "공고문 5.가의 '전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)'와 제안요청서 Ⅳ-1의 '제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시'가 상이한데, 공고문 5.가의 값이 적용됩니까? (예/아니오)"
+     "question": "공고문 5.가 \"전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)\"과 제안요청서 Ⅳ-1 \"제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시\" 중 공고문 5.가의 값이 적용됩니까? (예/아니오)"
     }
    ],
    "conflicts_detail": [
@@ -3953,7 +3956,7 @@
      "id": "C1",
      "members": [
       "R16",
-      "R18"
+      "R17"
      ],
      "rule": "K1",
      "values": {

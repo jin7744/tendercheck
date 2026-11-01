@@ -22,18 +22,10 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "web" / "data"
 REPLAYS = ROOT / "replays"  # committed: runs/live_* is git-ignored, and the server's re-run needs the replies
 
-# One recorded live run per sample, all on the final engine and prompts (req_rules 1.1.0, m_match 1.1.0,
-# e1_extract 1.1.0), so "re-run" replays them byte for byte. B-M2-PII: the first v4 run is not used, the model
-# copied the consortium numbers into every record and code held 20 records as ungrounded (docs/live_runs_20261028.md).
-DEFAULT_RUNS = {
-    "A-M1": "runs/live_20261028_v4_web/A-M1",
-    "A-M2": "runs/live_20261028_v4_web/A-M2",
-    "A-M3": "runs/live_20261028_v4_web/A-M3",
-    "B-M1": "runs/live_20261028_v3_k1/B-M1",
-    "B-M2": "runs/live_20261028_v3_k1/B-M2",
-    "B-M3": "runs/live_20261028_v3_k1/B-M3",
-    "B-M2-PII": "runs/live_20261028_v4_web2/B-M2-PII",
-}
+# One recorded live run per sample, all recorded on 2026-11-01 on the frozen engine (5aa4ba5, fixes 1-9), so
+# "re-run" replays them byte for byte. Earlier recordings are listed in docs/live_runs_20261028.md.
+DEFAULT_RUNS = {m: f"runs/live_20261101_freeze/{m}" for m in
+                ("A-M1", "A-M2", "A-M3", "B-M1", "B-M2", "B-M3", "B-M2-PII")}
 TITLES = {
     "A-M1": ("Package A · clean bid", "English tender, every document in order"),
     "A-M2": ("Package A · missing & wrong", "Joint venture bid with gaps, expired and unsigned files"),

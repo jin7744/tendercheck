@@ -5,79 +5,68 @@
  "package": "B",
  "lang": "ko",
  "run": {
-  "run_dir": "live_20261028_v3_k1/B-M2",
+  "run_dir": "live_20261101_freeze/B-M2",
   "mode": "replay",
   "models": [
    "muse-spark-1.3"
   ],
-  "calls": 6,
-  "cost_usd": 0.169962,
+  "calls": 5,
+  "cost_usd": 0.118995,
   "call_log": [
    {
     "stage": "U",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 1462,
+    "latency_ms": 1164,
     "tokens_in": 331,
-    "tokens_out": 73,
-    "tokens_reasoning": 58,
-    "cost_usd": 0.00076645
+    "tokens_out": 85,
+    "tokens_reasoning": 70,
+    "cost_usd": 0.000775
    },
    {
     "stage": "E1",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 92288,
+    "latency_ms": 52515,
     "tokens_in": 2571,
-    "tokens_out": 27172,
-    "tokens_reasoning": 17452,
-    "cost_usd": 0.11869475
-   },
-   {
-    "stage": "E2",
-    "attempt": 0,
-    "outcome": "response",
-    "model": "muse-spark-1.3",
-    "latency_ms": 4920,
-    "tokens_in": 1759,
-    "tokens_out": 707,
-    "tokens_reasoning": 442,
-    "cost_usd": 0.0052035
+    "tokens_out": 17263,
+    "tokens_reasoning": 9522,
+    "cost_usd": 0.0765815
    },
    {
     "stage": "E4",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 13772,
-    "tokens_in": 3742,
-    "tokens_out": 2811,
-    "tokens_reasoning": 2293,
-    "cost_usd": 0.01662425
+    "latency_ms": 8424,
+    "tokens_in": 3526,
+    "tokens_out": 2227,
+    "tokens_reasoning": 2153,
+    "cost_usd": 0.01387225
    },
    {
     "stage": "M",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 16012,
-    "tokens_in": 3633,
-    "tokens_out": 3856,
-    "tokens_reasoning": 2065,
-    "cost_usd": 0.02092925
+    "latency_ms": 13819,
+    "tokens_in": 3138,
+    "tokens_out": 3858,
+    "tokens_reasoning": 2232,
+    "cost_usd": 0.020319
    },
    {
     "stage": "C",
     "attempt": 0,
     "outcome": "response",
     "model": "muse-spark-1.3",
-    "latency_ms": 4044,
-    "tokens_in": 3523,
-    "tokens_out": 786,
-    "tokens_reasoning": 583,
-    "cost_usd": 0.00774425
+    "latency_ms": 3724,
+    "tokens_in": 3251,
+    "tokens_out": 796,
+    "tokens_reasoning": 588,
+    "cost_usd": 0.00744675
    }
   ]
  },
@@ -427,8 +416,8 @@
     ],
     "depends_on": null,
     "depends_on_conflict": null,
-    "reason": "서명·날인, 원본·사본 검사에서 문제가 나왔습니다: 물안개시스템_사업자등록증.pdf.",
-    "bidder_action": "요구된 서명·날인을 하세요. 요구된 원본 또는 원본대조필 사본을 내세요."
+    "reason": "원본·사본 검사에서 문제가 나왔습니다: 물안개시스템_사업자등록증.pdf.",
+    "bidder_action": "요구된 원본 또는 원본대조필 사본을 내세요."
    },
    {
     "id": "R06",
@@ -486,21 +475,6 @@
    },
    {
     "id": "R10",
-    "kind": "attribute",
-    "quote": "⑧ 개인정보 수집·이용 동의서[서식 제5호]: 투입 예정 인력 전원이 각자 자필 서명한다.",
-    "location": "공고문 3.⑧",
-    "status": "missing",
-    "condition_state": null,
-    "evidence_files": [
-     "물안개시스템_개인정보동의서.pdf"
-    ],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "구성원별·인원별로 필요한 수보다 적게 기재되어 있습니다.",
-    "bidder_action": "모자란 서류를 추가하세요."
-   },
-   {
-    "id": "R11",
     "kind": "document",
     "quote": "개인정보 수집·이용 동의서[서식 제5호]: 투입 예정 인력 전원이 각자 자필 서명한다.",
     "location": "공고문 3.⑧",
@@ -515,7 +489,7 @@
     "bidder_action": "모자란 서류를 추가하세요."
    },
    {
-    "id": "R12",
+    "id": "R11",
     "kind": "document",
     "quote": "제안서(제안요청서 Ⅲ의 목차에 따름)",
     "location": "공고문 3.⑨",
@@ -530,7 +504,7 @@
     "bidder_action": "추가 조치 없음."
    },
    {
-    "id": "R13",
+    "id": "R12",
     "kind": "document",
     "quote": "입찰보증보험증권: 보증금액은 입찰금액의 100분의 5 이상, 보증기간은 입찰서 제출 마감일부터 30일 이상으로 한다.",
     "location": "공고문 3.⑩",
@@ -545,33 +519,20 @@
     "bidder_action": "요구 기간에 유효한 서류를 새로 발급받으세요."
    },
    {
+    "id": "R13",
+    "kind": "conditional",
+    "quote": "공동수급협정서[서식 제2호]: 공동수급으로 참가하는 경우에 한하여 제출하며, 구성원 전원의 인감을 날인한다.",
+    "location": "공고문 3.⑪",
+    "status": "conditional",
+    "condition_state": "not_triggered",
+    "evidence_files": [],
+    "depends_on": null,
+    "depends_on_conflict": null,
+    "reason": "공동수급으로 참가하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.",
+    "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
+   },
+   {
     "id": "R14",
-    "kind": "conditional",
-    "quote": "공동수급협정서[서식 제2호]: 공동수급으로 참가하는 경우에 한하여 제출하며",
-    "location": "공고문 3.⑪",
-    "status": "conditional",
-    "condition_state": "not_triggered",
-    "evidence_files": [],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "공동수급으로 참가하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.",
-    "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
-   },
-   {
-    "id": "R15",
-    "kind": "conditional",
-    "quote": "구성원 전원의 인감을 날인한다.",
-    "location": "공고문 3.⑪",
-    "status": "conditional",
-    "condition_state": "not_triggered",
-    "evidence_files": [],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "공동수급으로 참가하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.",
-    "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
-   },
-   {
-    "id": "R16",
     "kind": "conditional",
     "quote": "공동수급으로 참가하는 경우 구성원 각각의 ③ 사업자등록증 사본과 ④ 법인등기부등본",
     "location": "공고문 3.⑫",
@@ -584,9 +545,9 @@
     "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
    },
    {
-    "id": "R17",
+    "id": "R15",
     "kind": "deadline",
-    "quote": "국가종합전자조달시스템(나라장터)으로 전자 제출한다",
+    "quote": "국가종합전자조달시스템(나라장터)으로 전자 제출한다(세부 사항은 제안요청서 Ⅳ 참조).",
     "location": "공고문 4.",
     "status": "needs-confirmation",
     "condition_state": null,
@@ -597,9 +558,9 @@
     "bidder_action": "제출할 때 이 절차를 따르세요."
    },
    {
-    "id": "R18",
+    "id": "R16",
     "kind": "deadline",
-    "quote": "전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00",
+    "quote": "전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)",
     "location": "공고문 5.가",
     "status": "needs-confirmation",
     "condition_state": null,
@@ -610,7 +571,20 @@
     "bidder_action": "C1에 대한 기관 답변을 기다리세요. 모든 해석에 맞추려면 2026. 12. 9.(수) 10:00 전에 올리세요."
    },
    {
-    "id": "R19",
+    "id": "R17",
+    "kind": "deadline",
+    "quote": "제안서 평가: 2026. 12. 15.(화) 예정",
+    "location": "공고문 5.나",
+    "status": "needs-confirmation",
+    "condition_state": null,
+    "evidence_files": [],
+    "depends_on": null,
+    "depends_on_conflict": null,
+    "reason": "원문 마감: 2026. 12. 15.(화). 목록에 업로드 예정 시각이 없습니다.",
+    "bidder_action": "2026. 12. 15.(화) 전에 올리도록 계획하세요."
+   },
+   {
+    "id": "R18",
     "kind": "file_rule",
     "quote": "모든 제출서류는 PDF 형식으로 제출한다.",
     "location": "제안요청서 Ⅳ-2",
@@ -623,7 +597,7 @@
     "bidder_action": "요구 형식으로 변환하세요."
    },
    {
-    "id": "R20",
+    "id": "R19",
     "kind": "file_rule",
     "quote": "한글(HWP)·워드(DOCX) 파일은 접수하지 않는다.",
     "location": "제안요청서 Ⅳ-2",
@@ -636,7 +610,7 @@
     "bidder_action": "요구 형식으로 변환하세요."
    },
    {
-    "id": "R21",
+    "id": "R20",
     "kind": "file_rule",
     "quote": "파일 1개의 용량은 30MB 이하로 한다.",
     "location": "제안요청서 Ⅳ-3",
@@ -649,7 +623,7 @@
     "bidder_action": "용량 상한 이하로 줄이세요."
    },
    {
-    "id": "R22",
+    "id": "R21",
     "kind": "file_rule",
     "quote": "입찰참가자격 확인서류(공고문 3.의 ②~⑤, 공동수급인 경우 ⑫ 포함)는 하나의 PDF 파일로 병합하여 제출한다.",
     "location": "제안요청서 Ⅳ-4",
@@ -666,9 +640,9 @@
     "bidder_action": "요구대로 한 파일로 병합하세요."
    },
    {
-    "id": "R23",
+    "id": "R22",
     "kind": "file_rule",
-    "quote": "파일명은 '업체명_서류명.pdf'로 하며",
+    "quote": "파일명은 '업체명_서류명.pdf'로 하며, 업체명에는 '(주)' 등 법인 표기를 넣지 않는다.",
     "location": "제안요청서 Ⅳ-5",
     "status": "error",
     "condition_state": null,
@@ -679,7 +653,7 @@
     "bidder_action": "요구 형식에 맞게 파일명을 바꾸세요."
    },
    {
-    "id": "R24",
+    "id": "R23",
     "kind": "file_rule",
     "quote": "업체명에는 '(주)' 등 법인 표기를 넣지 않는다.",
     "location": "제안요청서 Ⅳ-5",
@@ -690,75 +664,6 @@
     "depends_on_conflict": null,
     "reason": "이 요구사항을 보여 주는 파일이나 검사 결과가 목록에 없습니다.",
     "bidder_action": "업로드 전에 직접 확인하세요."
-   },
-   {
-    "id": "R25",
-    "kind": "attribute",
-    "quote": "[서식 제1호] 입찰참가신청서 - 인감 날인란",
-    "location": "별첨 서식 제1호",
-    "status": "met",
-    "condition_state": null,
-    "evidence_files": [
-     "물안개시스템_입찰참가신청서.hwp"
-    ],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "물안개시스템_입찰참가신청서.hwp와 대조했고 검사에서 문제가 나오지 않았습니다.",
-    "bidder_action": "추가 조치 없음."
-   },
-   {
-    "id": "R26",
-    "kind": "attribute",
-    "quote": "[서식 제2호] 공동수급협정서 - 구성원, 지분율, 대표사 기재 / 구성원 전원 인감 날인란",
-    "location": "별첨 서식 제2호",
-    "status": "conditional",
-    "condition_state": "not_triggered",
-    "evidence_files": [],
-    "depends_on": "R14",
-    "depends_on_conflict": null,
-    "reason": "원문에 적힌 조건에 해당하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.",
-    "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
-   },
-   {
-    "id": "R27",
-    "kind": "conditional",
-    "quote": "[서식 제3호] 사용인감계 - 사용인감과 법인인감을 함께 날인",
-    "location": "별첨 서식 제3호",
-    "status": "conditional",
-    "condition_state": "not_triggered",
-    "evidence_files": [],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "사용인감을 날인하는 경우에만 필요하며, 목록에 해당하지 않는다고 적혀 있습니다.",
-    "bidder_action": "기재 내용이 바뀌면 이 항목이 필요해집니다."
-   },
-   {
-    "id": "R28",
-    "kind": "attribute",
-    "quote": "[서식 제4호] 청렴계약이행서약서 - 인감 날인란",
-    "location": "별첨 서식 제4호",
-    "status": "missing",
-    "condition_state": null,
-    "evidence_files": [],
-    "depends_on": "R09",
-    "depends_on_conflict": null,
-    "reason": "R09의 파일이 목록에 없어 이 속성도 확인할 수 없습니다.",
-    "bidder_action": "해당 서류를 추가할 때 이 요구사항도 맞추세요."
-   },
-   {
-    "id": "R29",
-    "kind": "attribute",
-    "quote": "개인정보 수집·이용 동의서 - 투입 예정 인력별 1매",
-    "location": "별첨 서식 제5호",
-    "status": "missing",
-    "condition_state": null,
-    "evidence_files": [
-     "물안개시스템_개인정보동의서.pdf"
-    ],
-    "depends_on": null,
-    "depends_on_conflict": null,
-    "reason": "구성원별·인원별로 필요한 수보다 적게 기재되어 있습니다.",
-    "bidder_action": "모자란 서류를 추가하세요."
    }
   ],
   "conflicts": [
@@ -767,7 +672,7 @@
     "topic": "마감",
     "sides": [
      {
-      "quote": "전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00",
+      "quote": "전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)",
       "location": "공고문 5.가"
      },
      {
@@ -775,7 +680,7 @@
       "location": "제안요청서 Ⅳ-1"
      }
     ],
-    "agency_question": "공고문 5.가는 '2026. 12. 9.(수) 10:00', 제안요청서 Ⅳ-1은 '2026년 12월 10일(목) 오전 10시'로 적혀 있습니다. 제출 마감은 2026. 12. 9.(수) 10:00입니까? (예/아니오)"
+    "agency_question": "공고문 5.가 ‘전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)’와 제안요청서 Ⅳ-1 ‘제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시’가 다른데, 공고문 5.가의 값이 적용됩니까? (예/아니오)"
    }
   ],
   "bidder_questions": [],
@@ -788,11 +693,11 @@
   ],
   "not_in_source": [],
   "status_counts": {
-   "met": 4,
-   "missing": 6,
+   "met": 3,
+   "missing": 3,
    "error": 8,
-   "conditional": 8,
-   "needs-confirmation": 3
+   "conditional": 5,
+   "needs-confirmation": 4
   },
   "disclaimer": "이 결과는 제공된 텍스트를 대조한 준비 보조자료이며 적격·준수 여부 판정이 아닙니다. 공식 공고 원문과 발주기관 안내가 우선하며, 최종 판단은 사람이 합니다.",
   "x_meta": {
@@ -814,11 +719,11 @@
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 331,
-      "tokens_cached": 283,
-      "tokens_out": 73,
-      "tokens_reasoning": 58,
-      "cost_usd": 0.00076645,
-      "latency_ms": 1462,
+      "tokens_cached": 0,
+      "tokens_out": 85,
+      "tokens_reasoning": 70,
+      "cost_usd": 0.000775,
+      "latency_ms": 1164,
       "error": null
      },
      {
@@ -827,95 +732,73 @@
       "model_resolved": "muse-spark-1.3",
       "tokens_in": 2571,
       "tokens_cached": 0,
-      "tokens_out": 27172,
-      "tokens_reasoning": 17452,
-      "cost_usd": 0.11869475,
-      "latency_ms": 92288,
-      "error": null
-     },
-     {
-      "stage": "E2",
-      "attempt": 0,
-      "model_resolved": "muse-spark-1.3",
-      "tokens_in": 1759,
-      "tokens_cached": 0,
-      "tokens_out": 707,
-      "tokens_reasoning": 442,
-      "cost_usd": 0.0052035,
-      "latency_ms": 4920,
+      "tokens_out": 17263,
+      "tokens_reasoning": 9522,
+      "cost_usd": 0.0765815,
+      "latency_ms": 52515,
       "error": null
      },
      {
       "stage": "E4",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3742,
+      "tokens_in": 3526,
       "tokens_cached": 0,
-      "tokens_out": 2811,
-      "tokens_reasoning": 2293,
-      "cost_usd": 0.01662425,
-      "latency_ms": 13772,
+      "tokens_out": 2227,
+      "tokens_reasoning": 2153,
+      "cost_usd": 0.01387225,
+      "latency_ms": 8424,
       "error": null
      },
      {
       "stage": "M",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3633,
+      "tokens_in": 3138,
       "tokens_cached": 0,
-      "tokens_out": 3856,
-      "tokens_reasoning": 2065,
-      "cost_usd": 0.02092925,
-      "latency_ms": 16012,
+      "tokens_out": 3858,
+      "tokens_reasoning": 2232,
+      "cost_usd": 0.020319,
+      "latency_ms": 13819,
       "error": null
      },
      {
       "stage": "C",
       "attempt": 0,
       "model_resolved": "muse-spark-1.3",
-      "tokens_in": 3523,
+      "tokens_in": 3251,
       "tokens_cached": 0,
-      "tokens_out": 786,
-      "tokens_reasoning": 583,
-      "cost_usd": 0.00774425,
-      "latency_ms": 4044,
+      "tokens_out": 796,
+      "tokens_reasoning": 588,
+      "cost_usd": 0.00744675,
+      "latency_ms": 3724,
       "error": null
      }
     ],
     "quote_checks": {
-     "total": 32,
-     "passed": 30,
-     "requoted": 1,
+     "total": 24,
+     "passed": 24,
+     "requoted": 0,
      "retracted": 0,
      "unverified": 0,
      "ungrounded": 0,
-     "fix_rounds": 1
+     "fix_rounds": 0
     },
     "rechecks": {
      "requested": 0,
      "resolved": 0
     },
     "coverage": {
-     "trigger_segments": 27,
-     "cited": 22,
-     "explained": 1,
-     "sent": 4,
-     "unexplained": 0
+     "trigger_segments": 28,
+     "cited": 18,
+     "explained": 7,
+     "sent": 3,
+     "unexplained": 0,
+     "list_entries": 1
     },
     "status_hint_downgrades": 0,
     "validity_merges": [],
-    "list_entry_joins": [
-     {
-      "kept": "R12",
-      "absorbed": "R13",
-      "seg_id": "B_NOTICE-L25"
-     },
-     {
-      "kept": "R12",
-      "absorbed": "R14",
-      "seg_id": "B_NOTICE-L25"
-     }
-    ],
+    "list_entry_joins": [],
     "member_rule_conditions": [
      {
       "tmp_id": "R1",
@@ -926,6 +809,7 @@
       "condition_quote": "대표사"
      }
     ],
+    "file_rule_scope_conditions": [],
     "stages": [
      {
       "stage": "U",
@@ -946,22 +830,15 @@
       "notes": []
      },
      {
-      "stage": "E2",
-      "attempt": 0,
-      "called": true,
-      "prompt_version": "e2_fix/1.0.0",
-      "error": null,
-      "dropped": [],
-      "notes": []
-     },
-     {
       "stage": "E4",
       "attempt": 0,
       "called": true,
       "prompt_version": "e4_coverage/1.0.0+req_rules/1.1.0",
       "error": null,
       "dropped": [],
-      "notes": []
+      "notes": [
+       "ids_canonicalized: 3"
+      ]
      },
      {
       "stage": "M",
@@ -983,29 +860,15 @@
      }
     ]
    },
-   "cost_total_usd": 0.16996245,
+   "cost_total_usd": 0.1189945,
    "info_gaps": [],
    "asked_items": [],
-   "removed_records": [
-    {
-     "tmp_id": "R13",
-     "why": "joined into R12 (same list entry)"
-    },
-    {
-     "tmp_id": "R14",
-     "why": "joined into R12 (same list entry)"
-    }
-   ],
+   "removed_records": [],
    "adjudication_log": [
     {
      "candidate": "K1",
      "action": "kept",
      "why": "same_obligation=yes"
-    },
-    {
-     "candidate": "K1",
-     "action": "question_replaced",
-     "why": "QV1"
     }
    ],
    "stop": null,
@@ -1015,13 +878,13 @@
    "output_lang": "ko",
    "analysis_state": "complete",
    "banner": "",
-   "summary_line": "요구사항 29개를 목록의 파일 7개와 대조했습니다: 충족 4 · 누락 6 · 오류 8 · 조건부 8 · 확인 필요 3.",
+   "summary_line": "요구사항 23개를 목록의 파일 7개와 대조했습니다: 충족 3 · 누락 3 · 오류 8 · 조건부 5 · 확인 필요 4.",
    "rows": [
     {
      "id": "R01",
      "tmp_id": "R1",
      "subject": "consortium composition",
-     "requirement": "구성원은 대표사를 포함하여 2개사 이하로 구성해야 한다.",
+     "requirement": "공동수급 구성원은 대표사를 포함하여 2개사 이하로 구성해야 한다.",
      "category": "other",
      "seg_id": "B_NOTICE-L13",
      "page": 0,
@@ -1087,7 +950,7 @@
      "id": "R02",
      "tmp_id": "R2",
      "subject": "consortium composition",
-     "requirement": "대표사의 지분율은 51퍼센트 이상이어야 한다.",
+     "requirement": "공동수급 대표사의 지분율은 51퍼센트 이상이어야 한다.",
      "category": "other",
      "seg_id": "B_NOTICE-L13",
      "page": 0,
@@ -1436,7 +1299,6 @@
      "verify_method": "exact",
      "rule": "S13",
      "reason_codes": [
-      "CHECK_FAILED:F5",
       "CHECK_FAILED:F6"
      ],
      "info_codes": [],
@@ -1503,8 +1365,8 @@
       },
       {
        "id": "F5",
-       "result": "fail",
-       "detail": "fail: 물안개시스템_사업자등록증.pdf: sealed = no"
+       "result": "not_applicable",
+       "detail": ""
       },
       {
        "id": "F6",
@@ -1568,7 +1430,7 @@
      "id": "R06",
      "tmp_id": "R6",
      "subject": "corporate registry certificate",
-     "requirement": "법인등기부등본을 입찰서 제출 마감일 기준 최근 3개월 이내 발급분으로 제출해야 한다.",
+     "requirement": "법인등기부등본은 입찰서 제출 마감일 기준 최근 3개월 이내 발급분을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L19",
      "page": 0,
@@ -1707,7 +1569,7 @@
      "id": "R07",
      "tmp_id": "R7",
      "subject": "corporate seal certificate",
-     "requirement": "법인인감증명서를 입찰서 제출 마감일 기준 최근 3개월 이내 발급분으로 제출해야 한다.",
+     "requirement": "법인인감증명서는 입찰서 제출 마감일 기준 최근 3개월 이내 발급분을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L20",
      "page": 0,
@@ -1842,8 +1704,8 @@
     {
      "id": "R08",
      "tmp_id": "R8",
-     "subject": "usage seal declaration",
-     "requirement": "사용인감을 날인하는 경우 사용인감계를 제출해야 한다.",
+     "subject": "usage seal report",
+     "requirement": "사용인감을 날인하는 경우에 사용인감계를 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L21",
      "page": 0,
@@ -1908,7 +1770,7 @@
     {
      "id": "R09",
      "tmp_id": "R9",
-     "subject": "clean contract pledge",
+     "subject": "integrity pact",
      "requirement": "청렴계약이행서약서를 제출하고 인감을 날인해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L22",
@@ -2043,10 +1905,10 @@
     },
     {
      "id": "R10",
-     "tmp_id": "R31",
+     "tmp_id": "R10",
      "subject": "personal data consent form",
-     "requirement": "개인정보 수집이용 동의서는 투입 예정 인력별로 1매씩 자필 서명해야 한다.",
-     "category": "signature_seal",
+     "requirement": "개인정보 수집이용 동의서는 투입 예정 인력 전원이 각자 자필 서명하여 제출해야 한다.",
+     "category": "document",
      "seg_id": "B_NOTICE-L23",
      "page": 0,
      "verify_method": "exact",
@@ -2181,147 +2043,9 @@
     },
     {
      "id": "R11",
-     "tmp_id": "R10",
-     "subject": "personal data consent form",
-     "requirement": "개인정보 수집이용 동의서를 투입 예정 인력 전원이 각자 자필 서명하여 제출해야 한다.",
-     "category": "document",
-     "seg_id": "B_NOTICE-L23",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S12",
-     "reason_codes": [
-      "QUANTITY_SHORT"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F8",
-       "result": "pass",
-       "detail": "all issue dates on or before 2026-12-05"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "fail",
-       "detail": "3 signed forms for 4 persons"
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [
-      "M5"
-     ],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R12",
      "tmp_id": "R11",
      "subject": "proposal",
-     "requirement": "제안서를 제안요청서 3의 목차에 따라 제출해야 한다.",
+     "requirement": "제안요청서 Ⅲ의 목차에 따른 제안서를 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L24",
      "page": 0,
@@ -2456,10 +2180,10 @@
      }
     },
     {
-     "id": "R13",
+     "id": "R12",
      "tmp_id": "R12",
      "subject": "bid guarantee insurance policy",
-     "requirement": "입찰보증보험증권을 제출해야 한다.",
+     "requirement": "입찰금액의 100분의 5 이상을 보증금액으로 하고 입찰서 제출 마감일부터 30일 이상을 보증기간으로 하는 입찰보증보험증권을 제출해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L25",
      "page": 0,
@@ -2595,10 +2319,10 @@
      }
     },
     {
-     "id": "R14",
-     "tmp_id": "R15",
+     "id": "R13",
+     "tmp_id": "R13",
      "subject": "consortium agreement",
-     "requirement": "공동수급으로 참가하는 경우 공동수급협정서를 제출해야 한다.",
+     "requirement": "공동수급으로 참가하는 경우 공동수급협정서를 제출하고 구성원 전원의 인감을 날인해야 한다.",
      "category": "document",
      "seg_id": "B_NOTICE-L26",
      "page": 0,
@@ -2661,74 +2385,8 @@
      }
     },
     {
-     "id": "R15",
-     "tmp_id": "R16",
-     "subject": "consortium agreement",
-     "requirement": "공동수급협정서에 구성원 전원의 인감을 날인해야 한다.",
-     "category": "signature_seal",
-     "seg_id": "B_NOTICE-L26",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S6",
-     "reason_codes": [
-      "NOT_TRIGGERED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": "not_triggered",
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R16",
-     "tmp_id": "R17",
+     "id": "R14",
+     "tmp_id": "R14",
      "subject": "consortium member documents",
      "requirement": "공동수급으로 참가하는 경우 구성원 각각의 사업자등록증 사본과 법인등기부등본을 제출해야 한다.",
      "category": "document",
@@ -2793,10 +2451,10 @@
      }
     },
     {
-     "id": "R17",
-     "tmp_id": "R18",
+     "id": "R15",
+     "tmp_id": "R15",
      "subject": "submission method",
-     "requirement": "국가종합전자조달시스템으로 전자 제출해야 한다.",
+     "requirement": "제출서류를 국가종합전자조달시스템으로 전자 제출해야 한다.",
      "category": "submission_method",
      "seg_id": "B_NOTICE-L29",
      "page": 0,
@@ -2929,10 +2587,10 @@
      }
     },
     {
-     "id": "R18",
-     "tmp_id": "R19",
+     "id": "R16",
+     "tmp_id": "R16",
      "subject": "submission deadline",
-     "requirement": "전자입찰서를 2026년 12월 9일 10시까지 제출해야 한다.",
+     "requirement": "전자입찰서를 2026년 12월 9일 10시에 제출 마감해야 한다.",
      "category": "deadline",
      "seg_id": "B_NOTICE-L32",
      "page": 0,
@@ -3067,10 +2725,148 @@
      }
     },
     {
-     "id": "R19",
-     "tmp_id": "R21",
+     "id": "R17",
+     "tmp_id": "R17",
+     "subject": "proposal evaluation schedule",
+     "requirement": "제안서 평가는 2026년 12월 15일에 예정되어 있다.",
+     "category": "deadline",
+     "seg_id": "B_NOTICE-L33",
+     "page": 0,
+     "verify_method": "exact",
+     "rule": "S9",
+     "reason_codes": [
+      "ACTION_PENDING"
+     ],
+     "info_codes": [
+      "TZ_NOT_STATED"
+     ],
+     "checks": [
+      {
+       "id": "Q1",
+       "result": "pass",
+       "detail": "exact"
+      },
+      {
+       "id": "Q2",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q3",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q4",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q5",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q6",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q7",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "Q8",
+       "result": "pass",
+       "detail": ""
+      },
+      {
+       "id": "F1",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F2",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F3",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F4",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F5",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F6",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F7",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F8",
+       "result": "not_applicable",
+       "detail": "no issue date or no as_of"
+      },
+      {
+       "id": "F9",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F10",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F11",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F12",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F13",
+       "result": "not_applicable",
+       "detail": ""
+      },
+      {
+       "id": "F14",
+       "result": "not_applicable",
+       "detail": ""
+      }
+     ],
+     "evidence_row_ids": [],
+     "condition_state": null,
+     "deadline_sort": "2026-12-15",
+     "provenance": {
+      "extracted_by": "model",
+      "verified_by": "code",
+      "matched_by": "model",
+      "status_by": "code"
+     }
+    },
+    {
+     "id": "R18",
+     "tmp_id": "R19",
      "subject": "file format",
-     "requirement": "모든 제출서류는 피디에프 형식으로 제출해야 한다.",
+     "requirement": "모든 제출서류를 PDF 형식으로 제출해야 한다.",
      "category": "file_format",
      "seg_id": "B_RFP-L5",
      "page": 0,
@@ -3203,10 +2999,10 @@
      }
     },
     {
-     "id": "R20",
-     "tmp_id": "R22",
+     "id": "R19",
+     "tmp_id": "R20",
      "subject": "file format",
-     "requirement": "한글과 워드 파일은 접수하지 않으므로 해당 형식으로 제출해서는 안 된다.",
+     "requirement": "한글과 워드 파일은 접수하지 않으므로 제출해서는 안 된다.",
      "category": "file_format",
      "seg_id": "B_RFP-L5",
      "page": 0,
@@ -3339,10 +3135,10 @@
      }
     },
     {
-     "id": "R21",
-     "tmp_id": "R23",
+     "id": "R20",
+     "tmp_id": "R21",
      "subject": "file size",
-     "requirement": "파일 1개의 용량은 30메가바이트 이하로 해야 한다.",
+     "requirement": "파일 1개의 용량을 30MB 이하로 제출해야 한다.",
      "category": "file_format",
      "seg_id": "B_RFP-L6",
      "page": 0,
@@ -3475,10 +3271,10 @@
      }
     },
     {
-     "id": "R22",
-     "tmp_id": "R24",
-     "subject": "file merging",
-     "requirement": "입찰참가자격 확인서류를 하나의 피디에프 파일로 병합하여 제출해야 한다.",
+     "id": "R21",
+     "tmp_id": "R22",
+     "subject": "file merge rule",
+     "requirement": "입찰참가자격 확인서류를 하나의 PDF 파일로 병합하여 제출해야 한다.",
      "category": "merge_rule",
      "seg_id": "B_RFP-L7",
      "page": 0,
@@ -3615,10 +3411,10 @@
      }
     },
     {
-     "id": "R23",
-     "tmp_id": "R25",
+     "id": "R22",
+     "tmp_id": "R23",
      "subject": "file naming",
-     "requirement": "파일명은 업체명과 서류명 형식으로 정하여 제출해야 한다.",
+     "requirement": "파일명을 업체명_서류명.pdf 형식으로 작성해야 한다.",
      "category": "file_naming",
      "seg_id": "B_RFP-L8",
      "page": 0,
@@ -3751,10 +3547,10 @@
      }
     },
     {
-     "id": "R24",
-     "tmp_id": "R26",
+     "id": "R23",
+     "tmp_id": "R24",
      "subject": "file naming",
-     "requirement": "파일명의 업체명에는 주식회사 등 법인 표기를 넣지 않아야 한다.",
+     "requirement": "파일명의 업체명에는 법인 표기를 넣지 않아야 한다.",
      "category": "file_naming",
      "seg_id": "B_RFP-L8",
      "page": 0,
@@ -3885,619 +3681,69 @@
       "matched_by": "model",
       "status_by": "code"
      }
-    },
-    {
-     "id": "R25",
-     "tmp_id": "R27",
-     "subject": "bid application form",
-     "requirement": "입찰참가신청서에 인감을 날인해야 한다.",
-     "category": "signature_seal",
-     "seg_id": "B_FORMS-L3",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S15",
-     "reason_codes": [
-      "ALL_CHECKS_PASSED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "pass",
-       "detail": "pass: 물안개시스템_입찰참가신청서.hwp"
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F8",
-       "result": "pass",
-       "detail": "all issue dates on or before 2026-12-05"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [
-      "M1"
-     ],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R26",
-     "tmp_id": "R28",
-     "subject": "consortium agreement",
-     "requirement": "공동수급협정서에 구성원 전원의 인감을 날인해야 한다.",
-     "category": "signature_seal",
-     "seg_id": "B_FORMS-L4",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S6",
-     "reason_codes": [
-      "NOT_TRIGGERED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": "not_triggered",
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R27",
-     "tmp_id": "R29",
-     "subject": "usage seal declaration",
-     "requirement": "사용인감계에 사용인감과 법인인감을 함께 날인해야 한다.",
-     "category": "signature_seal",
-     "seg_id": "B_FORMS-L5",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S6",
-     "reason_codes": [
-      "NOT_TRIGGERED"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": "not_triggered",
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R28",
-     "tmp_id": "R30",
-     "subject": "clean contract pledge",
-     "requirement": "청렴계약이행서약서에 인감을 날인해야 한다.",
-     "category": "signature_seal",
-     "seg_id": "B_FORMS-L6",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S11",
-     "reason_codes": [
-      "PARENT_MISSING"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "unknown",
-       "detail": "no matched file for this requirement"
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F8",
-       "result": "not_applicable",
-       "detail": "no issue date or no as_of"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
-    },
-    {
-     "id": "R29",
-     "tmp_id": "R32",
-     "subject": "personal data consent form",
-     "requirement": "개인정보 수집·이용 동의서는 투입 예정 인력별로 1매씩 제출해야 한다.",
-     "category": "document",
-     "seg_id": "B_FORMS-L8",
-     "page": 0,
-     "verify_method": "exact",
-     "rule": "S12",
-     "reason_codes": [
-      "QUANTITY_SHORT"
-     ],
-     "info_codes": [],
-     "checks": [
-      {
-       "id": "Q1",
-       "result": "pass",
-       "detail": "exact"
-      },
-      {
-       "id": "Q2",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q3",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q4",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q5",
-       "result": "pass",
-       "detail": "not applicable"
-      },
-      {
-       "id": "Q6",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q7",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "Q8",
-       "result": "pass",
-       "detail": ""
-      },
-      {
-       "id": "F1",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F2",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F3",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F4",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F5",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F6",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F7",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F8",
-       "result": "pass",
-       "detail": "all issue dates on or before 2026-12-05"
-      },
-      {
-       "id": "F9",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F10",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F11",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F12",
-       "result": "not_applicable",
-       "detail": ""
-      },
-      {
-       "id": "F13",
-       "result": "fail",
-       "detail": "3 signed forms for 4 persons"
-      },
-      {
-       "id": "F14",
-       "result": "not_applicable",
-       "detail": ""
-      }
-     ],
-     "evidence_row_ids": [
-      "M5"
-     ],
-     "condition_state": null,
-     "deadline_sort": "9999",
-     "provenance": {
-      "extracted_by": "model",
-      "verified_by": "code",
-      "matched_by": "model",
-      "status_by": "code"
-     }
     }
    ],
    "display_order": [
-    "R18",
+    "R16",
     "R17",
+    "R15",
     "R05",
     "R06",
     "R07",
     "R09",
     "R10",
-    "R11",
-    "R13",
+    "R12",
+    "R18",
     "R19",
     "R20",
     "R21",
     "R22",
-    "R23",
-    "R28",
-    "R29",
     "R01",
     "R02",
     "R03",
     "R04",
     "R08",
-    "R12",
+    "R11",
+    "R13",
     "R14",
-    "R15",
-    "R16",
-    "R24",
-    "R25",
-    "R26",
-    "R27"
+    "R23"
    ],
    "top_actions": [
-    "R18: C1에 대한 기관 답변을 기다리세요. 모든 해석에 맞추려면 2026. 12. 9.(수) 10:00 전에 올리세요.",
-    "R17: 제출할 때 이 절차를 따르세요.",
-    "R05: 요구된 서명·날인을 하세요. 요구된 원본 또는 원본대조필 사본을 내세요."
+    "R16: C1에 대한 기관 답변을 기다리세요. 모든 해석에 맞추려면 2026. 12. 9.(수) 10:00 전에 올리세요.",
+    "R17: 2026. 12. 15.(화) 전에 올리도록 계획하세요.",
+    "R15: 제출할 때 이 절차를 따르세요."
    ],
    "pre_submission_checklist": [
-    "[ ] R18 공고문 5.가: C1에 대한 기관 답변을 기다리세요. 모든 해석에 맞추려면 2026. 12. 9.(수) 10:00 전에 올리세요.",
-    "[ ] R17 공고문 4.: 제출할 때 이 절차를 따르세요.",
-    "[ ] R05 공고문 3.③: 요구된 서명·날인을 하세요. 요구된 원본 또는 원본대조필 사본을 내세요.",
+    "[ ] R16 공고문 5.가: C1에 대한 기관 답변을 기다리세요. 모든 해석에 맞추려면 2026. 12. 9.(수) 10:00 전에 올리세요.",
+    "[ ] R17 공고문 5.나: 2026. 12. 15.(화) 전에 올리도록 계획하세요.",
+    "[ ] R15 공고문 4.: 제출할 때 이 절차를 따르세요.",
+    "[ ] R05 공고문 3.③: 요구된 원본 또는 원본대조필 사본을 내세요.",
     "[ ] R06 공고문 3.④: 요구 기간에 유효한 서류를 새로 발급받으세요.",
     "[ ] R07 공고문 3.⑤: 이 서류를 추가하세요.",
     "[ ] R09 공고문 3.⑦: 이 서류를 추가하세요.",
     "[ ] R10 공고문 3.⑧: 모자란 서류를 추가하세요.",
-    "[ ] R11 공고문 3.⑧: 모자란 서류를 추가하세요.",
-    "[ ] R13 공고문 3.⑩: 요구 기간에 유효한 서류를 새로 발급받으세요.",
-    "[ ] R19 제안요청서 Ⅳ-2: 요구 형식으로 변환하세요."
+    "[ ] R12 공고문 3.⑩: 요구 기간에 유효한 서류를 새로 발급받으세요.",
+    "[ ] R18 제안요청서 Ⅳ-2: 요구 형식으로 변환하세요."
    ],
    "agency_questions": [
     {
      "for": "C1",
-     "question": "공고문 5.가는 '2026. 12. 9.(수) 10:00', 제안요청서 Ⅳ-1은 '2026년 12월 10일(목) 오전 10시'로 적혀 있습니다. 제출 마감은 2026. 12. 9.(수) 10:00입니까? (예/아니오)"
+     "question": "공고문 5.가 ‘전자입찰서(제안서 포함) 제출 마감: 2026. 12. 9.(수) 10:00 (나라장터 서버 시각 기준)’와 제안요청서 Ⅳ-1 ‘제안서 제출 마감 일시: 2026년 12월 10일(목) 오전 10시’가 다른데, 공고문 5.가의 값이 적용됩니까? (예/아니오)"
     }
    ],
    "conflicts_detail": [
     {
      "id": "C1",
      "members": [
-      "R18",
-      "R20"
+      "R16",
+      "R18"
      ],
      "rule": "K1",
      "values": {
       "a": "2026. 12. 9.(수) 10:00",
       "b": "2026년 12월 10일(목) 오전 10시"
      },
-     "question_source": "template"
+     "question_source": "model"
     }
    ],
    "unverified_rows": [],

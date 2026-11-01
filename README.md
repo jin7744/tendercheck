@@ -86,7 +86,9 @@ rule that lost its form's condition (fix 6), and a merge rule a single bidder wo
 follow, the one fail-open case found (fix 7). Fix 8 reads a filename template the model quoted inside a sentence. Fix 9 sends an unextracted entry of a numbered
 list ("⑨ 제안서(제안요청서 Ⅲ의 목차에 따름)", no obligation verb) to the coverage sweep.
 
-With fixes 5–9 the six regression lists were also re-run three times live: 17/18 runs, 332/333 rows. Every
+With fixes 5–9 the six regression lists were also re-run three times live: 17/18 runs, 332/333 rows. On Nov 1 the
+seven cases on the page were recorded again on this frozen engine, one live run each: the six graded lists 6/6,
+111/111 rows ($0.89 for all seven, `docs/live_runs_20261101.md`). Every
 non-clean run in pass 4, regression or aux, is the same row: the coverage stage extracts the seal rule of the
 usage-seal form as "mandatory: unclear", so it reads "needs check" instead of "met". That is the cautious
 direction, and code does not override the model's own doubt.
