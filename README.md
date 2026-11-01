@@ -58,7 +58,7 @@ report.json + a page
 
 ## Results on the synthetic test set
 
-Two synthetic tenders (A in English, B in Korean) with seven bidder lists, hand-written answer keys and an
+Two synthetic tenders (A in English, B in Korean) with seven bidder lists, answer keys written into the test specification before any engine code, and an
 independent grader in `eval/` that does not import the engine. All numbers below are from live model runs on
 2026-10-28; the per-run logs are in `docs/live_runs_20261028.md`.
 
