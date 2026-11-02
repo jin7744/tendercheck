@@ -551,6 +551,15 @@ class StageConfig(unittest.TestCase):
                                        ("E1", 32768, {"keep": 1, "reasoning_effort": "medium"})])
         self.assertEqual((client.max_output_tokens, client.extra_body), (1000, {"keep": 1}))
 
+    def test_long_input_doubles_the_output_budget(self):
+        # package R (a real tender) is about 31,000 characters; recorded synthetic calls stay under 10,000
+        client = RecordingClient({("E1", 0): ServerError(500), ("E1", 1): ServerError(500), ("M", 0): ServerError(500)})
+        stages._call(client, "E1", 0, "가" * 20000)
+        stages._call(client, "E1", 1, "가" * 20001)
+        stages._call(client, "M", 0, "가" * 20001)
+        self.assertEqual([s[:2] for s in client.seen], [("E1", 32768), ("E1", 65536), ("M", 32768)])
+        self.assertEqual(client.max_output_tokens, 1000)
+
     def test_effort_not_sent_to_other_providers(self):
         client = fake({("U", 0): {"asked_items": []}})
         stages.run_ask(client, "Check the bank reference letter.")

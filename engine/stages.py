@@ -186,8 +186,15 @@ def _mask(value):
 # calling
 # ---------------------------------------------------------------------------------------------
 
+# A package far longer than the synthetic ones (a real tender: about 31,000 characters against 3,600) needs room to
+# answer; B-M2's E1 reply alone was 17,263 output tokens. Content above LONG_INPUT_CHARS gets LONG_INPUT_FACTOR x
+# each stage's max_output_tokens. The request hash does not include the budget, so recorded calls replay unchanged.
+LONG_INPUT_CHARS = 20000
+LONG_INPUT_FACTOR = 2
+
+
 @contextmanager
-def stage_settings(client, stage: str):
+def stage_settings(client, stage: str, *, long_input: bool = False):
     """Apply STAGE_CONFIG to the client for one call and restore it afterwards. client.complete() has no
     per-call knobs, so this sets the public attributes max_output_tokens and extra_body["reasoning_effort"]."""
     cfg = STAGE_CONFIG[stage]
@@ -195,7 +202,7 @@ def stage_settings(client, stage: str):
     try:
         if isinstance(getattr(client, "max_output_tokens", None), int):
             saved["max_output_tokens"] = client.max_output_tokens
-            client.max_output_tokens = int(cfg["max_output_tokens"])
+            client.max_output_tokens = int(cfg["max_output_tokens"]) * (LONG_INPUT_FACTOR if long_input else 1)
         if getattr(client, "provider", "") in REASONING_EFFORT_PROVIDERS \
                 and isinstance(getattr(client, "extra_body", None), dict):
             saved["extra_body"] = client.extra_body
@@ -217,7 +224,7 @@ def _call(client, stage: str, attempt: int, content: str) -> dict:
     env["called"] = True
     messages = [{"role": "user", "content": content}]
     try:
-        with stage_settings(client, stage):
+        with stage_settings(client, stage, long_input=len(content) > LONG_INPUT_CHARS):
             result = client.complete(stage, attempt, messages, STAGES[stage][1])
     except PROPAGATE_ERRORS:
         raise
