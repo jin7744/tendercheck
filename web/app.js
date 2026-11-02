@@ -117,8 +117,7 @@
     $("case").value = id;
     S.data = data;
     S.filter = null;
-    $("case-title").textContent = data.title;
-    $("case-blurb").textContent = data.blurb;
+    $("case-blurb").textContent = `${data.title}: ${data.blurb}`;
     for (const el of ["rows", "act", "pre", "conflicts", "questions", "summary", "doc-view", "bidder", "nis", "flags"]) $(el).lang = data.lang;
     setDocs(data.sources);
     $("bidder").textContent = data.manifest_text || "";
@@ -137,7 +136,15 @@
   }
 
   function renderTabs(active) {
-    const tabs = clear($("doc-tabs"));
+    // rebuild only when the documents or their flags change, so the focused tab survives a click
+    const tabs = $("doc-tabs");
+    const key = S.docs.map((d) => d.doc_id).join("|") + "#" + [...S.injected].join("|");
+    if (S.tabsKey === key) {
+      [...tabs.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === active)));
+      return;
+    }
+    S.tabsKey = key;
+    clear(tabs);
     S.docs.forEach((d, i) => {
       const flagged = [...S.injected].some((s) => s.startsWith(`${d.doc_id}-`));
       tabs.append(h("button", { type: "button", class: "doc-tab", "aria-pressed": String(i === active),
@@ -214,7 +221,18 @@
   }
   $("ev-close").addEventListener("click", closeSheet);
   $("scrim").addEventListener("click", closeSheet);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("evidence").classList.contains("open")) closeSheet(); });
+  document.addEventListener("keydown", (e) => {
+    const ev = $("evidence");
+    if (!ev.classList.contains("open")) return;
+    if (e.key === "Escape") { closeSheet(); return; }
+    if (e.key !== "Tab") return;
+    // keep focus inside the sheet while it is a modal dialog
+    const f = [...ev.querySelectorAll('button:not([disabled]), summary, [tabindex]:not([tabindex="-1"])')].filter((x) => x.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   SMALL.addEventListener("change", () => { if (!SMALL.matches && $("evidence").classList.contains("open")) closeSheet(); });
 
   /* ── findings ──────────────────────────────────────── */
@@ -229,7 +247,9 @@
     $("as-of").textContent = (x.as_of || "n/a").replace("T", " ").replace(/:00([+-]\d\d:\d\d)$/, " $1");
     $("disclaimer").textContent = report.disclaimer || "";
     setBanner(x.banner || "");
-    $("summary").textContent = [report.basis, x.summary_line].filter(Boolean).join(" ");
+    // the per-status counts are already in the tally; keep the basis and what was compared
+    $("summary").textContent = [report.basis, (x.summary_line || "").split(/[:：]/)[0].trim() + (x.summary_line ? "." : "")]
+      .filter((s) => s && s !== ".").join(" ");
 
     S.cited = new Set(Object.values(rows).map((r) => r.seg_id).filter(Boolean));
     S.injected = new Set((report.untrusted_instructions || []).map((u) => findSeg(u.quote)).filter(Boolean));
@@ -282,7 +302,7 @@
       h("b", null, value), label);
     box.append(...[
       item("quotes verified by code", `${q.passed} of ${q.passed + q.unverified}`, "log", true),
-      item("invariants hold", `${invOk} of ${(inv.checks || []).length}`, "log", true),
+      item("report checks passed", `${invOk} of ${(inv.checks || []).length}`, "log", true),
       (report.conflicts || []).length ? item(report.conflicts.length > 1 ? "conflicts between documents" : "conflict between documents", String(report.conflicts.length), "conf-sec") : null,
       (report.untrusted_instructions || []).length ? item("AI instruction in the tender, ignored", String(report.untrusted_instructions.length), "flag-sec") : null,
       ((x.flags || {}).pii_masked || []).length ? item("kinds of personal data masked", String(x.flags.pii_masked.length), "flag-sec") : null,
@@ -412,7 +432,7 @@
 
   function quoteButton(side) {
     return h("button", { type: "button", class: "quote quote-btn", title: "Open this line in the tender",
-      onclick: (e) => openLine(side.quote, null, e.currentTarget) }, side.quote, h("span", { class: "open-line" }, "Open line →"));
+      onclick: (e) => openLine(side.quote, null, e.currentTarget) }, h("span", { class: "quote-text" }, side.quote), h("span", { class: "open-line" }, "Open line →"));
   }
 
   function copyButton(text) {

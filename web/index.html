@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
 <title>TenderCheck: pre-submission checklist</title>
 <meta name="description" content="A verification agent that checks a bid package against the tender's own documents. Every requirement is quoted from the source; every status is computed by code.">
-<link rel="stylesheet" href="app.css?v=4">
+<link rel="stylesheet" href="app.css?v=5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181d'/%3E%3Cpath d='M8 17l5 5 11-12' stroke='%23fbfcfd' stroke-width='3' fill='none'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -28,10 +28,10 @@
 
 <div class="casebar">
   <div class="case-head">
-    <h1 id="case-title">Loading case…</h1>
+    <h1 id="case-title">Check a bid package against the tender before you submit</h1>
     <p id="case-blurb"></p>
   </div>
-  <p class="claim">Model finds and matches. <strong>Code verifies every quote and decides every status.</strong> It never says a bid is eligible; a person makes that call.</p>
+  <p class="claim">Meta's Muse Spark extracts the requirements and matches your file list. <strong>Code verifies every quote and decides every status.</strong> It never says a bid is eligible; a person makes the final call.</p>
   <div class="proofline" id="proofline" aria-label="What code checked in this run"></div>
   <div class="tally" id="tally" role="group" aria-label="Show requirements by status">
     <span class="tally-ink" id="tally-ink" aria-hidden="true"></span>
@@ -51,7 +51,7 @@
     <section class="sec" aria-labelledby="rows-h">
       <div class="sec-head">
         <h2 id="rows-h">Requirements</h2>
-        <span class="hint">Worst first. Select a row (or use ↑ ↓) to open its line in the tender.</span>
+        <span class="hint">Worst first. Select a row to open its line in the tender (↑ ↓ to move, Enter to open).</span>
       </div>
       <ol id="rows" class="rows"></ol>
       <p id="rows-empty" class="empty" hidden>No requirement has this status. <button type="button" id="show-all" class="link">Show all</button></p>
@@ -123,6 +123,6 @@
   <p class="hint">Synthetic demo data: fictional agencies, bidders and people. Do not paste real or confidential documents.</p>
 </footer>
 
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>
