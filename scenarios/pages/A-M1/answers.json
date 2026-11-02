@@ -1,0 +1,102 @@
+{
+  "set": "A-M1",
+  "note": "Synthetic scanned pages for case A-M1 (bidder QDS, fictional). Written by hand before any page-reading code. The engine never reads this file. Two pages contradict the bidder's own file list on purpose.",
+  "list_says": {
+    "QDS_BF1.pdf": {
+      "sealed": "yes",
+      "issue_date": "2026-11-20"
+    },
+    "QDS_TAX.pdf": {
+      "sealed": "no",
+      "issue_date": "2026-10-15"
+    }
+  },
+  "pages": [
+    {
+      "page_id": "QDS_BF1-p1",
+      "file": "QDS_BF1.pdf",
+      "page": 1,
+      "render": {
+        "template": "bf1_p1",
+        "seed": 1101,
+        "image": "QDS_BF1-p1.png"
+      },
+      "truth": {
+        "seal_fields": [],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ],
+        "confusers": [
+          "a red printed company logo at the top left (not an ink seal)"
+        ]
+      }
+    },
+    {
+      "page_id": "QDS_BF1-p2",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 1102,
+        "sealed": false,
+        "image": "QDS_BF1-p2.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "empty"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ],
+        "signature": "present"
+      }
+    },
+    {
+      "page_id": "QDS_TAX-p1",
+      "file": "QDS_TAX.pdf",
+      "page": 1,
+      "render": {
+        "template": "tax",
+        "seed": 1103,
+        "issued": "2026-07-15",
+        "issued_text": "15 July 2026",
+        "image": "QDS_TAX-p1.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "Official stamp",
+            "state": "stamped",
+            "whose": "the issuing authority"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date of issue",
+            "value": "2026-07-15"
+          }
+        ]
+      }
+    }
+  ],
+  "contradictions": [
+    "QDS_BF1.pdf: the list says sealed = yes; page 2's [Company seal] field is empty.",
+    "QDS_TAX.pdf: the list says issued 2026-10-15; page 1 prints Date of issue 15 July 2026."
+  ],
+  "expected_on_replayed_A-M1": {
+    "why": "U/E1/E4/M/C are replayed from replays/A-M1, so requirement ids are those of the recorded run.",
+    "R02": "met -> error (Form of Bid must bear the company seal; page 2 seal field empty)",
+    "R22": "met -> error ([Company seal] field of the form; page 2 empty)",
+    "R14": "met -> error (Tax Clearance valid 90 days from issue; printed issue 2026-07-15 ends 2026-10-13, before the 2026-11-30 deadline)",
+    "every_other_row": "unchanged"
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "set": "gate",
+  "note": "Field-level gate for the page-reading stage, pre-registered before any page-reading code. Fresh seeds, not the demo pages.",
+  "pass_rule": "PASS if at least 11 of 12 pages are read fully correctly AND no seal field is read in the wrong state (stamped read as empty, or empty read as stamped). Printed issue dates are compared as ISO dates after engine.dates parsing. One run, scored once.",
+  "pages": [
+    {
+      "page_id": "G01-bf1p2-sealed",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2001,
+        "sealed": true,
+        "scan_level": 1,
+        "image": "G01-bf1p2-sealed.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "stamped"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G02-bf1p2-sealed",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2002,
+        "sealed": true,
+        "scan_level": 1,
+        "image": "G02-bf1p2-sealed.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "stamped"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G03-bf1p2-sealed",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2003,
+        "sealed": true,
+        "scan_level": 2,
+        "image": "G03-bf1p2-sealed.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "stamped"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G04-bf1p2-sealed",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2004,
+        "sealed": true,
+        "scan_level": 2,
+        "image": "G04-bf1p2-sealed.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "stamped"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G05-bf1p2-empty",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2005,
+        "sealed": false,
+        "scan_level": 1,
+        "image": "G05-bf1p2-empty.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "empty"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G06-bf1p2-empty",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2006,
+        "sealed": false,
+        "scan_level": 1,
+        "image": "G06-bf1p2-empty.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "empty"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G07-bf1p2-empty",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2007,
+        "sealed": false,
+        "scan_level": 2,
+        "image": "G07-bf1p2-empty.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "empty"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G08-bf1p2-empty",
+      "file": "QDS_BF1.pdf",
+      "page": 2,
+      "render": {
+        "template": "bf1_p2",
+        "seed": 2008,
+        "sealed": false,
+        "scan_level": 2,
+        "image": "G08-bf1p2-empty.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "[Company seal]",
+            "state": "empty"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date",
+            "value": "2026-11-20"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G09-tax-2026-03-03",
+      "file": "QDS_TAX.pdf",
+      "page": 1,
+      "render": {
+        "template": "tax",
+        "seed": 2009,
+        "issued": "2026-03-03",
+        "issued_text": "3 March 2026",
+        "scan_level": 1,
+        "image": "G09-tax-2026-03-03.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "Official stamp",
+            "state": "stamped",
+            "whose": "the issuing authority"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date of issue",
+            "value": "2026-03-03"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G10-tax-2026-08-28",
+      "file": "QDS_TAX.pdf",
+      "page": 1,
+      "render": {
+        "template": "tax",
+        "seed": 2010,
+        "issued": "2026-08-28",
+        "issued_text": "28 August 2026",
+        "scan_level": 2,
+        "image": "G10-tax-2026-08-28.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "Official stamp",
+            "state": "stamped",
+            "whose": "the issuing authority"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date of issue",
+            "value": "2026-08-28"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G11-tax-2026-10-09",
+      "file": "QDS_TAX.pdf",
+      "page": 1,
+      "render": {
+        "template": "tax",
+        "seed": 2011,
+        "issued": "2026-10-09",
+        "issued_text": "9 October 2026",
+        "scan_level": 1,
+        "image": "G11-tax-2026-10-09.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "Official stamp",
+            "state": "stamped",
+            "whose": "the issuing authority"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date of issue",
+            "value": "2026-10-09"
+          }
+        ]
+      }
+    },
+    {
+      "page_id": "G12-tax-2026-06-21",
+      "file": "QDS_TAX.pdf",
+      "page": 1,
+      "render": {
+        "template": "tax",
+        "seed": 2012,
+        "issued": "2026-06-21",
+        "issued_text": "21 June 2026",
+        "scan_level": 2,
+        "image": "G12-tax-2026-06-21.png"
+      },
+      "truth": {
+        "seal_fields": [
+          {
+            "label": "Official stamp",
+            "state": "stamped",
+            "whose": "the issuing authority"
+          }
+        ],
+        "printed_dates": [
+          {
+            "label": "Date of issue",
+            "value": "2026-06-21"
+          }
+        ]
+      }
+    }
+  ]
+}
