@@ -37,12 +37,13 @@ def object_depth(schema, depth=0):
 
 
 class ModelSchemas(unittest.TestCase):
-    def test_seven_model_schemas_exist(self):
+    def test_model_schemas_exist(self):
+        # seven text stages plus x_pages for the optional page-reading stage V (added 2026-11-02)
         self.assertEqual(
             [p.name for p in MODEL_FILES],
             ["model_x_ask.schema.json", "model_x_conflict.schema.json", "model_x_coverage.schema.json",
              "model_x_extract.schema.json", "model_x_fix.schema.json", "model_x_match.schema.json",
-             "model_x_review.schema.json"],
+             "model_x_pages.schema.json", "model_x_review.schema.json"],
         )
 
     def test_strict_objects(self):

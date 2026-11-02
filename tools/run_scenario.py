@@ -3,6 +3,8 @@
   python3 -m tools.run_scenario --run A-M1 --mode fake --fake-fixture fixture.json --run-id dev_01
   python3 -m tools.run_scenario --run A-M1 --mode replay --run-id dev_01            (replays runs/dev_01/A-M1)
   TENDERCHECK_LIVE=1 python3 -m tools.run_scenario --run A-M1 --mode live --run-id live_20261028_01 --global-cap-usd 10
+  TENDERCHECK_LIVE=1 python3 -m tools.run_scenario --run A-M1 --pages A-M1 --mode live --hybrid-replay replays/A-M1       --run-id live_20261102_pages_r1 --global-cap-usd 140 --no-grade
+      (scanned pages: every recorded text stage is replayed from replays/A-M1 and only stage V is called live)
 
 Writes runs/<run_id>/<run>/{report.json, grading.json, report.txt, calls.jsonl, run.json} and grades with
 `python3 -m eval.grade` in a separate process (the engine never imports eval/). Live mode spends money: it needs
@@ -51,6 +53,39 @@ def user_message_for(run: str, test: str | None, cfg: dict) -> str:
         if aux.get("manifest") == run:
             return aux.get("user_message", "")
     raise SystemExit(f"test {test} has no run {run}")
+
+
+def load_pages(set_name: str) -> list[dict]:
+    """Scanned pages of one set, read from file names only (<file stem>-p<n>.png -> <file stem>.pdf page n).
+    The set's answers.json is never read here or by the engine."""
+    d = SCENARIOS / "pages" / set_name
+    pages = []
+    for p in sorted(d.glob("*-p*.png")):
+        stem, _, n = p.stem.rpartition("-p")
+        pages.append({"file": stem + ".pdf", "page": int(n), "png": p.read_bytes(), "image": f"{set_name}/{p.name}"})
+    if not pages:
+        raise SystemExit(f"no pages in {d}")
+    return pages
+
+
+class HybridClient:
+    """Replays every recorded stage of one run and sends only the listed stages to the live client. Used to add
+    stage V to a recorded run: the text stages' requests are unchanged, so the difference comes from the pages."""
+
+    def __init__(self, replay, live, live_stages=("V",)):
+        object.__setattr__(self, "_replay", replay)
+        object.__setattr__(self, "_live", live)
+        object.__setattr__(self, "_live_stages", frozenset(live_stages))
+
+    def __getattr__(self, name):
+        return getattr(object.__getattribute__(self, "_live"), name)
+
+    def __setattr__(self, name, value):          # per-call knobs only matter for the live call
+        setattr(object.__getattribute__(self, "_live"), name, value)
+
+    def complete(self, stage, attempt, messages, schema_name):
+        target = self._live if stage in self._live_stages else self._replay
+        return target.complete(stage, attempt, messages, schema_name)
 
 
 def scenario_inputs(run: str, test: str | None = None) -> dict:
@@ -105,6 +140,13 @@ def build_client(args, out_dir: Path):
     if (out_dir / CALLS_FILENAME).exists():
         raise SystemExit(f"{out_dir / CALLS_FILENAME} exists; use a new --run-id")
     ledger = Ledger(caps=Caps(global_stop_e8=int(round(args.global_cap_usd * E8_PER_USD))))
+    if args.hybrid_replay:
+        src = Path(args.hybrid_replay)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src / CALLS_FILENAME, out_dir / CALLS_FILENAME)
+        live = MetaClient.from_env(live=True, ledger=ledger, recorder=Recorder(out_dir),
+                                   run_id=f"{args.run_id}-{args.run}")
+        return HybridClient(ReplayClient(src), live)
     return MetaClient.from_env(live=True, ledger=ledger, recorder=Recorder(out_dir),
                                run_id=f"{args.run_id}-{args.run}")
 
@@ -152,6 +194,8 @@ def main(argv=None) -> int:
     ap.add_argument("--replay-from", help="run directory holding calls.jsonl (default: the output directory)")
     ap.add_argument("--runs-root", default=str(ROOT / "runs"))
     ap.add_argument("--no-grade", action="store_true")
+    ap.add_argument("--pages", help="scanned page set under scenarios/pages/ (adds stage V)")
+    ap.add_argument("--hybrid-replay", help="with --mode live: replay every recorded stage from this run dir, call V live")
     args = ap.parse_args(argv)
 
     runs_dir = Path(args.runs_root) / args.run_id
@@ -159,7 +203,8 @@ def main(argv=None) -> int:
     inputs = scenario_inputs(args.run, args.test)
     client = build_client(args, out_dir)
     result = pipeline.run(inputs["docs"], inputs["manifest_text"], lang=inputs["lang"], as_of=inputs["as_of"],
-                          run_id=args.run, client=client, user_message=inputs["user_message"])
+                          run_id=args.run, client=client, user_message=inputs["user_message"],
+                          pages=load_pages(args.pages) if args.pages else None)
     _write(out_dir / "report.json", dumps(result["report"]))
     _write(out_dir / "grading.json", dumps(result["grading"]))
     _write(out_dir / "report.txt", result["text"])

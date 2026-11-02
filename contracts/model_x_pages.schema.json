@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "name": "x_pages",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "pages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "page_ref": {
+              "type": "string"
+            },
+            "seal_fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label_text": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "stamped",
+                      "empty",
+                      "unclear"
+                    ]
+                  },
+                  "x_min": {
+                    "type": "integer"
+                  },
+                  "y_min": {
+                    "type": "integer"
+                  },
+                  "x_max": {
+                    "type": "integer"
+                  },
+                  "y_max": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "label_text",
+                  "state",
+                  "x_min",
+                  "y_min",
+                  "x_max",
+                  "y_max"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "printed_dates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label_text": {
+                    "type": "string"
+                  },
+                  "value_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "label_text",
+                  "value_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "page_ref",
+            "seal_fields",
+            "printed_dates"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "pages"
+    ],
+    "additionalProperties": false
+  }
+}

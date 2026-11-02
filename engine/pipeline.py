@@ -16,7 +16,7 @@ import unicodedata
 from pathlib import Path
 
 from engine import report as report_mod
-from engine import rules, stages, textfilter
+from engine import rules, stages, textfilter, vision
 from engine.checks import check_requirements, contains, norm08
 from engine.conflicts import (apply_adjudication, conflict_info_for, cut, deadline_anchors, find_candidates,
                               merge_conflicting, tmp_id_of, usable)
@@ -703,9 +703,9 @@ class _Run:
                 coded.add(seg["seg_id"])
         return out
 
-    def decide_all(self):
+    def decide_all(self, record: bool = True):
         kept = self.kept()
-        for v in self.vreqs:
+        for v in self.vreqs if record else []:
             if v["check"]["remove"]:
                 why = "merged duplicate (Q7)" if v["check"].get("merged_into") else "instruction-like text (Q8)"
                 self.removed.append({"tmp_id": v["req"].get("tmp_id", ""), "why": why,
@@ -888,9 +888,11 @@ def check_invariants(report: dict, grading: dict, bundle: dict, tap_calls: list[
 # ---------------------------------------------------------------------------------------------
 
 def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, run_id: str, client,
-        user_message: str = "", source_lang: str | None = None, on_event=None) -> dict:
+        user_message: str = "", source_lang: str | None = None, on_event=None, pages: list[dict] | None = None) -> dict:
     """One analysis run. bundle_docs = [{doc_id, title, text, header?, doc_type?}] (normalize.build_source_bundle).
     on_event(dict) receives stage progress ({"stage": "E1", "attempt": 0, ...}, then "RULES", "DONE").
+    pages (optional) = scanned pages of the bidder's files [{file, page, png, image}]: stage V reads them after the
+    text stages, and every requirement is decided on the list and on the page-adjusted list (vision.page_cautious).
     Returns {"report", "grading", "text", "calls", "invariants"}; never raises on a stop condition."""
     bundle = build_source_bundle([dict(d) for d in bundle_docs], bundle_id=_bundle_id(run_id), output_lang=lang,
                                  as_of=as_of, source_lang=source_lang)
@@ -906,8 +908,39 @@ def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, r
     if not rules.source_missing(bundle):
         r.model_phase()
 
+    page_env = None
+    if pages and r.vreqs and not r.stop and not r.extract_failed:
+        try:
+            page_env = vision.run_pages(tap, pages)
+        except STOP_ERRORS as exc:
+            r.stop = {"key": _stop_key(exc), "class": type(exc).__name__, "stage": tap.attempted}
+        if page_env is not None:
+            r.stage_log.append({"stage": "V", "attempt": 0, "called": page_env["called"],
+                                "prompt_version": vision.PROMPT_VERSION, "error": page_env["error"], "dropped": [],
+                                "notes": list(page_env["notes"])})
+            r.emit("V", attempt=0, error=bool(page_env["error"]))
+
     r.emit("RULES", requirements=len(r.vreqs))
     items, conflicts, adj = r.decide_all() if r.vreqs else ([], [], {"log": []})
+    facts, page_changes, moved = {}, [], []
+    if page_env is not None and page_env["pages"] and items:
+        facts = vision.file_facts(page_env["pages"])
+        adjusted, page_changes = vision.adjust_manifest(r.manifest, facts)
+        if page_changes:
+            listed, r.manifest = r.manifest, adjusted
+            try:
+                items_p, _, _ = r.decide_all(record=False)
+            finally:
+                r.manifest = listed
+            kept_items = []
+            for a, b in zip(items, items_p):
+                sa, sb = a["decision"]["status"], b["decision"]["status"]
+                if vision.page_cautious(sa, sb) != sa:
+                    kept_items.append(b)
+                    moved.append({"tmp_id": tmp_id_of(a["vreq"]), "from": sa, "to": sb})
+                else:
+                    kept_items.append(a)
+            items = kept_items
     reason_key = (r.stop or {}).get("key") or ("extract" if r.extract_failed else "match" if r.match_error else "")
     if reason_key:
         flags["incomplete_reason"] = STOP_TEXT[reason_key][lang]
@@ -915,6 +948,8 @@ def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, r
     report = report_mod.build_report(run_id, items, conflicts, lang=lang, manifest=manifest, bundle=bundle,
                                      untrusted=r.untrusted(), not_in_source=r.not_in_source, flags=flags,
                                      x_meta=x_meta)
+    if page_env is not None:
+        report["x_meta"]["pages"] = _page_meta(report, page_env, facts, page_changes, moved)
     grading = report_mod.grading_view(report)
     invariants = check_invariants(report, grading, bundle, tap.calls, tap.pii_in_requests, tap.pii_in_replies)
     report["x_meta"]["invariants"] = invariants
@@ -922,6 +957,23 @@ def run(bundle_docs: list[dict], manifest_text: str, *, lang: str, as_of: str, r
     return {"report": report, "grading": grading, "text": report_mod.render_text(report, lang),
             "calls": list(tap.calls), "invariants": invariants}
 
+
+
+def _page_meta(report: dict, env: dict, facts: dict, changes: list[dict], moved: list[dict]) -> dict:
+    """x_meta["pages"] (present only when pages were given): what V read, what code checked, which list values
+    the pages contradict, and which rows moved because of it."""
+    rid = {r.get("tmp_id"): r.get("id") for r in report["x_meta"].get("rows") or []}
+    reqs = {r["id"]: r for r in report.get("requirements") or []}
+    out_moved = []
+    for m in moved:
+        rid_ = rid.get(m["tmp_id"], "")
+        files = (reqs.get(rid_) or {}).get("evidence_files") or []
+        out_moved.append({"id": rid_, "from": m["from"], "to": m["to"], "files": files,
+                          "changes": [c for c in changes if c["file"] in files],
+                          "evidence": [e for f in files for e in (facts.get(f) or {}).get("evidence", [])]})
+    return {"prompt_version": vision.PROMPT_VERSION, "called": env["called"], "error": env["error"],
+            "read": env["pages"], "list_contradictions": changes, "moved": out_moved,
+            "rule": "decided on the list and on the page-adjusted list; the more cautious status is kept"}
 
 __all__ = ["CallCapReached", "MAX_CALLS", "RUN_COST_CAP_USD", "RunBudgetReached", "STOP_ERRORS", "TRIGGER_RE",
            "apply_attribute_findings", "check_invariants", "run"]

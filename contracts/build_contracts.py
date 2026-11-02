@@ -124,6 +124,15 @@ MODEL_SCHEMAS = {
         })),
     }),
     "x_review": obj({"flags": arr(obj({"req_id": S, "seg_id": S, "issue": S, "quote": S}))}),
+    # V (engine/vision.py): scanned pages of the bidder's files; boxes normalized to 0-1000
+    "x_pages": obj({
+        "pages": arr(obj({
+            "page_ref": S,
+            "seal_fields": arr(obj({"label_text": S, "state": enum("stamped", "empty", "unclear"),
+                                    "x_min": INT, "y_min": INT, "x_max": INT, "y_max": INT})),
+            "printed_dates": arr(obj({"label_text": S, "value_text": S})),
+        })),
+    }),
 }
 
 # --- grading contract: 08 spec §1.3 (field names and enums fixed; code-built, so null is allowed) ---

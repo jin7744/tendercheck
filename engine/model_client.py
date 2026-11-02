@@ -541,10 +541,30 @@ def _resolved_model(raw: Any) -> str:
     return model if isinstance(model, str) else ""
 
 
+IMAGE_PART_TOKENS = 4500  # per image part (measured 4,164 input tokens for one 1654x2339 page plus a short prompt)
+
+
 def estimate_input_tokens(body: Mapping[str, Any]) -> int:
     """Upper bound for text input: UTF-8 bytes of the serialized request (a byte-level BPE token covers >= 1
-    byte). Very pessimistic for base64 images/PDF; there is no stdlib tokenizer."""
-    return len(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+    byte); there is no stdlib tokenizer. Image parts (stage V) count IMAGE_PART_TOKENS each instead of their base64
+    bytes; a body without image parts is estimated exactly as before."""
+    images = 0
+
+    def strip(node):
+        nonlocal images
+        if isinstance(node, dict):
+            if node.get("type") == "image_url":
+                images += 1
+                return {"type": "image_url"}
+            return {k: strip(v) for k, v in node.items()}
+        if isinstance(node, list):
+            return [strip(v) for v in node]
+        return node
+
+    stripped = strip(body)
+    if not images:
+        return len(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+    return len(json.dumps(stripped, ensure_ascii=False).encode("utf-8")) + images * IMAGE_PART_TOKENS
 
 
 # =============================================================================================
