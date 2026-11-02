@@ -67,10 +67,11 @@ def main(argv=None) -> int:
     for i, spec in enumerate(key["pages"]):
         page = {"file": spec["file"], "page": spec["page"], "png": (GATE / spec["render"]["image"]).read_bytes(),
                 "image": spec["render"]["image"]}
-        # one ledger run per page: the per-run cap of 9 calls is for one analysis, not for a 12-page gate
-        client = ReplayClient(out) if i in recorded else MetaClient.from_env(
-            live=True, ledger=ledger, recorder=recorder, run_id=f"{args.run_id}-gate-{i:02d}")
         attempt = i if i in recorded or i not in taken else 100 + i
+        # a page whose attempt is recorded is replayed at $0; only a page never read is called live, with one ledger
+        # run per page (the per-run cap of 9 calls is for one analysis, not for a 12-page gate)
+        client = ReplayClient(out) if attempt in recorded else MetaClient.from_env(
+            live=True, ledger=ledger, recorder=recorder, run_id=f"{args.run_id}-gate-{i:02d}")
         env = vision.run_pages(client, [page], attempt=attempt)
         read = env["pages"][0] if env["pages"] else {"seal_fields": [], "printed_dates": [], "notes": [env["error"]]}
         s = score_page(spec["truth"], read)
@@ -82,7 +83,8 @@ def main(argv=None) -> int:
     passed = ok >= 11 and wrong == 0
     summary = {"pass_rule": key["pass_rule"], "pages": len(rows), "fully_correct": ok, "seal_wrong_state": wrong,
                "PASS": passed, "rows": rows}
-    (out / "gate.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    name = "gate.json" if not (out / "gate.json").exists() else "gate_rescored.json"   # never overwrite a result
+    (out / name).write_text(json.dumps(summary, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"gate: {ok}/{len(rows)} fully correct, {wrong} seal fields in the wrong state -> {'PASS' if passed else 'FAIL'}")
     return 0 if passed else 1
 

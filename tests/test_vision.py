@@ -90,6 +90,10 @@ class CheckPage(unittest.TestCase):
         self.assertEqual(out["seal_fields"][0]["state"], "empty")
         self.assertEqual(out["printed_dates"][0]["iso"], "2026-07-15")
 
+    def test_empty_box_but_a_stamp_elsewhere_on_the_page(self):
+        # the model's box (40,40)-(120,120) is clean; a stamp-sized red block sits at (130,130)-(190,190)
+        self.assertEqual(self.run_check((130, 130, 190, 190), "empty")["seal_fields"][0]["state"], "unknown")
+
     def test_model_says_empty_but_ink_is_there(self):
         self.assertEqual(self.run_check((40, 40, 120, 120), "empty")["seal_fields"][0]["state"], "unknown")
 

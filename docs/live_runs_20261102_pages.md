@@ -43,3 +43,18 @@ What r1 read and checked (report.json x_meta.pages):
   date the 90-day validity ends 2026-10-13, before the 2026-11-30 deadline.
 
 Run totals in run.json include the replayed text stages' recorded cost; only V was paid on 11/2.
+
+## Correction after review (11/2 evening)
+
+The code checked "no stamp-sized red mark" only where a mark overlapped the model's box, while this log and the
+README described a page-wide check. The rule is now page-wide (`engine/vision.check_page`): a field reads empty only
+when its box has no red ink AND no stamp-sized red mark is anywhere on the page; otherwise it reads unknown (needs
+check). New test: `test_empty_box_but_a_stamp_elsewhere_on_the_page`. Checked at $0:
+- the A-M1-P run r1 replays through the corrected code byte-identical (page 2 has no red mark), and so do the
+  seven list-only cases;
+- the gate was rescored from its recording with no API key set: 12/12, 0 seal fields in the wrong state
+  (`gate_rescored.json`; the original `gate.json` is kept).
+
+While fixing the resume path of `tools/page_gate`, one run of the old resume code made one unintended live V call
+for page G10 ($0.0060, ledger run `live_20261102_pagegate-gate-09`, 09:57 UTC). The recorder refused to store it as a
+duplicate, so it was neither recorded nor scored; no result above uses it.

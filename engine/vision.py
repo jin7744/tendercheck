@@ -183,10 +183,6 @@ def _px_box(field: dict, w: int, h: int) -> tuple[int, int, int, int]:
             max(y1 * h // 1000 + 1, y2 * h // 1000))
 
 
-def _overlaps(a, b) -> bool:
-    return a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
-
-
 # ---------------------------------------------------------------- the call
 
 def page_ref(page: dict) -> str:
@@ -261,9 +257,12 @@ def check_page(page: dict, reply: dict | None) -> dict:
             continue
         box = _px_box(f, w, h)
         ink = ink_ratio(rows, box)
-        marks_in = [m for m in marks if _overlaps(m, box)]
-        if state == "empty" and ink <= EMPTY_MAX_INK and not marks_in:
+        # "empty" needs a clean box AND no stamp-sized red mark anywhere on the page: a seal pressed beside a
+        # misplaced box must not read as missing
+        if state == "empty" and ink <= EMPTY_MAX_INK and not marks:
             code, final = "agrees: no red ink in the field", "empty"
+        elif state == "empty" and ink <= EMPTY_MAX_INK:
+            code, final = f"disagrees: the field is clean but {len(marks)} stamp-sized red mark(s) are on the page", "unknown"
         elif state == "stamped" and ink >= STAMPED_MIN_INK:
             code, final = "agrees: red ink in the field", "stamped"
         else:
