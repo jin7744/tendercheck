@@ -348,7 +348,7 @@
       item("report checks passed", `${invOk} of ${(inv.checks || []).length}`, "log", true),
       (report.conflicts || []).length ? item(report.conflicts.length > 1 ? "conflicts between documents" : "conflict between documents", String(report.conflicts.length), "conf-sec") : null,
       (report.untrusted_instructions || []).length ? item("AI instruction in the tender, ignored", String(report.untrusted_instructions.length), "flag-sec") : null,
-      ((x.flags || {}).pii_masked || []).length ? item("kinds of personal data masked", String(x.flags.pii_masked.length), "flag-sec") : null,
+      ((x.flags || {}).pii_masked || []).length ? item(x.flags.pii_masked.length === 1 ? "kind of personal data masked" : "kinds of personal data masked", String(x.flags.pii_masked.length), "flag-sec") : null,
       x.pages && (x.pages.list_contradictions || []).length ? item(x.pages.list_contradictions.length > 1 ? "file-list entries contradicted by scanned pages" : "file-list entry contradicted by a scanned page",
         String(x.pages.list_contradictions.length), (x.pages.moved || []).length ? `row-${x.pages.moved[0].id}` : "rows") : null,
     ].filter(Boolean));

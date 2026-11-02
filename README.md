@@ -8,8 +8,8 @@ It can also read scanned pages of the bidder's own files: Muse Spark finds each 
 page, code checks the model's seal box on the pixels, and a page that contradicts the bidder's list can turn a row
 into an error, never into "met".
 
-**Demo:** https://jin7744.github.io/tendercheck/ (eight recorded live runs, replayed in the page; no model is called
-from it. Case A-M1-P is the one with scanned pages.)
+**Demo:** https://jin7744.github.io/tendercheck/ (nine recorded live runs, replayed in the page; no model is called
+from it. Case A-M1-P is the one with scanned pages; case R-M1 is a real city tender, shown as recorded.)
 
 > Built for the Meta Global AI Developer Hackathon 2026 (Indie Developer track, "Build for Your World").
 > **All code in this repository was written during the hackathon building period, starting Oct 27, 2026.**
@@ -127,6 +127,27 @@ list says the tax certificate was issued 2026-10-15 but the page prints 15 July 
 validity before the deadline. On page 1 a red printed logo was not taken for a seal. One V call for three pages:
 8,549 input tokens, about 5 s, about $0.015.
 
+### A real tender (one run)
+
+Package R is a published tender, not ours: Pyeongtaek City notice 2026-1272 (an AI-assisted architecture-design
+training contract), notice and RFP as posted on g2b.go.kr, about 31,000 characters, one official's name masked. The
+bidder and its list are synthetic, with five planted defects. The key (21 rows), the pass rule, the run rules and
+six inconsistencies a person found in the tender were committed before the first model call (5d057a5); the log is
+`docs/real_tender_20261102.md`.
+
+| One live run, shown as recorded | |
+|---|---|
+| Verdict on the pre-registered rule | **FAIL**, 11 / 21 key rows |
+| Planted defects | 3 / 5 exact (missing 보안서약서, copy without 원본대조필, certificate older than six months); the other 2 "needs check" |
+| Defect rows passed as "met" | **0 / 6** |
+| False alarms | 2: a seal check applied to a registry certificate; `.pptx` failed against "ppt" |
+| Inconsistencies inside the tender surfaced | 0 / 6 |
+| Cost | $0.40, 8 Muse Spark calls, 52 records |
+
+Why the two flagged defects were not errors: the notice gives no time zone for its 10:00 e-bid deadline, so code
+does not compare the bidder's planned 13:00 with it (the action line still says to submit before 10:00), and code
+has no rule for a number of printed copies.
+
 ## Run it
 
 Python 3.12, standard library only for the engine (the page generator `tools/gen_pages.py` needs Pillow). Run live
@@ -134,7 +155,7 @@ mode under Linux or WSL: the cost ledger's cross-process lock uses `fcntl` (on W
 and that one test is skipped).
 
 ```bash
-cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 626 tests
+cd tests && PYTHONPATH=.. python3 -m unittest discover -p 'test_*.py'   # 629 tests
 python3 -m tools.serve --rerun          # the page at http://127.0.0.1:8765; re-runs at $0
 python3 -m tools.run_scenario --run A-M2 --mode replay --run-id replay_demo --replay-from replays/A-M2
 python3 -m tools.run_scenario --run A-M1 --pages A-M1 --mode replay --run-id replay_pages --replay-from replays/A-M1-P
@@ -156,7 +177,7 @@ The page works without the server as static files (`web/`), showing the recorded
 | `contracts/` | Model output schemas, report schema, fixed text, reason codes |
 | `engine/` | Normalization, model client and cost ledger, quote checks, conflicts, file checks, rules, report |
 | `engine/prompts/` | One versioned prompt per model stage |
-| `scenarios/` | Synthetic tender packages, bidder lists, answer keys, adversarial test cards; `pages/` synthetic scanned pages and their keys |
+| `scenarios/` | Synthetic tender packages, bidder lists, answer keys, adversarial test cards; `pages/` synthetic scanned pages and their keys; `packages/R` one published tender with a synthetic bidder list |
 | `eval/` | Independent grader (does not import `engine/`) |
 | `web/` | The page (`index.html`, `app.css`, `app.js`), fonts with licences, recorded cases in `web/data/` |
 | `replays/` | The recorded model replies behind each bundled case |
@@ -169,12 +190,18 @@ The page works without the server as static files (`web/`), showing the recorded
   (Oct 16–22, 2026). The synthetic tender texts, bidder lists and answer keys in `scenarios/` were drafted as text
   inside that specification and transcribed into fixture files on Oct 27.
 - Everything executable (engine, grader, model adapter, page, server) was written from Oct 27 onward.
+- Package R (a published tender) was downloaded, keyed and run on Nov 2.
 
 ## Limits
 
-- Synthetic data only. The bidder's files are described as a list (name, format, size, seal, issue date, notes).
-  Scanned pages (PNG) can be added; PDF or HWP files are not opened, and the pages here are generated, not real
-  scans. Page reading has been measured only on these synthetic pages.
+- Bidder lists are synthetic. The tenders are synthetic except package R, one published tender run once (above).
+  The bidder's files are described as a list (name, format, size, seal, issue date, notes). Scanned pages (PNG) can
+  be added; PDF or HWP files are not opened, and the pages here are generated, not real scans. Page reading has been
+  measured only on these synthetic pages.
+- Seen on the real tender: a deadline with no time zone is not compared; a time range ("09:00 ~ 17:00") is not
+  read; there is no rule for a number of printed copies; a content rule a list cannot show (binding, page numbers)
+  can come back "met" because the file exists; office phone numbers in the tender are masked inside quotes; the
+  conflict stage found none of the tender's own inconsistencies.
 - A seal field found empty means no seal impression was seen in that field; it does not judge whether a seal is the
   right one, and zero marks found is not taken as proof that a document is unsealed elsewhere.
 - It prepares a bid; it does not judge eligibility, and the issuing authority's documents prevail.
