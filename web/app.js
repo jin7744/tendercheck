@@ -590,7 +590,8 @@
     add("code", "Checked the invariants", inv.ok ? "all passed" : "a check failed; see the JSON",
       (inv.checks || []).map((c) => `${c.id} ${c.ok ? "ok" : "FAIL"}`).join(" · "), !inv.ok);
     body.append(steps, h("p", { class: "totals" },
-      `${calls.filter((c) => c.outcome === "response").length} model calls · $${(run.cost ?? calls.reduce((a, c) => a + (c.cost_usd || 0), 0)).toFixed(4)} · ${[...new Set(calls.map((c) => c.model).filter(Boolean))].join(", ") || "n/a"}`));
+      `${calls.filter((c) => c.outcome === "response").length} model calls · $${(run.cost ?? calls.reduce((a, c) => a + (c.cost_usd || 0), 0)).toFixed(4)} · ${[...new Set(calls.map((c) => c.model).filter(Boolean))].join(", ") || "n/a"}`),
+      ...(S.data && S.data.note ? [h("p", { class: "totals" }, S.data.note)] : []));
   }
 
   $("download").addEventListener("click", () => {
