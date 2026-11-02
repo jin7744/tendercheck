@@ -8,6 +8,8 @@ It can also read scanned pages of the bidder's own files: Muse Spark finds each 
 page, code checks the model's seal box on the pixels, and a page that contradicts the bidder's list can turn a row
 into an error, never into "met".
 
+**Video (2:52):** https://youtu.be/qtPQ01vu0e8
+
 **Demo:** https://jin7744.github.io/tendercheck/ (nine recorded live runs, replayed in the page; no model is called
 from it. Case A-M1-P is the one with scanned pages; case R-M1 is a real city tender, shown as recorded.)
 
