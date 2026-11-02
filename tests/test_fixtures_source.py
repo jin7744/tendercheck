@@ -22,6 +22,8 @@ FIXTURE_OF_LABEL = {
     "B-M1": "manifests/B-M1.txt", "B-M2": "manifests/B-M2.txt", "B-M3": "manifests/B-M3.txt",
 }
 ALL_TEXT_FIXTURES = list(FIXTURE_OF_LABEL.values()) + ["manifests/B-M2-PII.txt"]
+# R: a real public tender (docs/real_tender_20261102.md) with a synthetic bidder list
+ALL_TEXT_FIXTURES += ["packages/R/R-공고문.txt", "packages/R/R-제안요청서.txt", "manifests/R-M1.txt"]
 
 # 08 §2.5/§3.5 cell notation -> (status, condition_state)
 NOTATION = {
@@ -170,7 +172,7 @@ class SpecInternalConsistency(unittest.TestCase):
     """08's own tables against 08's own source blocks (as copied into scenarios/)."""
 
     def test_gold_quotes_and_anchors_exist_in_source(self):
-        for pkg in ("A", "B"):
+        for pkg in ("A", "B", "R"):
             docs = source_text(pkg)
             for r in json.loads((SC / f"answers/{pkg}.json").read_text(encoding="utf-8"))["requirements"]:
                 for q in r["gold_quote"]:
@@ -179,7 +181,7 @@ class SpecInternalConsistency(unittest.TestCase):
                     self.assertTrue(any(squash(a) in d for d in docs), (pkg, r["id"], a))
 
     def test_gold_quotes_carry_own_anchor_and_no_foreign_anchor(self):
-        for pkg in ("A", "B"):
+        for pkg in ("A", "B", "R"):
             reqs = json.loads((SC / f"answers/{pkg}.json").read_text(encoding="utf-8"))["requirements"]
             for r in reqs:
                 for q in r["gold_quote"]:
@@ -187,7 +189,7 @@ class SpecInternalConsistency(unittest.TestCase):
                     self.assertEqual(owners, {r["id"]}, (pkg, r["id"], q))
 
     def test_allowed_extra_sentences_exist_in_source(self):
-        for pkg in ("A", "B"):
+        for pkg in ("A", "B", "R"):
             docs = source_text(pkg)
             for e in json.loads((SC / f"answers/{pkg}.json").read_text(encoding="utf-8"))["allowed_extra"]:
                 self.assertTrue(any(squash(e["text"]) in d for d in docs), (pkg, e["text"]))

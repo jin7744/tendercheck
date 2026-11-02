@@ -76,5 +76,18 @@
       "conditional": 4,
       "needs-confirmation": 4
     }
+  },
+  {
+    "run_id": "R-M1",
+    "package": "R",
+    "manifest": "R-M1",
+    "requirements": 21,
+    "expected_counts": {
+      "met": 15,
+      "missing": 2,
+      "error": 4,
+      "conditional": 0,
+      "needs-confirmation": 0
+    }
   }
 ]

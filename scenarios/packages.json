@@ -59,5 +59,27 @@
       "B-M2-PII": "manifests/B-M2-PII.txt",
       "B-M3": "manifests/B-M3.txt"
     }
+  },
+  "R": {
+    "docs": [
+      {
+        "header": "[R-공고문]",
+        "doc_id": "R_NOTICE",
+        "title": "공고문",
+        "file": "packages/R/R-공고문.txt"
+      },
+      {
+        "header": "[R-제안요청서]",
+        "doc_id": "R_RFP",
+        "title": "제안요청서",
+        "file": "packages/R/R-제안요청서.txt"
+      }
+    ],
+    "as_of": "2026-04-17T09:00:00+09:00",
+    "output_lang": "ko",
+    "default_user_message": "이 공고 기준으로 제 제출 서류를 점검해 주세요.",
+    "manifests": {
+      "R-M1": "manifests/R-M1.txt"
+    }
   }
 }

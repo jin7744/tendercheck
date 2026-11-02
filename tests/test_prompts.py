@@ -139,7 +139,7 @@ def _scenario_strings():
             if line:
                 lines.append(line)
     pieces = []
-    for pkg in ("A", "B"):
+    for pkg in ("A", "B", "R"):
         ans = json.loads((sc / "answers" / f"{pkg}.json").read_text(encoding="utf-8"))
         for r in ans["requirements"]:
             pieces += r["gold_quote"] + r["anchors"]

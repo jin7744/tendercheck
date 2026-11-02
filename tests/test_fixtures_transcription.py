@@ -85,7 +85,7 @@ class AnswerCounts(unittest.TestCase):
                                "R16": ("met", "triggered")})
 
     def test_regression_json_equals_08_section5(self):
-        reg = {e["run_id"]: e for e in load("regression.json")}
+        reg = {e["run_id"]: e for e in load("regression.json") if e["package"] in ("A", "B")}
         self.assertEqual(sorted(reg), sorted(SECTION5_08))
         for run_id, (n, met, mis, err, cond, nc) in SECTION5_08.items():
             e = reg[run_id]
@@ -157,7 +157,14 @@ class PackagesAndCards(unittest.TestCase):
 
     def test_no_holdout_package(self):
         self.assertFalse((SC / "holdout").exists())
-        self.assertEqual(sorted(p.name for p in (SC / "packages").iterdir()), ["A", "B"])
+        self.assertEqual(sorted(p.name for p in (SC / "packages").iterdir()), ["A", "B", "R"])
+
+    def test_real_tender_regression_entry(self):
+        # R-M1 counts as written in docs/real_tender_20261102.md before the first model call on package R
+        e = {x["run_id"]: x for x in load("regression.json")}["R-M1"]
+        self.assertEqual((e["package"], e["manifest"], e["requirements"]), ("R", "R-M1", 21))
+        self.assertEqual(e["expected_counts"], {"met": 15, "missing": 2, "error": 4, "conditional": 0,
+                                                "needs-confirmation": 0})
 
 
 if __name__ == "__main__":
