@@ -31,8 +31,8 @@ and the 3 remaining pages were read live (`--resume`). No page was read twice.
 | Run | V call | Rows as the key says | Moved rows |
 |---|---|---|---|
 | r1 (shown) | 8,549 in / 1,026 out tokens, 5.5 s, $0.0150 | 23/23 PASS | R02, R22 met -> error (seal); R14 met -> error (validity) |
-| r2 | $0.0142 (run total $0.1423 incl. replayed stages) | 23/23 PASS | same three |
-| r3 | $0.0143 (run total $0.1433 incl. replayed stages) | 23/23 PASS | same three |
+| r2 | 8,549 in / 841 out tokens, 4.8 s, $0.0143 | 23/23 PASS | same three |
+| r3 | 8,549 in / 759 out tokens, 4.8 s, $0.0152 | 23/23 PASS | same three |
 
 What r1 read and checked (report.json x_meta.pages):
 - QDS_BF1 page 1: no seal field reported (the red printed logo was not taken for a seal); printed Date 20 November 2026.
