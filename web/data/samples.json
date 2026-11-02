@@ -15,6 +15,20 @@
    }
   },
   {
+   "id": "A-M1-P",
+   "title": "Package A · clean list + scanned pages",
+   "blurb": "The same clean list, now with three scanned pages; two of them contradict it",
+   "package": "A",
+   "lang": "en",
+   "status_counts": {
+    "met": 14,
+    "missing": 0,
+    "error": 3,
+    "conditional": 4,
+    "needs-confirmation": 2
+   }
+  },
+  {
    "id": "A-M2",
    "title": "Package A · missing & wrong",
    "blurb": "Joint venture bid with gaps, expired and unsigned files",

@@ -26,6 +26,20 @@ The run stopped once after 9 pages: the ledger's per-run cap of 9 calls applied 
 was changed to give each page its own ledger run; the 9 pages already read were replayed from their recording at $0
 and the 3 remaining pages were read live (`--resume`). No page was read twice.
 
-## Demo runs
+## Demo runs (A-M1 + three pages, text stages replayed from the 11/1 recording, V live)
 
-(filled in after the runs)
+| Run | V call | Rows as the key says | Moved rows |
+|---|---|---|---|
+| r1 (shown) | 8,549 in / 1,026 out tokens, 5.5 s, $0.0150 | 23/23 PASS | R02, R22 met -> error (seal); R14 met -> error (validity) |
+| r2 | $0.0142 (run total $0.1423 incl. replayed stages) | 23/23 PASS | same three |
+| r3 | $0.0143 (run total $0.1433 incl. replayed stages) | 23/23 PASS | same three |
+
+What r1 read and checked (report.json x_meta.pages):
+- QDS_BF1 page 1: no seal field reported (the red printed logo was not taken for a seal); printed Date 20 November 2026.
+- QDS_BF1 page 2: "[Company seal]" field, model: empty; code: 0.0 % red ink in the box, no stamp-sized red mark on the
+  page -> empty. The list says sealed = yes -> contradiction.
+- QDS_TAX page 1: "Official stamp" field (the issuing authority's), model: stamped; code: 12.4 % red ink -> stamped.
+  Printed Date of issue 15 July 2026 -> 2026-07-15. The list says 2026-10-15 -> contradiction. Under the printed
+  date the 90-day validity ends 2026-10-13, before the 2026-11-30 deadline.
+
+Run totals in run.json include the replayed text stages' recorded cost; only V was paid on 11/2.

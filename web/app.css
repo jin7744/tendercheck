@@ -306,6 +306,36 @@ button, select, input { font: inherit; color: inherit; letter-spacing: inherit; 
   .ev-close { display: block; }
   .scrim { display: block; position: fixed; inset: 0; z-index: 35; background: rgba(21, 24, 29, .5); }
 }
+/* scanned pages (stage V) */
+.page-tab small { color: var(--error); }
+.doc-tab:not(.page-tab) small { display: none; }
+.page-cap { margin: 4px 16px 8px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.page-fig { position: relative; margin: 0 16px; }
+.page-fig img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+.pbox { position: absolute; border: 3px solid var(--check); }
+.pbox.empty { border-color: var(--error); }
+.pbox.stamped { border-color: var(--met); }
+.pbox.unknown { border-style: dashed; }
+.pbox.focus { outline: 4px solid var(--accent-10); }
+.pbox span { position: absolute; right: -3px; top: 100%; margin-top: 4px; padding: 2px 6px; white-space: nowrap; font: 600 12px/16px var(--mono); color: var(--on-accent); background: var(--check); }
+.pbox.empty span { background: var(--error); }
+.pbox.stamped span { background: var(--met); }
+.page-facts { margin: 10px 16px 0; padding-left: 18px; font-size: 13px; line-height: 20px; color: var(--ink-2); }
+.page-facts b { color: var(--ink); font-weight: 600; }
+.page-card { grid-column: 2; display: grid; gap: 6px; margin-top: 8px; }
+.pc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: stretch; border: 1px solid var(--line-strong); }
+.pc-side { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; background: var(--layer); }
+.pc-side.page { background: var(--error-bg); border-left: 1px solid var(--line-strong); }
+.pc-k { font-size: 12px; color: var(--ink-3); }
+.pc-side small { font-size: 12px; color: var(--ink-3); }
+.pc-open { align-self: center; padding: 0 12px; white-space: nowrap; }
+@media (max-width: 672px) {
+  .row .page-card { grid-column: 1; }
+  .page-card .pc { grid-template-columns: 1fr; }
+  .page-card .pc-side.page { border-left: 0; border-top: 1px solid var(--line-strong); }
+  .page-card .pc-open { justify-self: start; padding: 8px 10px; }
+  .pbox span { font-size: 10px; line-height: 14px; }
+}
 .sec, .row, .conflict { scroll-margin-top: calc(var(--top) + 12px); }
 @media (prefers-color-scheme: dark) {
   .case-pick select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23c3c7cd' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); }

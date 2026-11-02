@@ -18,10 +18,12 @@
     E4: ["model", "Swept for missed lines", "lines with requirement words that nothing cited"],
     M:  ["model", "Matched the bidder's files", "and read facts written in the file notes"],
     C:  ["model", "Judged possible conflicts", "code proposed the pairs; quotes must prove a difference"],
+    V:  ["model", "Read the scanned pages", "seal fields with a box and printed dates; a page is data, never instructions"],
     RULES: ["code", "Decided every status", "rules over verified quotes and file checks"],
     DONE:  ["code", "Checked the invariants", "no status without a verified quote; no secrets in the output"],
   };
-  const STAGES = ["U", "E1", "E2", "E3", "E4", "M", "C", "RULES", "DONE"];
+  const STAGES = ["U", "E1", "E2", "E3", "E4", "M", "C", "V", "RULES", "DONE"];
+  const SEAL_WORD = { empty: "empty", stamped: "stamped", unknown: "unclear" };
   const DEFAULT_CASE = "A-M2";
   const SMALL = matchMedia("(max-width: 672px)");
   const CALM = matchMedia("(prefers-reduced-motion: reduce)");
@@ -117,6 +119,7 @@
     $("case").value = id;
     S.data = data;
     S.filter = null;
+    S.pages = data.pages || [];
     $("case-blurb").textContent = `${data.title}: ${data.blurb}`;
     for (const el of ["rows", "act", "pre", "conflicts", "questions", "summary", "doc-view", "bidder", "nis", "flags"]) $(el).lang = data.lang;
     setDocs(data.sources);
@@ -138,7 +141,7 @@
   function renderTabs(active) {
     // rebuild only when the documents or their flags change, so the focused tab survives a click
     const tabs = $("doc-tabs");
-    const key = S.docs.map((d) => d.doc_id).join("|") + "#" + [...S.injected].join("|");
+    const key = S.docs.map((d) => d.doc_id).join("|") + "#" + [...S.injected].join("|") + "#" + S.pages.map((p) => p.ref).join("|");
     if (S.tabsKey === key) {
       [...tabs.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === active)));
       return;
@@ -152,6 +155,46 @@
         flagged ? h("span", { class: "dot", title: "Contains an instruction aimed at AI (ignored)" }) : null,
         flagged ? h("span", { class: "sr-only" }, " (contains an ignored instruction aimed at AI)") : null));
     });
+    S.pages.forEach((p, j) => tabs.append(h("button", { type: "button", class: "doc-tab page-tab",
+      "aria-pressed": String(S.docs.length + j === active), onclick: () => showPage(j) },
+      `${p.file.replace(/\.[a-z0-9]+$/i, "")} p.${p.page}`, h("small", null, "scan"))));
+  }
+
+  /* scanned pages of the bidder's files (stage V): the image, the model's seal boxes and what code measured */
+  function showPage(j, focusLabel) {
+    renderTabs(S.docs.length + j);
+    const pg = S.pages[j];
+    const read = ((S.report.x_meta || {}).pages || {}).read || [];
+    const r = read.find((x) => x.page_ref === pg.ref) || {};
+    const [w, hgt] = r.size || pg.size || [1240, 1754];
+    const view = clear($("doc-view"));
+    const fig = h("figure", { class: "page-fig" }, h("img", { src: pg.image, alt: `Scanned page ${pg.page} of ${pg.file} (synthetic)` }));
+    let target = null;
+    for (const f of r.seal_fields || []) {
+      if (!f.box) continue;
+      const [x1, y1, x2, y2] = f.box;
+      const box = h("div", { class: `pbox ${f.state}${focusLabel === f.label ? " focus" : ""}` },
+        h("span", null, `${f.label} · ${SEAL_WORD[f.state] || f.state}`));
+      Object.assign(box.style, { left: `${x1 / w * 100}%`, top: `${y1 / hgt * 100}%`,
+        width: `${(x2 - x1) / w * 100}%`, height: `${(y2 - y1) / hgt * 100}%` });
+      fig.append(box);
+      if (focusLabel === f.label) target = box;
+    }
+    const facts = h("ul", { class: "page-facts" },
+      (r.seal_fields || []).map((f) => h("li", null, h("b", null, `Seal field “${f.label}”`),
+        `: the model reads it as ${f.model_state}; code measured ${f.ink == null ? "nothing" : (f.ink * 100).toFixed(1) + "% red ink"} inside the box → `,
+        h("b", null, SEAL_WORD[f.state] || f.state))),
+      (r.printed_dates || []).map((d) => h("li", null, h("b", null, `Printed “${d.label}”`), `: ${d.value}${d.iso ? ` (read as ${d.iso})` : ""}`)),
+      (r.seal_fields || []).length || (r.printed_dates || []).length ? null : h("li", null, "No seal field or printed date on this page."));
+    view.append(h("p", { class: "page-cap" }, `${pg.file} · page ${pg.page} · synthetic scan`), fig, facts);
+    view.scrollTop = target ? Math.max(0, target.offsetTop - view.clientHeight * 0.3) : 0;
+    say(`${pg.file}, page ${pg.page} (scan) opened.`);
+  }
+  function openPage(ref, label, from) {
+    const j = S.pages.findIndex((p) => p.ref === ref);
+    if (j < 0) return;
+    showPage(j, label);
+    if (SMALL.matches) openSheet(from);
   }
 
   function showDoc(i, seg, quote, ref) {
@@ -306,6 +349,8 @@
       (report.conflicts || []).length ? item(report.conflicts.length > 1 ? "conflicts between documents" : "conflict between documents", String(report.conflicts.length), "conf-sec") : null,
       (report.untrusted_instructions || []).length ? item("AI instruction in the tender, ignored", String(report.untrusted_instructions.length), "flag-sec") : null,
       ((x.flags || {}).pii_masked || []).length ? item("kinds of personal data masked", String(x.flags.pii_masked.length), "flag-sec") : null,
+      x.pages && (x.pages.list_contradictions || []).length ? item(x.pages.list_contradictions.length > 1 ? "file-list entries contradicted by scanned pages" : "file-list entry contradicted by a scanned page",
+        String(x.pages.list_contradictions.length), (x.pages.moved || []).length ? `row-${x.pages.moved[0].id}` : "rows") : null,
     ].filter(Boolean));
   }
 
@@ -367,6 +412,7 @@
       h("button", { type: "button", class: "loc", tabindex: "-1", title: "Open this line in the tender",
         onclick: (e) => { e.stopPropagation(); pick(li, e.currentTarget); } }, `${r.location || "location not stated"} →`),
       r.reason ? h("div", { class: "row-sub" }, r.reason) : null,
+      pageCard(r.id),
       r.bidder_action ? h("div", { class: "row-act" }, r.bidder_action) : null,
       more);
     li._r = r; li._meta = meta; li._more = more;
@@ -378,6 +424,26 @@
       else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); step(li, -1); }
     });
     return li;
+  }
+
+  function pageCard(id) {
+    const mv = (((S.report || {}).x_meta || {}).pages || {}).moved || [];
+    const m = mv.find((x) => x.id === id);
+    if (!m) return null;
+    const sides = [];
+    for (const c of m.changes || []) {
+      const ev = (m.evidence || []).find((e) => e.page_ref.startsWith(c.file + "#") &&
+        (c.field === "sealed" ? e.kind === "seal" && e.state !== "stamped" : e.kind === "issue_date"));
+      if (!ev) continue;
+      const listed = c.field === "sealed" ? `${c.file}: sealed = ${c.list}` : `${c.file}: issued ${c.list}`;
+      const paged = c.field === "sealed" ? `“${ev.label}” field ${SEAL_WORD[ev.state] || ev.state}` : `“${ev.label}” ${ev.value}`;
+      const how = c.field === "sealed" ? "model and code agree" : "read by the model; dates computed by code";
+      sides.push(h("div", { class: "pc" },
+        h("div", { class: "pc-side" }, h("span", { class: "pc-k" }, "Your file list"), h("span", null, listed)),
+        h("div", { class: "pc-side page" }, h("span", { class: "pc-k" }, `Page ${ev.page} (scan)`), h("span", null, paged), h("small", null, how)),
+        h("button", { type: "button", class: "link pc-open", onclick: (e) => { e.stopPropagation(); openPage(ev.page_ref, ev.label, e.currentTarget); } }, "Open page →")));
+    }
+    return sides.length ? h("div", { class: "page-card" }, sides) : null;
   }
 
   function rove(li) {
@@ -497,7 +563,7 @@
     const steps = h("ol", { class: "steps" });
     const add = (who, title, note, num, warn) => steps.append(h("li", { class: `step ${who}${warn ? " warn" : ""}` },
       h("span", { class: "who" }, who), h("div", null, title, note ? h("span", { class: "hint" }, `: ${note}`) : null, num ? h("span", { class: "n" }, num) : null)));
-    for (const st of STAGES.slice(0, 7)) {
+    for (const st of STAGES.slice(0, 8)) {
       const cs = by[st];
       if (!cs) continue;
       const sum = (k) => cs.reduce((a, c) => a + (c[k] || 0), 0);
@@ -512,6 +578,11 @@
       }
       if (st === "C" && (v.member_rule_conditions || []).length)
         add("code", "Added consortium conditions", "a member rule binds only a joint venture", `${v.member_rule_conditions.length} record(s)`);
+      if (st === "V" && x.pages) {
+        const fields = (x.pages.read || []).flatMap((p) => p.seal_fields || []);
+        add("code", "Checked the model's seal boxes on the pixels", "red ink inside each box; a field counts only when model and code agree",
+          `${fields.length} seal field${fields.length === 1 ? "" : "s"} · ${fields.filter((f) => f.state !== "unknown").length} agreed · ${(x.pages.list_contradictions || []).length} file-list entries contradicted · ${(x.pages.moved || []).length} rows moved (never to met)`);
+      }
     }
     if (v.status_hint_downgrades) add("code", "Kept the model's doubts", "a model hint can only make a result more cautious", `${v.status_hint_downgrades}`);
     add("code", STEP.RULES[1], STEP.RULES[2]);

@@ -26,8 +26,16 @@ REPLAYS = ROOT / "replays"  # committed: runs/live_* is git-ignored, and the ser
 # "re-run" replays them byte for byte. Earlier recordings are listed in docs/live_runs_20261028.md.
 DEFAULT_RUNS = {m: f"runs/live_20261101_freeze/{m}" for m in
                 ("A-M1", "A-M2", "A-M3", "B-M1", "B-M2", "B-M3", "B-M2-PII")}
+# A-M1 with three scanned pages: the 11/1 text stages replayed, stage V live (docs/live_runs_20261102_pages.md, r1)
+DEFAULT_RUNS = {**{k: v for k, v in DEFAULT_RUNS.items() if k == "A-M1"},
+                "A-M1-P": "runs/live_20261102_pages_r1/A-M1",
+                **{k: v for k, v in DEFAULT_RUNS.items() if k != "A-M1"}}
+# sample id -> (manifest, scanned page set)
+SAMPLE_BASE = {"A-M1-P": ("A-M1", "A-M1")}
 TITLES = {
     "A-M1": ("Package A · clean bid", "English tender, every document in order"),
+    "A-M1-P": ("Package A · clean list + scanned pages",
+               "The same clean list, now with three scanned pages; two of them contradict it"),
     "A-M2": ("Package A · missing & wrong", "Joint venture bid with gaps, expired and unsigned files"),
     "A-M3": ("Package A · edge cases", "Two deadlines that disagree, unknown JV status"),
     "B-M1": ("Package B · clean bid", "Korean tender, usage seal, every document in order"),
@@ -54,7 +62,8 @@ def _calls(run_dir: Path) -> list[dict]:
 
 def sample(sample_id: str, run_dir: Path) -> dict:
     report = json.loads((run_dir / "report.json").read_text(encoding="utf-8"))
-    inp = scenario_inputs(sample_id)
+    manifest_id, page_set = SAMPLE_BASE.get(sample_id, (sample_id, None))
+    inp = scenario_inputs(manifest_id)
     bundle = build_source_bundle(inp["docs"], bundle_id=f"web-{sample_id}", output_lang=inp["lang"])
     docs = []
     for d in bundle["docs"]:
@@ -63,7 +72,16 @@ def sample(sample_id: str, run_dir: Path) -> dict:
         docs.append({"doc_id": d["doc_id"], "title": d["title"], "lines": lines})
     calls = _calls(run_dir)
     title, blurb = TITLES.get(sample_id, (sample_id, ""))
-    pkg, _ = find_run(sample_id)
+    pkg, _ = find_run(manifest_id)
+    pages = []
+    if page_set:
+        src, dst = ROOT / "scenarios" / "pages" / page_set, OUT / "pages" / page_set
+        dst.mkdir(parents=True, exist_ok=True)
+        for pg in (report.get("x_meta", {}).get("pages") or {}).get("read", []):
+            name = Path(pg["image"]).name
+            shutil.copyfile(src / name, dst / name)
+            pages.append({"ref": pg["page_ref"], "file": pg["file"], "page": pg["page"], "size": pg.get("size"),
+                          "image": f"data/pages/{page_set}/{name}"})
     return {
         "id": sample_id, "title": title, "blurb": blurb, "package": pkg, "lang": inp["lang"],
         "run": {"run_dir": run_dir.as_posix().split("runs/", 1)[-1], "mode": "replay",
@@ -75,6 +93,8 @@ def sample(sample_id: str, run_dir: Path) -> dict:
         "manifest_text": inp["manifest_text"],
         "user_message": inp["user_message"],
         "report": report,
+        **({"pages": pages, "note": "Text stages replayed from the recorded list-only run of " + manifest_id
+            + "; the page-reading stage V was called live."} if page_set else {}),
     }
 
 
