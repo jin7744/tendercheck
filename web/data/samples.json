@@ -111,6 +111,20 @@
     "conditional": 5,
     "needs-confirmation": 3
    }
+  },
+  {
+   "id": "R-M1",
+   "title": "Real tender · Pyeongtaek City 2026-1272",
+   "blurb": "A published city tender from g2b.go.kr with a synthetic bidder list (five planted defects); the first and only live run, shown as recorded",
+   "package": "R",
+   "lang": "ko",
+   "status_counts": {
+    "met": 25,
+    "missing": 1,
+    "error": 4,
+    "conditional": 5,
+    "needs-confirmation": 17
+   }
   }
  ]
 }

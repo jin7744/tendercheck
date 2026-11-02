@@ -80,8 +80,8 @@
     const sel = clear($("case"));
     const groups = {};
     for (const s of S.samples) (groups[s.package] = groups[s.package] || []).push(s);
-    for (const [pkg, items] of Object.entries(groups)) {
-      sel.append(h("optgroup", { label: `Package ${pkg} · ${items[0].lang === "ko" ? "Korean tender" : "English tender"}` },
+    for (const items of Object.values(groups)) {
+      sel.append(h("optgroup", { label: `${items[0].title.split("·")[0].trim()} · ${items[0].lang === "ko" ? "Korean tender" : "English tender"}` },
         items.map((s) => h("option", { value: s.id }, `${s.id}: ${s.title.split("·").pop().trim()}`))));
     }
   }

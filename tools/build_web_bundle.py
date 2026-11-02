@@ -30,6 +30,8 @@ DEFAULT_RUNS = {m: f"runs/live_20261101_freeze/{m}" for m in
 DEFAULT_RUNS = {**{k: v for k, v in DEFAULT_RUNS.items() if k == "A-M1"},
                 "A-M1-P": "runs/live_20261102_pages_r1/A-M1",
                 **{k: v for k, v in DEFAULT_RUNS.items() if k != "A-M1"}}
+# A real city tender with a synthetic bidder list, run once live (docs/real_tender_20261102.md, r1)
+DEFAULT_RUNS["R-M1"] = "runs/live_20261102_real_r1/R-M1"
 # sample id -> (manifest, scanned page set)
 SAMPLE_BASE = {"A-M1-P": ("A-M1", "A-M1")}
 TITLES = {
@@ -42,6 +44,16 @@ TITLES = {
     "B-M2": ("Package B · missing & wrong", "HWP file, old certificates, short signatures"),
     "B-M3": ("Package B · edge cases", "Deadline conflict, cut-off scan, unknown JV status"),
     "B-M2-PII": ("Package B · sensitive data", "A bidder list carrying personal numbers, masked before the model"),
+    "R-M1": ("Real tender · Pyeongtaek City 2026-1272",
+             "A published city tender from g2b.go.kr with a synthetic bidder list (five planted defects); "
+             "the first and only live run, shown as recorded"),
+}
+# Shown in the run log under the call list
+NOTES = {
+    "R-M1": "Real tender, synthetic bidder list, one live run shown as recorded (pre-registered key: 11/21 rows, FAIL). "
+            "Of the five planted defects, three are caught exactly and two are flagged for review; none is passed as "
+            "met. Two of the four errors are false alarms (a seal check on the 법인인감증명서 row, .pptx against "
+            "\"ppt\"). Details: docs/real_tender_20261102.md.",
 }
 
 
@@ -95,6 +107,7 @@ def sample(sample_id: str, run_dir: Path) -> dict:
         "report": report,
         **({"pages": pages, "note": "Text stages replayed from the recorded list-only run of " + manifest_id
             + "; the page-reading stage V was called live."} if page_set else {}),
+        **({"note": NOTES[sample_id]} if sample_id in NOTES else {}),
     }
 
 
