@@ -70,3 +70,47 @@ These are in the tender itself, not planted. After the run we record which of th
 | O4 | 제안요청서 Ⅵ 정량평가 table | past-performance criterion names "UX/UI 디자이너 양성 과정" in an architecture-design training tender |
 | O5 | 공고문 3.마 | registration "입찰서 제출마감일 전일까지" = Sunday 2026-04-19, while the desk works weekdays only |
 | O6 | 공고문 9 vs 제안요청서 Ⅴ.3.가⑤ | 청렴계약 이행서약서 "제출한 것으로 간주" vs 청렴이행서약서 1부 listed to submit |
+
+---
+
+## r1 result (added after the run, 2026-11-02)
+
+`runs/live_20261102_real_r1/R-M1` (replies in `replays/R-M1/calls.jsonl`). Engine 127c4fd, key 5d057a5.
+
+| | |
+|---|---|
+| Run | complete, 8 calls (U, E1, E2, E3, E4, E2 again, M, C), all `muse-spark-1.3`, 226 s of model time, **$0.4025** |
+| E1 | 22,677 input / 29,989 output tokens (14,115 reasoning) |
+| Records | 52 requirements: met 25, missing 1, error 4, conditional 5, needs-confirmation 17; conflicts 0, agency questions 0 |
+| **Verdict** | **FAIL** (pre-registered rule): status match **11/21**; F2 (one quote differs from the source); one over-merged record |
+| Safety | key rows expected non-met that came back `met`: **0 of 6** |
+
+### The five planted defects
+
+| Key row | Expected | Got | Why (from the report) |
+|---|---|---|---|
+| R08 보안서약서 | missing | **missing** | no file on the list |
+| R11 사업자등록증 사본(원본대조필) | error | **error** | original/copy check failed |
+| R15 실적증명서 6개월 | error | **error** | issued 2025-09-30, outside the window "in every counting convention" |
+| R01 e-bid 10:00, planned 13:00 | error | needs-confirmation | the notice gives no time zone, so code does not compare; the action line still says to submit before 2026. 4. 20.(월) 10:00 |
+| R16 제안서 10부, list 9부 | missing | needs-confirmation | no copy-count rule in code (known before the run); flagged for review |
+| R14 사본 → 원본대조필 후 인감날인 | error | conditional (unknown) | the condition "사본일 경우" was not resolved from the list's 비고 "사본" |
+
+### Rows expected met that came back otherwise
+
+| Key row | Got | Cause |
+|---|---|---|
+| R10 사용인감계 / 법인인감증명서 | **error** | false alarm: a seal check was applied to the 법인인감증명서 row, a registry certificate that carries no bidder seal |
+| R17 USB (제안서 + 발표 ppt) | **error** | false alarm: the file `.pptx` failed a format check against "ppt" |
+| R02 visit window 09:00 ~ 17:00 | needs-confirmation | the date parser did not read a time range |
+| R06 위임장·재직증명서 (대리인 제출 시) | conditional (unknown) | the list says an agent submits (비고), the condition was not resolved |
+| R18 소기업·소상공인 확인서 | needs-confirmation | "유효기간 내" has no period in the tender text, so code could not decide |
+| R03 입찰참가신청서 | unmatched | the engine's record R30 quotes the Ⅶ table row and is `met`; the key's anchor "입찰참가신청서 1부" does not cover that row. Scored as a miss as registered; noted here after the run |
+| R12 법인 등기부등본 | unmatched | over-merged with 사업자등록증 in one record (R38, error) |
+
+### Other findings
+
+- F2: the record quoting "평택시청 청년정책과 … ☎031-8024-3571" carries `☎[MASKED:phone]`; office numbers in the tender are masked before the model, so the quote is checked against the masked text, not the published one.
+- Three extra records were marked `met` on content rules a file list cannot show (A4 binding, page numbering, no company marks on evaluation copies): met because a proposal file exists. That is over-trust.
+- None of the six observations O1–O6 was surfaced: C returned no conflicts and no questions.
+- The doubled output budget was not needed this time: E1's 29,989 output tokens would have fit in 32,768.
