@@ -208,4 +208,12 @@ The page works without the server as static files (`web/`), showing the recorded
   right one, and zero marks found is not taken as proof that a document is unsealed elsewhere.
 - It prepares a bid; it does not judge eligibility, and the issuing authority's documents prevail.
 
-Fonts: Pretendard (SIL OFL 1.1) and IBM Plex Mono (SIL OFL 1.1), licences in `web/fonts/`.
+## License
+
+The code and the project's own text are under the MIT License (`LICENSE`). Not covered by it:
+
+- Fonts in `web/fonts/`: Pretendard and IBM Plex Mono, SIL OFL 1.1, licences next to the fonts.
+- `scenarios/packages/R/`: the text of Pyeongtaek City notice 2026-1272 and its RFP as published on g2b.go.kr (one
+  official's name masked), included for testing.
+- Recorded model replies in `replays/` and `web/data/`: Muse Spark 1.3 outputs from the Meta Model API; Meta's terms
+  apply to them.
